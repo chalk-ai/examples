@@ -1,0 +1,28 @@
+name: Create a preview deployment
+on: push
+
+jobs:
+  test-with-chalk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      # The chalk-ai/deploy-action expects chalkpy to be installed
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - uses: chalk-ai/deploy-action@v1
+        with:
+          client-id: ${{secrets.CHALK_CLIENT_ID}}
+          client-secret: ${{secrets.CHALK_CLIENT_SECRET}}
+          # Waits for the deployment to succeed (Optional, default false)
+          await: true
+
+      - name: Use the Chalk CLI
+        run: chalk query --in transaction.transaction_id=1 --out transaction.clean_memo

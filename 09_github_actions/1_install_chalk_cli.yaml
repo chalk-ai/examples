@@ -1,0 +1,20 @@
+name: Install the Chalk CLI
+on: push
+
+jobs:
+  test-with-chalk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: chalk-ai/cli-action@v1
+        with:
+          client-id: ${{secrets.CHALK_CLIENT_ID}}
+          client-secret: ${{secrets.CHALK_CLIENT_SECRET}}
+
+      - name: Use the Chalk CLI
+        run: |
+          # Print out the version
+          chalk version
+          # All commands are now authenticated with your client-id and client-secret
+          chalk whoami

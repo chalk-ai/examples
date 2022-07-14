@@ -1,0 +1,4 @@
+chalkpy>=1.11.8
+pydantic
+cattrs
+requests

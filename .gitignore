@@ -1,0 +1,30 @@
+# dependencies
+/node_modules
+node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# misc
+.DS_Store
+*.pem
+
+# python
+__pycache__
+*.pyc
+.eggs
+*.egg-info
+venv/
+dist
+build
+engine.iml
+
+# VSCode
+.vscode/
+
+# intellij
+*.iml
+.idea
+
