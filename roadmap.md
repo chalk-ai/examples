@@ -6,6 +6,7 @@
   - [x] Downstream scalars
   - [ ] Downstream dataframes
   - [ ] Tags and environments
+  - [ ] Multi-tenancy
 - [x] Caching
 - [x] Scheduling
 - [x] Feature Discovery
