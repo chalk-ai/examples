@@ -1,4 +1,5 @@
-from chalk.features import features, tags, is_primary, owner, description
+from chalk import tags, is_primary, owner, description
+from chalk.features import features
 
 
 @features(owner="shuttle@nasa.gov", tags="group:rocketry")

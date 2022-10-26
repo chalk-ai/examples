@@ -1,4 +1,5 @@
-from chalk.features import features, feature, tags
+from chalk import tags
+from chalk.features import features, feature
 
 
 # Tags are assigned as code comments

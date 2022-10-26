@@ -1,4 +1,5 @@
-from chalk.features import features, feature, description
+from chalk import description
+from chalk.features import feature, features
 
 
 @features
