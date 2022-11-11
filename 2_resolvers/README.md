@@ -39,9 +39,11 @@ def get_email_info(id: User.id) -> Features[User.email_domain, User.email]:
 ```
 https://docs.chalk.ai/docs/resolver-overview
 
-## 3. Downstream Resolvers
+## 3. Downstream Scalars
 Resolvers chain together through their required dependencies
 and declared outputs.
+
+**[3_downstream_scalars.py](3_downstream_scalars.py)**
 
 ```python
 @realtime
@@ -57,3 +59,4 @@ result = ChalkClient().query(
     output=[User.banned_email],
 )
 ```
+https://docs.chalk.ai/docs/resolver-overview

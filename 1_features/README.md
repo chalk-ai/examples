@@ -5,6 +5,7 @@ to a Python class with typed attributes.
 
 https://docs.chalk.ai/docs/features
 
+
 ## 1. Feature Types
 Create a namespaced set of features.
 
@@ -19,11 +20,12 @@ class Book:
 ```
 https://docs.chalk.ai/docs/features
 
+
 ## 2. Custom Feature Types
-Use [pydantic](https://pydantic-docs.helpmanual.io/),
-[attrs](https://www.attrs.org/), 
-[dataclasses.dataclass](https://docs.python.org/3/library/dataclasses.html),
-or [custom types](2_custom_feature_types.py) as feature values.
+Use [pydantic](https://docs.chalk.ai/docs/feature-types#pydantic-models),
+[attrs](https://docs.chalk.ai/docs/feature-types#attrs), 
+[dataclasses.dataclass](https://docs.chalk.ai/docs/feature-types#dataclass),
+or [custom types](https://docs.chalk.ai/docs/feature-types#custom-serializers) as feature values.
 
 **[2_custom_feature_types.py](2_custom_feature_types.py)**
 
@@ -37,7 +39,8 @@ class Book:
     jacket: JacketInfo
     custom: CustomClass = feature(encoder=..., decoder=...)
 ```
-https://docs.chalk.ai/docs/features
+https://docs.chalk.ai/docs/feature-types
+
 
 ## 3. Primary Keys
 Set the primary key for an entity.
@@ -49,7 +52,7 @@ Set the primary key for an entity.
 class Book:
     id: str
 ```
-
+https://docs.chalk.ai/docs/features#primary-keys
 
 ## 4. Has One
 Define a has-one relationship between feature classes.
@@ -66,6 +69,7 @@ class Book:
     author_id: str
     author: Author = has_one(lambda: Book.author_id == Author.id)
 ```
+https://docs.chalk.ai/docs/has-one
 
 
 ## 5. Has Many
@@ -83,7 +87,7 @@ class Author:
     id: str
     books: DataFrame[Book] = has_many(lambda: Book.author_id == Author.id)
 ```
-
+https://docs.chalk.ai/docs/has-many
 
 ## 6. Has One + Has Many
 Define a has-many relationship between feature classes.
@@ -101,6 +105,7 @@ class Author:
     id: str
     books: DataFrame[Book] = has_many(lambda: Book.author_id == Author.id)
 ```
+https://docs.chalk.ai/docs/has-many#one-to-many
 
 
 ## 7. Feature Time
@@ -129,3 +134,4 @@ assert dict(Book(name="Anna Karenina", pages=864)) == {
     "book.pages": 864,
 }
 ```
+https://docs.chalk.ai/docs/features#constructing-feature-classes

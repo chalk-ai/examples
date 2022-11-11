@@ -48,14 +48,19 @@ User.txns[
 https://docs.chalk.ai/docs/dataframe
 
 ## 4. Composing Projections and Filters
+Compose projections and filters to create a new `DataFrame`.
 
 **[4_filters_and_projections.py](4_filters_and_projections.py)**
-```python
 
+```python
+User.transactions[Transaction.amount > 100, Transaction.memo]
 ```
+
 https://docs.chalk.ai/docs/dataframe#composing-projections-and-filters
 
 ## 5. Aggregations
+
+Compute aggregates over a `DataFrame`.
 
 **[5_aggregations.py](5_aggregations.py)**
 
