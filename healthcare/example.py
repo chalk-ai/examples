@@ -6,7 +6,7 @@ from chalk.features import Features, sink
 from chalk.sql import PostgreSQLSource
 from chalk.streams import stream, KafkaSource
 from chalk.streams.KafkaSource import KafkaConsumerConfig
-from garbage.curebase.helpers import StitchAPIClient, Base
+from healthcare.helpers import StitchAPIClient, Base
 
 # --------------------------------------
 # ----- PART 1: INGESTING RAW DATA -----
@@ -51,9 +51,7 @@ class SentrySQSMessage(BaseModel):
 
 stream_source = KafkaSource(
     message=SentrySQSMessage,
-    consumer_config=KafkaConsumerConfig(
-        broker="kafka.website.com:9092", topic="sentry_updates"
-    ),
+    consumer_config=KafkaConsumerConfig(broker="kafka.website.com:9092", topic="sentry_updates"),
 )
 
 

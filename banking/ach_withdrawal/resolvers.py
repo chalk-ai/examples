@@ -39,6 +39,7 @@ class SettlementTimes:
     ratio_30_day: float
     ratio_60_day: float = 1
 
+
 @features
 class User:
     id: str
@@ -60,26 +61,16 @@ class Balance:
 @features
 class Account:
     id: str
-    @max_staleness(days="5d")
     balances: DataFrame[Balance] = feature(max_staleness="40d")
     ...
-
-
 
 
 class Account2:
     balances: DataFrame[Balance] = feature(max_staleness="30d")
 
 
-ChalkClient(...).query(
-    input={Balance.id: "124"},
-    output=[
-        Balance.available_balance
-    ],
-    max_stalensese={
+ChalkClient(...).query(input={Balance.id: "124"}, output=[Balance.available_balance], max_stalensese={})
 
-    }
-)
 
 def wow(bs: Account.last_balances[Balance.available_balance > 300]) -> ...:
     ...
@@ -90,24 +81,28 @@ def refresh_fico(user: User.id, fico: DataFrame[User.fico].take(40)) -> User.fic
 
 
 @realtime(cron="1d")
-def get_balances(aid: Account.id, ) -> Account.balances:
+def get_balances(
+    aid: Account.id,
+) -> Account.balances:
     return session.query(...).all(incremental=True)
+
 
 @realtime(cron="1d")
 def get_balances(aid: Account2.id) -> Account2.balances:
     return session.query(...).all(incremental=True)
 
 
-ChalkClient(...).query(
-    input={Account.id: "124"},
-    output=[
-        Account.balances[
-            Balance.available_balance,
-            Balance.ts,
-            after(days_ago=30),
-        ]
-    ],
-)
+#
+# ChalkClient(...).query(
+#     input={Account.id: "124"},
+#     output=[
+#         Account.balances[
+#             Balance.available_balance,
+#             Balance.ts,
+#             after(days_ago=30),
+#         ]
+#     ],
+# )
 
 
 @features
@@ -124,13 +119,11 @@ class TransferLimit:
     to_account: Account
 
 
-internal_accounts = {AccountKind.savings, AccountKind.checking}
+INTERNAL = {AccountKind.savings, AccountKind.checking}
+EXTERNAL = {AccountKind.plaid}
 
 
-@realtime(
-    when=TransferLimit.from_account.kind in internal_accounts
-    and TransferLimit.to_account.kind in internal_accounts
-)
+@realtime(when=TransferLimit.from_account.kind in INTERNAL and TransferLimit.to_account.kind in INTERNAL)
 def internal_transfer_limit(
     source_balance: TransferLimit.from_account.balances,
 ) -> TransferLimit.amount:
@@ -140,16 +133,12 @@ def internal_transfer_limit(
     return source_balance
 
 
-@realtime(
-    when=TransferLimit.from_account.kind
-    == TransferLimit.to_account.kind
-    == AccountKind.plaid
-)
+@realtime(when=TransferLimit.from_account.kind in EXTERNAL and TransferLimit.to_account.kind in EXTERNAL)
 def deposit_limit() -> TransferLimit.amount:
     return 0
 
 
-@realtime(when=TransferLimit.from_account.kind == AccountKind.plaid)
+@realtime(when=TransferLimit.from_account.kind in EXTERNAL)
 def deposit_limit(
     email: User.email,
     from_balance: TransferLimit.from_account.available_balance,
@@ -157,14 +146,10 @@ def deposit_limit(
     return max(0, from_balance - 30)
 
 
-@realtime(when=TransferLimit.to_account.kind == AccountKind.plaid)
+@realtime(when=TransferLimit.to_account.kind in EXTERNAL)
 def withdrawal_limit(
-    internal_accounts: TransferLimit.user.accounts[
-        Account.kind in {AccountKind.savings, AccountKind.checking}
-    ],
-    recent_deposits: TransferLimit.user.transfers[
-        Transfer.from_account.kind == AccountKind.plaid, before(days_ago=90)
-    ],
+    internal_accounts: TransferLimit.user.accounts[Account.kind in {AccountKind.savings, AccountKind.checking}],
+    recent_deposits: TransferLimit.user.transfers[Transfer.from_account.kind == AccountKind.plaid, before(days_ago=90)],
 ) -> TransferLimit.amount:
     platform_balance = internal_accounts[Account.balances].sum()
     recent_deposits.sum()
