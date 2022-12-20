@@ -35,7 +35,7 @@ https://docs.chalk.ai/docs/feature-caching
 
 ## 3. Intermediate Feature Values
 Caching also works when features are needed as intermediate
-results, but not as outputs.
+results.
 
 **[3_intermediates.py](3_intermediates.py)**
 

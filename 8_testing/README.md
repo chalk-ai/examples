@@ -2,10 +2,11 @@
 Testing for Chalk resolvers.
 
 ## 1. Unit tests
+Resolvers are just Python functions, so they are easy to unit test.
+
 Chalk lets you specify your feature pipelines using
 idiomatic Python. This means that you can unit test
-individual resolvers and combinations of resolvers,
-since they’re just Python functions.
+individual resolvers and combinations of resolvers.
 
 **[1_unit_tests.py](1_unit_tests.py)**
 
