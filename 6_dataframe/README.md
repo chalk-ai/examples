@@ -47,7 +47,7 @@ User.txns[
 ```
 https://docs.chalk.ai/docs/dataframe
 
-## 4. Composing Projections and Filters
+## 4. Projections with Filters
 Compose projections and filters to create a new `DataFrame`.
 
 **[4_filters_and_projections.py](4_filters_and_projections.py)**
