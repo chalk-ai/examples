@@ -28,9 +28,11 @@ class User:
 
 
 @realtime
-def get_transaction_trend(this_year_txns: User.transactions[after(days_ago=30)],
-                          last_year_txns: User.transactions[before(years_ago=1), after(years_ago=1, days_ago=30)]
-                          ) -> User.change_from_last_year:
+def get_transaction_trend(
+        this_year_txns: User.transactions[after(days_ago=30)],
+        last_year_txns: User.transactions[before(years_ago=1),
+                                          after(years_ago=1, days_ago=30)]
+    ) -> User.change_from_last_year:
     sum_last = last_year_txns['amount'].sum()
     sum_this = this_year_txns['amount'].sum()
     return (sum_last - sum_this) * 100 / sum_last
