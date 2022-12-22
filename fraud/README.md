@@ -25,7 +25,7 @@ https://docs.chalk.ai/docs/resolver-inputs
 ## 2. Changes in behavior
 Identify changes in user behavior over time
 
-**[2_patterhs.py](2_patterns.py)**
+**[2_patterns.py](2_patterns.py)**
 
 ```python
 @realtime
@@ -40,31 +40,25 @@ def get_transaction_trend(this_year_txns: User.transactions[after(days_ago=30)],
 ```
 
 https://docs.chalk.ai/docs/window-functions
-## BELOW THIS IS A LIE
 
-## 3. Credit Bureau API
-Integrate data from credit bureaus like Equifax
+## 3. Identity Verification
 
-**[3_bureau_api.py](3_bureau_api.py)**
+**[3_identity.py](3_identity.py)**
 
 ```python
-def get_credit_report(first_name: User.first_name, last_name: User.last_name,
-                      city: User.city, state: User.state, id = User.id
-    ) -> CreditReport:
-    args = {
-        "firstName": first_name,
-        "lastName": last_name,
-        "city": city,
-        "state": state
-        }
-    res = requests.post(f"{url}/equifax/credit-report", args).json()
+@features
+class User:
+    id: str
+    socure_score: float = feature(max_staleness="30d")
 
-    return CreditReport(
-        user_id=id, 
-        report_id=res["pdfReportId"], 
-        report=res["data"]
+@online
+def get_socure_score(uid: User.id) -> Features[User.socure_score]:
+    return (
+        requests.get("https://api.socure.com", json={
+            id: uid
+        }).json()['socure_score']
     )
 
 ```
 
-https://docs.chalk.ai/docs/resolver-overview
+https://docs.chalk.ai/docs/feature-caching
