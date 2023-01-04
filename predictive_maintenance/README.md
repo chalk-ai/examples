@@ -26,7 +26,7 @@ def read_message(message: Message) -> Measurement:
 https://docs.chalk.ai/docs/streams
 
 ## 2. Historical Data
-Access historical data as-of any time in the past
+Access historical sensor data as-of any time in the past.
 
 **[2_time_query.py](2_time_query.py)**
 

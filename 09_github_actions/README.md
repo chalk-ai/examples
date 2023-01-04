@@ -8,7 +8,7 @@ CLI Step: https://github.com/chalk-ai/cli-action
 Deploy Step: https://github.com/chalk-ai/deploy-action
 
 ## 1. Install Chalk CLI
-Install the Chalk CLI in a GitHub Action
+Install the Chalk CLI in a GitHub Action.
 
 **[1_install_chalk_cli.yaml](1_install_chalk_cli.yaml)**
 
@@ -23,7 +23,7 @@ Docs: https://docs.chalk.ai/docs/github-actions
 Step: https://github.com/chalk-ai/cli-action
 
 ## 2. Deploy with Chalk
-Deploy to Chalk (either as a preview deployment or to production)
+Deploy to Chalk (either as a preview deployment or to production).
 
 **[2_deploy_with_chalk.yaml](2_deploy_with_chalk.yaml)**
 
