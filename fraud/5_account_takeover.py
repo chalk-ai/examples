@@ -1,4 +1,4 @@
-from enum import StrEnum
+from enum import Enum
 from pydantic import BaseModel
 
 from chalk.features import (
@@ -17,7 +17,7 @@ class User:
 source = KafkaSource(name="sensor_stream")
 
 
-class LoginStatus(StrEnum):
+class LoginStatus(Enum):
     success = "success"
     failed = "failed"
 

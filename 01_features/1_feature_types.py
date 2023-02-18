@@ -1,10 +1,10 @@
 from datetime import date, datetime
-from enum import StrEnum
+from enum import Enum
 
 from chalk.features import features
 
 
-class Genre(StrEnum):
+class Genre(Enum):
     FICTION = "FICTION"
     NONFICTION = "NONFICTION"
     DRAMA = "DRAMA"
