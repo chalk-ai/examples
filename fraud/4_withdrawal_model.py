@@ -29,7 +29,7 @@ class Holdback:
     holdback_7d: float
 
     # Percentage of funds deposited within the
-    # last 90d that are eligible for withdrawal
+    # last 30d that are eligible for withdrawal
     holdback_30d: float
 
     # Percentage of funds deposited within the
