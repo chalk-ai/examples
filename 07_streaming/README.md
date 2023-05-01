@@ -67,3 +67,24 @@ def failed_logins(events: DataFrame[LoginMessage]) -> DataFrame[
 ```
 
 https://docs.chalk.ai/docs/aggregations#using-sql
+
+## 4. Stream SQL Aggregation
+
+Compute an aggregation on windows using [DataFrames](https://docs.chalk.ai/docs/dataframe).
+
+**[4_continuous_sql.py](4_continuous_sql.py)**
+
+```python
+@stream(source=src, mode='continuous')
+def failed_logins(events: DataFrame[LoginMessage]) -> DataFrame[
+    User.id,
+    User.distinct_ips
+]:
+    return f"""
+        select
+          user_id as id,
+          approximate_count_distinct(id_address) as distinct_ips
+        from {events}
+
+    """
+```
