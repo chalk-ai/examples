@@ -75,7 +75,7 @@ Compute an aggregation on windows using [DataFrames](https://docs.chalk.ai/docs/
 **[4_continuous_sql.py](4_continuous_sql.py)**
 
 ```python
-@stream(source=src, mode='continuous')
+@stream(source=src, mode='continuous', keys=['user_id'])
 def failed_logins(events: DataFrame[LoginMessage]) -> DataFrame[
     User.id,
     User.distinct_ips
