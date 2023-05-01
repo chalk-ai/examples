@@ -72,7 +72,7 @@ https://docs.chalk.ai/docs/aggregations#using-sql
 
 Compute an aggregation on windows using [DataFrames](https://docs.chalk.ai/docs/dataframe).
 
-**[4_continuous_sql.py](4_continuous_sql.py)**
+**[4_continuous_sql.py](4_continuous_aggregation.py)**
 
 ```python
 @stream(source=src, mode='continuous', keys=['user_id'])
