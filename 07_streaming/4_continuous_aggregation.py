@@ -20,11 +20,10 @@ class User:
 
 class LoginMessage(BaseModel):
     user_id: int
-    failed: bool
     ip_address: int
 
 
-@stream(source=src, mode='continuous', keys="user_id")
+@stream(source=src, mode='continuous', keys=["user_id": User.id])
 def failed_logins(events: DataFrame[LoginMessage]) -> DataFrame[
     User.id,
     User.distinct_ips
