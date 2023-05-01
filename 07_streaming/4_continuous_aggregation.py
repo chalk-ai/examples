@@ -33,5 +33,4 @@ def failed_logins(events: DataFrame[LoginMessage]) -> DataFrame[
           user_id as id,
           approximate_count_distinct(id_address) as distinct_ips
         from {events}
-
     """
