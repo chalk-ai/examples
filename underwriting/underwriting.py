@@ -67,7 +67,7 @@ def get_records_scalar(id: RApplication.id) -> DataFrame[RQuickbooksRecord]:
             "app_id": id,
         },
         fields={
-            "idi": RQuickbooksRecord.id,
+            "id": RQuickbooksRecord.id,
             "app_id": RQuickbooksRecord.app_id,
             "created_at": RQuickbooksRecord.created_at,
             "start_date": RQuickbooksRecord.start_date,
