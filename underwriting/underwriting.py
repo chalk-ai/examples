@@ -9,9 +9,7 @@ from chalk.features import features
 from chalk.sql._internal.integrations.duckdb import DuckDbSourceImpl
 from polars.testing import assert_frame_equal
 
-# _db = DuckDbSourceImpl(database=":memory:")
-# _engine = _db.get_engine()
-_db = DuckDbSourceImpl(database="foo5.duck")
+_db = DuckDbSourceImpl(database="foo7.duck")
 
 _logger = logging.getLogger(__name__)
 
@@ -54,8 +52,8 @@ records_db = [
         current_assets=i,
         current_liabilities=-i,
     )
-    for i in range(12)
-    for j in range(100)
+    for i in range(36)
+    for j in range(100000)
 ]
 
 
@@ -98,16 +96,16 @@ def get_records() -> DataFrame[RQuickbooksRecord]:
 
 @offline(tags="scalar-most-recent-revenue")
 def most_recent_revenue(
-        records: RApplication.records[RQuickbooksRecord.revenue, RQuickbooksRecord.created_at], now: Now
+    records: RApplication.records[RQuickbooksRecord.revenue, RQuickbooksRecord.created_at], now: Now
 ) -> RApplication.most_recent_revenue:
     df: pl.LazyFrame = records.to_polars()
 
     x = (
         df.sort(by=str(RQuickbooksRecord.created_at), descending=True)
-            .filter(pl.col(str(RQuickbooksRecord.created_at)) <= now)
-            .head(1)
-            .select(pl.col(str(RQuickbooksRecord.revenue)))
-            .collect()
+        .filter(pl.col(str(RQuickbooksRecord.created_at)) <= now)
+        .head(1)
+        .select(pl.col(str(RQuickbooksRecord.revenue)))
+        .collect()
     )
 
     return x
@@ -115,16 +113,16 @@ def most_recent_revenue(
 
 @offline(tags="batch-most-recent-revenue")
 def batch_most_recent_revenue(
-        records: DataFrame[RApplication.id, RApplication.records, Now]
+    records: DataFrame[RApplication.id, RApplication.records, Now]
 ) -> DataFrame[RApplication.id, RApplication.most_recent_revenue]:
     df: pl.LazyFrame = records.to_polars()
 
     x = (
         df.sort(by=str(RQuickbooksRecord.created_at), descending=True)
-            .filter(pl.col(str(RQuickbooksRecord.created_at)) <= now)
-            .head(1)
-            .select(pl.col(str(RQuickbooksRecord.revenue)))
-            .collect()
+        .filter(pl.col(str(RQuickbooksRecord.created_at)) <= now)
+        .head(1)
+        .select(pl.col(str(RQuickbooksRecord.revenue)))
+        .collect()
     )
 
     return x
@@ -183,3 +181,49 @@ def test_aggregation_time_aware(local_chalk_client, db_fixture):
         pl.DataFrame({str(RApplication.id): [1, 1], str(RApplication.most_recent_revenue): [0.0, 2.0]}),
         check_column_order=False,
     )
+
+
+def test_aggregation_time_aware_batch(local_chalk_client, db_fixture):
+    ds = local_chalk_client.offline_query(
+        input={RApplication.id: [1, 1]},
+        input_times=[now, now - timedelta(days=60)],
+        output=[RApplication.most_recent_revenue],
+        recompute_features=True,
+        tags=["batch-records", "batch-most-recent-revenue"],
+    )
+
+    assert_frame_equal(
+        ds.get_data_as_polars().collect(),
+        pl.DataFrame({str(RApplication.id): [1, 1], str(RApplication.most_recent_revenue): [0.0, 2.0]}),
+        check_column_order=False,
+    )
+
+
+records_tags = ["batch-records", "scalar-records"]
+revenue_tags = ["scalar-most-recent-revenue", "batch-most-recent-revenue"]
+
+all_ids = range(10000)
+
+
+params = [
+    ([record_tag, revenue_tag], size)
+    for record_tag in records_tags
+    for revenue_tag in revenue_tags
+    for size in [1, 10, 100, 1000, 10000]
+]
+
+
+@pytest.mark.parametrize("tags,size", params)
+def test_benchmark(tags, size, local_chalk_client, db_fixture):
+
+    ids = all_ids[:size]
+
+    ds = local_chalk_client.offline_query(
+        input={RApplication.id: ids},
+        input_times=[now] * size,
+        output=[RApplication.most_recent_revenue],
+        recompute_features=True,
+        tags=tags,
+    )
+
+    print(ds.get_data_as_polars().collect())
