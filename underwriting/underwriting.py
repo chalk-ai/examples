@@ -5,11 +5,13 @@ import duckdb
 import polars as pl
 import pytest
 from chalk import DataFrame, Now, has_many, offline
-from chalk.features import features
+from chalk.features import Features, features
 from chalk.sql._internal.integrations.duckdb import DuckDbSourceImpl
 from polars.testing import assert_frame_equal
 
-_db = DuckDbSourceImpl(database="foo7.duck")
+# _db = DuckDbSourceImpl(database=":memory:")
+# _engine = _db.get_engine()
+_db = DuckDbSourceImpl(database="foo8.duck")
 
 _logger = logging.getLogger(__name__)
 
@@ -53,7 +55,7 @@ records_db = [
         current_liabilities=-i,
     )
     for i in range(36)
-    for j in range(100000)
+    for j in range(100)
 ]
 
 
@@ -95,10 +97,13 @@ def get_records() -> DataFrame[RQuickbooksRecord]:
 
 
 @offline(tags="scalar-most-recent-revenue")
-def most_recent_revenue(
+def scalar_most_recent_revenue(
     records: RApplication.records[RQuickbooksRecord.revenue, RQuickbooksRecord.created_at], now: Now
-) -> RApplication.most_recent_revenue:
+) -> Features[RApplication.most_recent_revenue]:
     df: pl.LazyFrame = records.to_polars()
+
+    if len(records) == 0:
+        return 0
 
     x = (
         df.sort(by=str(RQuickbooksRecord.created_at), descending=True)
@@ -117,15 +122,18 @@ def batch_most_recent_revenue(
 ) -> DataFrame[RApplication.id, RApplication.most_recent_revenue]:
     df: pl.LazyFrame = records.to_polars()
 
-    x = (
-        df.sort(by=str(RQuickbooksRecord.created_at), descending=True)
-        .filter(pl.col(str(RQuickbooksRecord.created_at)) <= now)
-        .head(1)
-        .select(pl.col(str(RQuickbooksRecord.revenue)))
-        .collect()
+    exploded = df.explode(pl.col(str(RApplication.records))).unnest(str(RApplication.records))
+
+    time_consistent = exploded.filter(pl.col(str(RQuickbooksRecord.created_at)) <= pl.col(str(Now)))
+
+    most_recent_rev_output = (
+        time_consistent.sort(by=str(RQuickbooksRecord.created_at), descending=True)
+        .groupby(str(RApplication.id), str(Now), maintain_order=True)
+        .agg(pl.first(str(RQuickbooksRecord.revenue)).alias(str(RApplication.most_recent_revenue)))
+        .select(str(RApplication.id), str(RApplication.most_recent_revenue))
     )
 
-    return x
+    return most_recent_rev_output
 
 
 @pytest.fixture()
