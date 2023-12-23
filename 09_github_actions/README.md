@@ -13,7 +13,7 @@ Install the Chalk CLI in a GitHub Action.
 **[1_install_chalk_cli.yaml](1_install_chalk_cli.yaml)**
 
 ```yaml
-- uses: chalk-ai/cli-action@v1
+- uses: chalk-ai/cli-action@v2
   with:
     client-id: ${{secrets.CHALK_CLIENT_ID}}
     client-secret: ${{secrets.CHALK_CLIENT_SECRET}}
@@ -28,7 +28,7 @@ Deploy to Chalk (either as a preview deployment or to production).
 **[2_deploy_with_chalk.yaml](2_deploy_with_chalk.yaml)**
 
 ```yaml
-- uses: chalk-ai/deploy-action@v1
+- uses: chalk-ai/deploy-action@v2
   with:
     client-id: ${{secrets.CHALK_CLIENT_ID}}
     client-secret: ${{secrets.CHALK_CLIENT_SECRET}}
@@ -44,7 +44,7 @@ Set up preview deployments for all PRs.
 **[3_deploy_preview.yaml](3_deploy_preview.yaml)**
 
 ```yaml
-- uses: chalk-ai/deploy-action@v1
+- uses: chalk-ai/deploy-action@v2
   with:
     client-id: ${{secrets.CHALK_CLIENT_ID}}
     client-secret: ${{secrets.CHALK_CLIENT_SECRET}}

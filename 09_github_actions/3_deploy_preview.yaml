@@ -18,7 +18,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - uses: chalk-ai/deploy-action@v1
+      - uses: chalk-ai/deploy-action@v2
         with:
           client-id: ${{secrets.CHALK_CLIENT_ID}}
           client-secret: ${{secrets.CHALK_CLIENT_SECRET}}
