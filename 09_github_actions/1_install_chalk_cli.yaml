@@ -7,7 +7,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: chalk-ai/cli-action@v1
+      - uses: chalk-ai/cli-action@v2
         with:
           client-id: ${{secrets.CHALK_CLIENT_ID}}
           client-secret: ${{secrets.CHALK_CLIENT_SECRET}}

@@ -20,7 +20,7 @@ class Sensor:
     measurements: DataFrame[Measurement] = has_many(lambda: Measurement.device_id == Sensor.id)
 
 
-ChalkClient().get_training_dataframe(
+ChalkClient().offline_query(
     input=labels[[Measurement.device_id]],
     input_times=[(datetime.now() - timedelta(days=30)).isoformat()],
     output=[Measurement.lat, Measurement.long, Measurement.temp],

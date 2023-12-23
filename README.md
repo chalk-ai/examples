@@ -175,7 +175,7 @@ CLI Step: https://github.com/chalk-ai/cli-action
 Deploy Step: https://github.com/chalk-ai/deploy-action
 
 ```yaml
-- uses: chalk-ai/deploy-action@v1
+- uses: chalk-ai/deploy-action@v2
   with:
     client-id: ${{secrets.CHALK_CLIENT_ID}}
     client-secret: ${{secrets.CHALK_CLIENT_SECRET}}
