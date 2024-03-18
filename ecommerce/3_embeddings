@@ -1,0 +1,76 @@
+import re
+
+from chalk import realtime, online
+from chalk.features import (
+    features,
+    DataFrame,
+    has_many,
+    after,
+    FeatureTime,
+    Vector,
+    before_all,
+)
+from chalk.sql import PostgreSQLSource
+
+my_model = MyModel()
+
+
+@before_all
+def load_my_model():
+    my_model.initialize("s3://my-bucket/my-checkpoint.pt")
+
+
+@features
+class Interaction:
+    id: str
+    amount: float
+    memo: str
+    on: FeatureTime
+    user_id: str
+    user: "User.id"
+    product_id: str
+    product: "Product.id"
+
+
+@features
+class Seller:
+    id: str
+
+
+@features
+class Product:
+    id: str
+    seller_id: Seller.id
+    embedding: Vector[64]
+    interactions: DataFrame[Interaction] = has_many(
+        lambda: Interaction.product_id == Product.id
+    )
+
+
+@features
+class User:
+    id: str
+    age: int
+    interactions: DataFrame[Interaction] = has_many(
+        lambda: Interaction.user_id == User.id
+    )
+    embedding: Vector[64]
+    recommendations: DataFrame[Product] = has_many(
+        lambda: User.embedding.is_near(Product.embedding)
+    )
+
+
+# Bank accounts are stored in SQL.
+# Credentials are stored as Chalk secrets
+users = PostgreSQLSource(name="CLOUD_DB").with_table(name="users", features=User)
+products = PostgreSQLSource(name="CLOUD_DB").with_table(name="users", features=Product)
+
+
+@online
+def product_embedding_function(content: DataFrame[Product.content]) -> DataFrame[User.embedding]:
+    return my_model.embed(content.to_arrow()['product.interactions'])
+
+
+@online
+def user_embedding_function(content: DataFrame[User.interactions, User.age]) -> DataFrame[User.embedding]:
+    return my_model.embed(content.to_arrow()['user.interactions'])

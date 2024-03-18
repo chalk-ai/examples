@@ -101,12 +101,11 @@ class SpaceShuttle:
 
 https://docs.chalk.ai/docs/feature-discovery
 
-
 ## [6_dataframe](06_dataframe)
 
 A Chalk DataFrame is a 2-dimensional data structure similar
 to `pandas.Dataframe`, but with richer types and
-underlying optimizations. 
+underlying optimizations.
 
 ```python
 User.txns[
@@ -118,7 +117,6 @@ User.txns[
 ```
 
 https://docs.chalk.ai/docs/dataframe
-
 
 ## [7_streaming](07_streaming)
 
@@ -162,6 +160,7 @@ def test_multiple_output():
         sq_ft=2_000,
     )
 ```
+
 https://docs.chalk.ai/docs/unit-tests
 
 ## [9_github_actions](09_github_actions)
@@ -187,7 +186,6 @@ Deploy Step: https://github.com/chalk-ai/deploy-action
 
 Docs on migrations coming soon!
 
-
 ## [11_sql](11_sql)
 
 Chalk can ingest your data using a SQL interface
@@ -200,8 +198,8 @@ or [SQLAlchemy](https://www.sqlalchemy.org/).
 def get_views() -> DataFrame[User]:
     return db.query_string(
         """
-        select id, sum(mins) as viewed_minutes 
-        from view_counts 
+        select id, sum(mins) as viewed_minutes
+        from view_counts
         group by id
         """,
     ).all()
