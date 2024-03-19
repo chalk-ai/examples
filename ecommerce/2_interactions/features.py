@@ -1,4 +1,4 @@
-from chalk.features import features, DataFrame,  FeatureTime
+from chalk.features import features, DataFrame, FeatureTime
 from enum import Enum
 
 
@@ -14,6 +14,7 @@ class User:
     age: int
     favorite_categories: set[str]
     interactions: DataFrame["Interaction"]
+
 
 @features
 class UserSeller:
@@ -33,8 +34,9 @@ class InteractionKind(Enum):
     OTHER = "OTHER"
 
     @classmethod
-    def _missing_(cls, value):
-        return cls.A
+    def _missing_(cls, _):
+        return cls.OTHER
+
 
 @features
 class Interaction:
