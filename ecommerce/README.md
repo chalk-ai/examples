@@ -3,12 +3,12 @@
 Chalk can help you build realtime recommendation systems.
 
 This guide shows you how to:
-1). Implement user/seller features in chalk,
+1). Implement User and Seller features in Chalk,
 2). Add an Interaction feature and connect it to users,
 3). Stream Interaction data from a Kafka queue.
 
-In each section, you can find an `example_query.py` file. The file shows how the python chalk api could be used to
-get information on the affinity between a user and a seller.
+In each section, you can find an `example_query.py` file. The file shows how the Chalk python client API can be used to
+get information on the affinity between a User and a Seller.
 
 ```python
 from chalk import ChalkClient
@@ -33,7 +33,7 @@ if __name__ == "__main__":
 
 ## 1. Set up and query Users & Sellers
 
-Create Chalk features for users and sellers and evaluate whether a user and seller have accordant categories.
+Create Chalk features for Users and Sellers and evaluate whether a user and seller have accordant categories.
 
 - features: **[1_user_sellers/features.py](1_user_sellers/features.py)**
 - resolvers: **[1_user_sellers/resolvers.py](1_user_sellers/resolvers.py)**
@@ -71,7 +71,7 @@ class UserSeller:
 
 ### resolvers.py
 
-Create an online resolver for whether Users and Sellers have overlapping categories.
+Create an online resolver that creates a favorites_match feature on UserSeller. This feature indicates whether a specific user and seller have overlapping categories.
 
 ```python
 from chalk import online
@@ -100,8 +100,8 @@ pg_database.with_table(name="sellers", features=Seller)
 
 ## 2. Add User Seller Interactions
 
-Add user seller interactions and update a UserSeller ranking based on the number of interactions
-that have occurred between a user and a seller.
+Add user seller interactions and create a UserSeller feature (number_of_interactions) which returns the number of interactions
+that have occurred between a user and a seller: this could be used for ranking.
 
 - [features](2_interactions/features.py)
 - [resolvers](2_interactions/resolvers.py)
@@ -120,6 +120,22 @@ class User:
     age: int
     favorite_categories: set[str]
     interactions: DataFrame["Interaction"]
+
+class User:
+    id: str
+    age: int
+    favorite_categories: set[str]
+    interactions: DataFrame["Interaction"]
+
+@features
+class UserSeller:
+    id: str
+    user_id: str
+    user: User.id
+    seller_id: str
+    seller: Seller.id
+    favorites_match: bool
+    number_of_interactions: int
 
 class InteractionKind(Enum):
     LIKE = "LIKE"
@@ -159,7 +175,7 @@ def get_number_of_interactions(
 
 ### datasources.py
 
-Connect postgres to interactions table
+Resolve Interaction with the "user_interactions" table in the postgres datasource.
 
 ```python
 pg_database.with_table(name="user_interactions", features=Interaction)
