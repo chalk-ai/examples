@@ -98,6 +98,10 @@ class InteractionKind(Enum):
     PURCHASE = "PURCHASE"
     OTHER = "OTHER"
 
+    @classmethod
+    def _missing_(cls, value):
+        return cls.OTHER
+
 @features
 class Interaction:
     id: str
