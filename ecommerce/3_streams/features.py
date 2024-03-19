@@ -34,7 +34,7 @@ class InteractionKind(Enum):
     OTHER = "OTHER"
 
     @classmethod
-    def _missing_(cls, value):
+    def _missing_(cls, _):
         return cls.OTHER
 
 @features

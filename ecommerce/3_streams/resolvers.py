@@ -17,6 +17,7 @@ def interactions_handler(
         seller_id=message.seller_id,
     )
 
+
 @online
 def get_number_of_interactions(
     user_interactions: UserSeller.user.interactions,
@@ -27,7 +28,6 @@ def get_number_of_interactions(
 
 @online
 def get_similarity(
-    fc: UserSeller.user.favorite_categories,
-    fc2: UserSeller.seller.categories
+    fc: UserSeller.user.favorite_categories, fc2: UserSeller.seller.categories
 ) -> UserSeller.favorites_match:
-    return fc & fc2 # check whether sets overlap
+    return fc & fc2  # check whether sets overlap

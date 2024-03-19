@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 
+
 class InteractionMessage(BaseModel):
     id: str
     user_id: str

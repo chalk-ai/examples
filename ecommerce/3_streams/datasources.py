@@ -1,4 +1,3 @@
-
 from chalk.sql import PostgreSQLSource
 from chalk.streams import KafkaSource
 from features import User, Seller, Interaction
