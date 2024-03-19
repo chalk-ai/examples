@@ -52,7 +52,7 @@ from models import UserSeller
 def get_similarity(
     fc: UserSeller.user.favorite_categories,
     fc2: UserSeller.seller.categories
-) -> UserSeller.favorites_match:
+) -> UserSeller.favorites_match::wq
     return fc & fc2 # check whether sets overlap
 ```
 
@@ -83,7 +83,7 @@ that have occurred between a user and a seller.
 Add interactions feature and connect interactions to user
 
 ```python
-from chalk.features import features, DataFrame,  FeatureTime
+from chalk.features import features, DataFrame, FeatureTime
 
 @features
 class User:
