@@ -12,24 +12,67 @@ Create Chalk features for users and sellers and evaluate whether a user and sell
 
 ### features.py
 
+Create default User, Seller, and UserSeller features.
+
 ```python
-@realtime
-def get_plaid_income(
-        txns: User.transactions[
-            PlaidTransaction.is_payroll is True,
-            after(days_ago=30),
-        ],
-) -> User.computed_income_30:
-    return txns[PlaidTransaction.amount].sum()
+from chalk.features import features
+
+
+@features
+class Seller:
+    id: str
+    categories: set[str]
+
+
+@features
+class User:
+    id: str
+    age: int
+    favorite_categories: set[str]
+
+@features
+class UserSeller:
+    id: str
+    user_id: str
+    user: User.id
+    seller_id: str
+    seller: Seller.id
+    favorites_match: bool
 ```
 
 ### resolvers.py
 
+Create an online resolver for whether Users and Sellers have overlapping categories.
+
+```python
+from chalk import online
+from models import UserSeller
+
+@online
+def get_similarity(
+    fc: UserSeller.user.favorite_categories,
+    fc2: UserSeller.seller.categories
+) -> UserSeller.favorites_match:
+    return fc & fc2 # check whether sets overlap
+```
+
 ### datasources.py
+
+Create postgres datasource and resolve User and Seller from tables.
+
+```python
+from chalk.sql import PostgreSQLSource
+from features import User, Seller
+
+pg_database = PostgreSQLSource(name="CLOUD_DB")
+pg_database.with_table(name="users", features=User)
+pg_database.with_table(name="sellers", features=Seller)
+```
 
 ## 2. Add User Seller Interactions
 
-Add user-seller interactions and update user-seller ranking.
+Add user seller interactions and update a UserSeller ranking based on the number of interactions
+that have occurred between a user and a seller.
 
 - [features](2_interactions/features.py)
 - [resolvers](2_interactions/resolvers.py)
