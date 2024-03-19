@@ -13,6 +13,6 @@ if __name__ == "__main__":
             UserSeller(user_id="123", seller_id="461"),
             UserSeller(user_id="123", seller_id="460"),
         ],
-        output=[UserSeller.user.id, UserSeller.seller.id, UserSeller.favorites_match]
+        output=[UserSeller.user.id, UserSeller.seller.id, UserSeller.favorites_match],
     )
     print(user_stores)

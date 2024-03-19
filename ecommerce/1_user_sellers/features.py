@@ -13,6 +13,7 @@ class User:
     age: int
     favorite_categories: set[str]
 
+
 @features
 class UserSeller:
     id: str
