@@ -35,13 +35,7 @@ if __name__ == "__main__":
 
 Create Chalk features for Users and Sellers and evaluate whether a user and seller have accordant categories.
 
-- features: **[1_user_sellers/features.py](1_user_sellers/features.py)**
-- resolvers: **[1_user_sellers/resolvers.py](1_user_sellers/resolvers.py)**
-- datasources: **[1_user_sellers/datasources.py](1_user_sellers/datasources.py)**
-
-### features.py
-
-Create default User, Seller, and UserSeller features.
+**[1_user_sellers.py](1_user_sellers.py)**
 
 ```python
 from chalk.features import features
@@ -69,73 +63,15 @@ class UserSeller:
     favorites_match: bool
 ```
 
-### resolvers.py
-
-Create an online resolver that creates a favorites_match feature on UserSeller. This feature indicates whether a specific user and seller have overlapping categories.
-
-```python
-from chalk import online
-from models import UserSeller
-
-@online
-def get_similarity(
-    fc: UserSeller.user.favorite_categories,
-    fc2: UserSeller.seller.categories
-) -> UserSeller.favorites_match::wq
-    return fc & fc2 # check whether sets overlap
-```
-
-### datasources.py
-
-Create postgres datasource and resolve User and Seller from tables.
-
-```python
-from chalk.sql import PostgreSQLSource
-from features import User, Seller
-
-pg_database = PostgreSQLSource(name="CLOUD_DB")
-pg_database.with_table(name="users", features=User)
-pg_database.with_table(name="sellers", features=Seller)
-```
-
 ## 2. Add User Seller Interactions
 
 Add user seller interactions and create a UserSeller feature (number_of_interactions) which returns the number of interactions
 that have occurred between a user and a seller: this could be used for ranking.
 
-- [features](2_interactions/features.py)
-- [resolvers](2_interactions/resolvers.py)
-- [datasources](2_interactions/datasources.py)
-
-### features.py
-
-Add interactions feature and connect interactions to user
+**[2_interactions.py](2_interactions.py)**
 
 ```python
 from chalk.features import features, DataFrame, FeatureTime
-
-@features
-class User:
-    id: str
-    age: int
-    favorite_categories: set[str]
-    interactions: DataFrame["Interaction"]
-
-class User:
-    id: str
-    age: int
-    favorite_categories: set[str]
-    interactions: DataFrame["Interaction"]
-
-@features
-class UserSeller:
-    id: str
-    user_id: str
-    user: User.id
-    seller_id: str
-    seller: Seller.id
-    favorites_match: bool
-    number_of_interactions: int
 
 class InteractionKind(Enum):
     LIKE = "LIKE"
@@ -156,14 +92,6 @@ class Interaction:
     seller_id: Seller.id
     interaction_kind: InteractionKind
     on: FeatureTime
-```
-
-### resolvers.py
-
-Add interactions resolver
-
-```python
-from features import UserSeller, Interaction
 
 @online
 def get_number_of_interactions(
@@ -173,58 +101,19 @@ def get_number_of_interactions(
     return len(user_interactions.loc[Interaction.seller_id == seller_id])
 ```
 
-### datasources.py
-
-Resolve Interaction with the "user_interactions" table in the postgres datasource.
-
-```python
-pg_database.with_table(name="user_interactions", features=Interaction)
-```
-
 ## 3. Stream User Seller Interaction Data
 
 Enrich User Interaction data with stream data.
 
-- [datasources](3_streams/datasources.py)
-- [models](3_streams/models.py)
-- [resolvers](3_streams/resolvers.py)
-- [features](3_streams/features.py)
-
-### datasources.py
-
-Add a Kafka stream data source to stream interactions
+**[3_streams.py](3_streams.py)**
 
 ```python
 from chalk.streams import KafkaSource
-interaction_stream = KafkaSource(name="interactions")
-```
-
-### models.py
-
-Create a pydantic Model to validate and process stream messages
-
-```python
-from pydantic import BaseModel
-
-class InteractionMessage(BaseModel):
-    id: str
-    user_id: str
-    seller_id: str
-    interaction_kind: str
-```
-
-### resolvers.py
-
-Add a stream resolver to process interactions
-
-```python
 from chalk.features import Features
 from chalk import stream, online
-from features import UserSeller, Interaction, InteractionKind
-from datasources import interaction_stream
-from models import InteractionMessage
 import uuid
 
+interaction_stream = KafkaSource(name="interactions")
 
 @stream(source=interaction_stream)
 def interactions_handler(
