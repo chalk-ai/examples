@@ -12,7 +12,7 @@ get information on the affinity between a User and a Seller.
 
 ## 1. Query Users & Sellers
 
-Create Chalk features for Users and Sellers and evaluate whether a user and seller have accordant categories.
+Create Chalk features for Users and Sellers and evaluate whether a user and seller have matching categories.
 
 **[1_user_sellers.py](1_user_sellers.py)**
 
@@ -44,8 +44,8 @@ class UserSeller:
 
 ## 2. Track User Seller Interactions
 
-Add user seller interactions and use a resolver to identify the number of interactions
-that have occurred between a user and a seller.
+Add interaction data and identify the number of interactions that have occurred
+between users and sellers.
 
 **[2_interactions.py](2_interactions.py)**
 
