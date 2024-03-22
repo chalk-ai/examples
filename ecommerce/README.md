@@ -10,7 +10,7 @@ This guide shows you how to:
 In each section, you can find an `example_query.py` file. The file shows how the Chalk python client API can be used to
 get information on the affinity between a User and a Seller.
 
-## 1. Set up and query Users & Sellers
+## 1. Query Users & Sellers
 
 Create Chalk features for Users and Sellers and evaluate whether a user and seller have accordant categories.
 
@@ -42,7 +42,7 @@ class UserSeller:
     favorites_match: bool
 ```
 
-## 2. Add User Seller Interactions
+## 2. Track User Seller Interactions
 
 Add user seller interactions and use a resolver to identify the number of interactions
 that have occurred between a user and a seller.
