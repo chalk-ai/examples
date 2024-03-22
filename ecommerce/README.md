@@ -10,28 +10,7 @@ This guide shows you how to:
 In each section, you can find an `example_query.py` file. The file shows how the Chalk python client API can be used to
 get information on the affinity between a User and a Seller.
 
-```python
-from chalk import ChalkClient
-from models import UserSeller
-
-if __name__ == "__main__":
-    client = ChalkClient()
-    user_stores = client.query(
-        input=[
-            UserSeller(user_id="123", seller_id="456"),
-            UserSeller(user_id="123", seller_id="457"),
-            UserSeller(user_id="123", seller_id="458"),
-            UserSeller(user_id="123", seller_id="458"),
-            UserSeller(user_id="123", seller_id="456"),
-            UserSeller(user_id="123", seller_id="461"),
-            UserSeller(user_id="123", seller_id="460"),
-        ],
-        output=[UserSeller.user.id, UserSeller.seller.id, UserSeller.favorites_match]
-    )
-    print(user_stores)
-```
-
-## 1. Set up and query Users & Sellers
+## 1. Query Users & Sellers
 
 Create Chalk features for Users and Sellers and evaluate whether a user and seller have accordant categories.
 
@@ -63,10 +42,10 @@ class UserSeller:
     favorites_match: bool
 ```
 
-## 2. Add User Seller Interactions
+## 2. Track User Seller Interactions
 
-Add user seller interactions and create a UserSeller feature (number_of_interactions) which returns the number of interactions
-that have occurred between a user and a seller: this could be used for ranking.
+Add user seller interactions and use a resolver to identify the number of interactions
+that have occurred between a user and a seller.
 
 **[2_interactions.py](2_interactions.py)**
 
