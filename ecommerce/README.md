@@ -14,7 +14,7 @@ get information on the affinity between a User and a Seller.
 
 Create Chalk features for Users and Sellers and evaluate whether a user and seller have matching categories.
 
-**[1_user_sellers.py](1_user_sellers.py)**
+**[1_users_sellers.py](1_users_sellers.py)**
 
 ```python
 from chalk.features import features
