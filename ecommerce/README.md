@@ -14,7 +14,7 @@ get information on the affinity between a User and a Seller.
 
 Create Chalk features for Users and Sellers and evaluate whether a user and seller have matching categories.
 
-**[1_user_sellers.py](1_user_sellers.py)**
+**[1_users_sellers.py](1_users_sellers.py)**
 
 ```python
 from chalk.features import features
@@ -44,8 +44,7 @@ class UserSeller:
 
 ## 2. Track User Seller Interactions
 
-Add interaction data and identify the number of interactions that have occurred
-between users and sellers.
+Identify the number of interactions that have occurred between users and sellers.
 
 **[2_interactions.py](2_interactions.py)**
 
