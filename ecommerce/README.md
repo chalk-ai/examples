@@ -44,8 +44,7 @@ class UserSeller:
 
 ## 2. Track User Seller Interactions
 
-Add interaction data and identify the number of interactions that have occurred
-between users and sellers.
+Identify the number of interactions that have occurred between users and sellers.
 
 **[2_interactions.py](2_interactions.py)**
 
