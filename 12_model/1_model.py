@@ -19,7 +19,6 @@ class User:
 
 class PredictionModel:
     """
-    # Example of how to save train and save model
     from sklearn.ensemble import RandomForestRegressor
     from skops.io import save
 

@@ -22,7 +22,6 @@ class User:
 
 class PreprocessingPipeline:
     """
-    # Example of how to save a preprocessing pipeline
     from sklearn.pipeline import make_pipeline
     from sklearn.compose import ColumnTransformer
     from sklearn.preprocessing import StandardScaler, OneHotEncoder
@@ -66,7 +65,6 @@ preprocessing_pipeline = PredictionModel("preprocessing.skops")
 
 class PredictionModel:
     """
-    # Example of how to save train and save model
     from sklearn.ensemble import RandomForestRegressor
     from skops.io import save
 
