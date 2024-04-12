@@ -67,7 +67,7 @@ class PredictionModel:
         return self._model.predict(data)
 
 
-# the model has been trained and saved in local chalk directory
+# the model has been trained and saved in our local Chalk directory
 churn_model = PredictionModel("churn_model.skops")
 
 
