@@ -21,10 +21,8 @@ class User:
     id: str
     age: int
     num_friends: int
-    favorite_categories: List[str]
     viewed_minutes: float
-    location: str
-    probability_of_churn: float
+    probability_of_churn: float  # this is the feature we will be predicting
 
 
 class PredictionModel:
@@ -45,19 +43,19 @@ class PredictionModel:
 
     @cached_property
     def _model(self):
-        return load(self.filename, trusted=True)
+        # The "TARGET_ROOT" environment variable is set by Chalk for both branch and
+        # standard deployments. You can read more about it on our docs:
+        # https://docs.chalk.ai/docs/env-vars#chalk-environment-variable
+        filepath = os.path.join(os.environ.get("TARGET_ROOT"), self.filename)
+
+        return load(filepath, trusted=True)
 
     def predict(self, data: np.array):
         return self._model.predict(data)
 
 
 # the model has been trained and saved in local chalk directory
-churn_model = PredictionModel(
-    os.path.join(
-        os.environ.get("TARGET_ROOT"),
-        "churn_model.skops"
-    )
-)
+churn_model = PredictionModel(os.path.join(os.environ.get("TARGET_ROOT"), "churn_model.skops"))
 
 
 @online
@@ -70,6 +68,4 @@ def get_user_churn_probability(
     This resolver runs a model that has been trained on a user's age, num_friends
     and viewed_minutes. It returns a platform churn prediction.
     """
-    return churn_model.predict(
-        np.array([[age, num_friends, viewed_minutes]])
-    )
+    return churn_model.predict(np.array([[age, num_friends, viewed_minutes]]))
