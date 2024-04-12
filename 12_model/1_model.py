@@ -36,7 +36,7 @@ class User:
 class PredictionModel:
     """
     # Previously, we trained a model on our user data. This
-    # model has been saved to our local chalk directory, next to
+    # model has been saved to our local chalk directory next to
     # our feature and resolver code. When we run chalk apply
     # it will be incorporated into deployments.
 
