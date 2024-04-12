@@ -38,8 +38,15 @@ class PredictionModel:
 
         return load(filepath, trusted=True)
 
-    def predict(self, data: np.array):
-        return self._model.predict(data)
+    def predict(self, data: np.array, target_class=1):
+        # predict proba returns something like [.2, .8] which is the probability of
+        # the 0 class and 1 class, respectively. We want to return the probability
+        # of class 1.
+        class_prediction_probabilities = {
+            class_: prob
+            for class_, prob in zip(self._model.classes_, self._model.predict_proba(data).squeeze(), strict=True)
+        }
+        return class_prediction_probabilities[target_class].item()  # item converts numpy array to float
 
 
 # the model has been trained and saved in our local Chalk directory
@@ -56,7 +63,5 @@ def get_user_churn_probability(
     This resolver runs a model that has been trained on a user's age, num_friends
     and viewed_minutes. It returns a platform churn prediction.
     """
-    return churn_model.predict(
-        np.array([[age, num_friends, viewed_minutes]])
-    ).item() # item converts array to float
+    return churn_model.predict(np.array([[age, num_friends, viewed_minutes]]))
 ```
