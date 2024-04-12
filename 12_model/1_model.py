@@ -20,7 +20,7 @@ import os
 class User:
     """This is a User for our streaming streaming platform. We keep track
     of a user's age, how many friends they have on our platform, and how
-    many minutes of video they have viewed.
+    many minutes of content they have viewed.
     """
     id: str
     age: int
