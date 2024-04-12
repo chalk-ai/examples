@@ -18,11 +18,19 @@ import os
 
 @features
 class User:
+    """This is a User for our streaming streaming platform. We keep track
+    of a user's age, how many friends they have on our platform, and how
+    many minutes of video they have viewed.
+    """
     id: str
     age: int
     num_friends: int
     viewed_minutes: float
-    probability_of_churn: float  # this is the feature we will be predicting
+    # this is a feature based on a model prediction: we will a
+    # model we previous trained on a users age, num_friends, and
+    # viewed_minutes to predict how likely they are to churn in
+    # a chalk resolver.
+    probability_of_churn: float
 
 
 class PredictionModel:
