@@ -28,12 +28,18 @@ class User:
     viewed_minutes: float
     # probability_of_churn is a feature that we predict
     # from a user's age, number of friends, and viewed_minutes.
-    # We run this prediction in the resolver below.
+    # We run this prediction in the 'get_user_churn_probability'
+    # resolver below.
     probability_of_churn: float
 
 
 class PredictionModel:
     """
+    # Previously, we trained a model on our user data. This
+    # model has been saved to our local chalk directory, next to
+    # our feature and resolver code. When we run chalk apply
+    # it will be incorporated into deployments.
+
     from sklearn.linear import LogisticRegression
     from skops.io import save
 
