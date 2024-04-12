@@ -12,7 +12,6 @@ from chalk import online
 import numpy as np
 from skops.io import load
 from functools import cached_property
-from typing import List
 import os
 
 
@@ -83,4 +82,4 @@ def get_user_churn_probability(
     """
     return churn_model.predict(
         np.array([[age, num_friends, viewed_minutes]])
-    ).item() # item converts array to float 
+    ).item() # item converts array to float
