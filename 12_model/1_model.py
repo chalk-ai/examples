@@ -55,7 +55,7 @@ class PredictionModel:
 
 
 # the model has been trained and saved in local chalk directory
-churn_model = PredictionModel(os.path.join(os.environ.get("TARGET_ROOT"), "churn_model.skops"))
+churn_model = PredictionModel("churn_model.skops")
 
 
 @online
