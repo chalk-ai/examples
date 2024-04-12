@@ -81,4 +81,6 @@ def get_user_churn_probability(
     This resolver runs a model that has been trained on a user's age, num_friends
     and viewed_minutes. It returns a platform churn prediction.
     """
-    return churn_model.predict(np.array([[age, num_friends, viewed_minutes]]))
+    return churn_model.predict(
+        np.array([[age, num_friends, viewed_minutes]])
+    ).item() # item converts array to float 
