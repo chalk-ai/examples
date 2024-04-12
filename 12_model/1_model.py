@@ -26,10 +26,9 @@ class User:
     age: int
     num_friends: int
     viewed_minutes: float
-    # this is a feature based on a model prediction: we will a
-    # model we previous trained on a users age, num_friends, and
-    # viewed_minutes to predict how likely they are to churn in
-    # a chalk resolver.
+    # probability_of_churn is a feature that we predict
+    # from a user's age, number of friends, and viewed_minutes.
+    # We run this prediction in the resolver below.
     probability_of_churn: float
 
 
