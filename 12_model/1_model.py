@@ -4,9 +4,7 @@ In this exmaple, we are using a logistic regression model to predict
 whether a user will churn from our video streaming service. This example
 assumes, we have already trained a simple model on age, num_friends and
 viewed_minutes features for a number of our users (a dummy model—
-named 'churn_model.skops'—can be found in this directory,).
-
-This example, shows how you can use Chalk to run model predictions.
+named 'churn_model.skops'—can be found in this file's directory).
 """
 
 from chalk.features import features
