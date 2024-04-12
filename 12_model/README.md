@@ -4,92 +4,59 @@ With Chalk, it's easy to run models in resolvers.
 
 ## 1. Models
 
-Models can be run as part of resolvers.
-
-**[1_model.py](1_model.py)**
+The example code below, which can be found in its entirety in the **[1_model.py](1_model.py)** file,
+shows how to integrate a predictive model into a resolver.
 
 ```python
 class PredictionModel:
+    """
+    # Previously, we trained a model on our user data. This
+    # model has been saved to our local chalk directory next to
+    # our feature and resolver code. When we run chalk apply
+    # it will be incorporated into deployments.
+
+    from sklearn.linear import LogisticRegression
+    from skops.io import save
+
+    X_train, y_train = ...
+
+    model = LogisticRegression()
+    model.fit(X_train, y_train)
+
+    save(model, "churn_model.skops")
+    """
+
     def __init__(self, filename: str):
         self.filename = filename
 
     @cached_property
     def _model(self):
-        return load(self.filename, trusted=True)
+        # The "TARGET_ROOT" environment variable is set by Chalk for both branch and
+        # standard deployments. You can read more about it on our docs:
+        # https://docs.chalk.ai/docs/env-vars#chalk-environment-variable
+        filepath = os.path.join(os.environ.get("TARGET_ROOT"), self.filename)
+
+        return load(filepath, trusted=True)
 
     def predict(self, data: np.array):
         return self._model.predict(data)
 
 
-# model has been trained and saved in local chalk directory
-model = PredictionModel("model.skops")
+# the model has been trained and saved in our local Chalk directory
+churn_model = PredictionModel("churn_model.skops")
+
 
 @online
-def get_model_prediction(
-        age: User.age, num_friends: User.num_friends, User.viewed_minutes,
-) -> User.model_prediction:
-    return model.predict(
-        User.age, User.num_friends, User.viewed_minutes
-    )
-```
-
-## 2. Pipelines
-
-Pipelines can be run as part of resolvers: this means you can save processed features in your offline store.
-
-**[2_pipeline.py](2_pipeline.py)**
-
-```python
-class PreprocessingPipeline:
-    def __init__(self, filename: str):
-        self.filename = filename
-
-    @cached_property
-    def _prep(self):
-        return load(self.filename, trusted=True)
-
-    def predict(self, data: np.array):
-        return self._prep.transform(data)
-
-
-# preprocessing pipeline has been trained and saved in local chalk dir
-preprocessing_pipeline = PredictionModel("preprocessing.skops")
-
-class PredictionModel:
-    def __init__(self, filename: str):
-        self.filename = filename
-
-    @cached_property
-    def _model(self):
-        return load(self.filename, trusted=True)
-
-    def predict(self, data: np.array):
-        return self._model.predict(data)
-
-
-# model has been trained and saved in local chalk directory
-model = PredictionModel("model.skops")
-
-@online
-def get_model_prediction(
-        user_processed: User.processed_features,
-) -> User.model_prediction:
-    return model.predict(
-        User.processed_features
-    )
-
-@online
-def get_user_prediction_data(
-        user_age: User.age,
-        user_favorite_categories: User.favorite_categories,
-        user_viewed_minutes: User.viewed_minutes,
-        user_location: User.location,
-) -> User.model_prediction:
-    # make sure features are in same order as when the preprocessing pipeline was trained
-    return preprocessing_pipeline.transform(
-        pd.DataFrame(
-            [[user_age, user_viewed_minutes, user_favorite_categories, user_location]],
-            columns=["age", "viewed_minutes", "favorite_categories", "location"]
-        )
-    )
+def get_user_churn_probability(
+    age: User.age,
+    num_friends: User.num_friends,
+    viewed_minutes: User.viewed_minutes,
+) -> User.probability_of_churn:
+    """
+    This resolver runs a model that has been trained on a user's age, num_friends
+    and viewed_minutes. It returns a platform churn prediction.
+    """
+    return churn_model.predict(
+        np.array([[age, num_friends, viewed_minutes]])
+    ).item() # item converts array to float
 ```
