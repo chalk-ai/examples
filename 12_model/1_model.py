@@ -7,7 +7,7 @@ assumes we have already trained a simple model on `age`, `num_friends` and
 named `'churn_model.skops'`—can be found in this file's directory).
 """
 
-from chalk.features import features
+from chalk.features import features, DataFrame
 from chalk import online
 import numpy as np
 from skops.io import load
@@ -21,6 +21,7 @@ class User:
     of a user's age, how many friends they have on our platform, and how
     many minutes of content they have viewed.
     """
+
     id: str
     age: int
     num_friends: int
@@ -62,8 +63,15 @@ class PredictionModel:
 
         return load(filepath, trusted=True)
 
-    def predict(self, data: np.array):
-        return self._model.predict(data)
+    def predict(self, data: np.array, target_class=1):
+        # predict proba returns something like [.2, .8] which is the probability of
+        # the 0 class and 1 class, respectively. We want to return the probability
+        # of class 1.
+        class_prediciton_probabilities = {
+            class_: prob
+            for class_, prob in zip(self._model.classes_, self._model.predict_proba(data).squeeze(), strict=True)
+        }
+        return class_prediciton_probabilities[target_class]
 
 
 # the model has been trained and saved in our local Chalk directory
@@ -80,6 +88,19 @@ def get_user_churn_probability(
     This resolver runs a model that has been trained on a user's age, num_friends
     and viewed_minutes. It returns a platform churn prediction.
     """
-    return churn_model.predict(
-        np.array([[age, num_friends, viewed_minutes]])
-    ).item() # item converts array to float
+    return churn_model.predict(np.array([[age, num_friends, viewed_minutes]])).item()  # item converts array to float
+
+
+@online
+def get_users() -> DataFrame[User.id, User.num_friends, User.viewed_minutes, User.age]:
+    """
+    If you want to generate mock base data without connecting to a feature source, you
+    can create a resolver that returns a few default users.
+    """
+    return DataFrame(
+        [
+            User(id=1, num_friends=3, viewed_minutes=100.1, age=33),
+            User(id=2, num_friends=71, viewed_minutes=10.2, age=93),
+            User(id=3, num_friends=32, viewed_minutes=3.7, age=27),
+        ]
+    )
