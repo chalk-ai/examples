@@ -1,6 +1,6 @@
 """An example of connecting Users to Tradelines.
 
-In particular, this example show how to filter
+In particular, this example shows how to filter
 transactions in a resolver for a computed feature.
 """
 from chalk import online
