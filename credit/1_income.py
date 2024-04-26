@@ -19,7 +19,7 @@ import pytz
 # functions on your upstream computed features).
 # 3. setting up your upstream raw data sources.
 #
-# this tutorial focusses on the first two steps and uses dummy resolvers
+# this example focuses on the first two steps and uses dummy resolvers
 # with no upstream inputs to create mock data. This means it should be runnable
 # in sandbox environments with a call to `chalk apply --branch credit` and
 # no other configuration.
