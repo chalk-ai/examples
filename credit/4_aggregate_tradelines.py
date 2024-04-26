@@ -1,7 +1,7 @@
 """An example of connecting Users to Tradelines.
 
-In particular, this example shows how to filter
-transactions in a resolver for a computed feature.
+In particular, this example shows how to pass a
+filtered DataFrame of features to a resolver.
 """
 from chalk import online
 from chalk.features import features, DataFrame, has_many
