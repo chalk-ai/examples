@@ -31,7 +31,6 @@ class Account:
 
 
 # this call connects the Accounts feature to the "account" table of the `PostgresSQLSource` instantiated above
-# postgres datasource.
 pg.with_table(
     name="accounts",
     features=Account,
