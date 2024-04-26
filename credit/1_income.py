@@ -11,7 +11,7 @@ from chalk.features import features, DataFrame, has_many, after, FeatureTime
 from datetime import datetime
 import pytz
 
-# Generally, implementing chalk in your system requires three steps:
+# Generally, implementing Chalk in your system requires three steps:
 # 1. setting up features (these are pydantic inspired dataclasses that fully
 # specify what you want your data to look like),
 # 2. setting up resolvers (these populate your features by pulling
