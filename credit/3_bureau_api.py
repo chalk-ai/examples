@@ -1,4 +1,4 @@
-"""An example of connecting Users to Credit Stores from a
+"""An example of connecting Users to Credit Reports from a
 third part API.
 
 In this example, we are getting Credit Reports for our

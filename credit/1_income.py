@@ -14,12 +14,12 @@ import pytz
 # Generally, implementing chalk in your system requires three steps:
 # 1. setting up features (these are pydantic inspired dataclasses that fully
 # specify what you want your data to look like),
-# 2. setting up resolvers (these populate your features, either by pulling
-# values directly from upstream raw data sources, by calling python functions
-# on your upstream data sources, or by leveraging upstream computed features),
+# 2. setting up resolvers (these populate your features by pulling
+# values directly from upstream raw data sources or by calling python
+# functions on your upstream resolved features).
 # 3. setting up your upstream raw data sources.
 #
-# this tutorial focusses on the first two steps and users dummy resolvers
+# this tutorial focusses on the first two steps and uses dummy resolvers
 # with no upstream inputs to create mock data. This means it should be runnable
 # in sandbox environments with a call to `chalk apply --branch credit` and
 # no other configuration.
