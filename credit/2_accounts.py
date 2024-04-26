@@ -61,11 +61,12 @@ def count_accounts(accounts: User.accounts) -> User.number_of_accounts:
 
 # ---------------------------------------------------------------------------------
 # Let us assume that our postgres database also contains a `users` table with
-# the fields: ['id', 'first_name', 'last_name', 'birthday', 'age']. We could
-# update our base User feature class to include all the fields and use the same
-# `with_table` syntax that we used to populate our `Account` feature. However,
-# suppose we want to keep the User feature lean or that we want to apply some
-# simple transformation on the raw data without using a python resolver.
+# the fields: ['id', 'first_name', 'last_name', 'birthday', 'age']. To get data
+# into this feature, we could update our base User feature class to include all
+# the fields specified in the database table and use the same `with_table` syntax
+# that we used to populate our `Account` feature. However, suppose we want to keep
+# the User feature lean or that we want to apply some simple transformation on the
+# raw data without using a python resolver.
 #
 # To accomplish this we can use what Chalk refers to as a `sql_file_resolver`
 # (https://docs.chalk.ai/docs/sql#sql-file-resolvers). Essentially, we can
