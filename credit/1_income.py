@@ -13,7 +13,7 @@ import pytz
 
 # Generally, implementing Chalk in your system requires three steps:
 # 1. setting up features (these are pydantic inspired dataclasses that fully
-# specify what you want your data to look like),
+# specify what you want your end data to look like),
 # 2. setting up resolvers (these populate your features by pulling
 # values directly from upstream raw data sources or by calling python
 # functions on your upstream computed features).
