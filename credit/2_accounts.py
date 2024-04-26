@@ -30,7 +30,8 @@ class Account:
     updated_at: FeatureTime
 
 
-# this call connects the Accounts feature to the "account" table of the `PostgresSQLSource` instantiated above
+# this call connects the Accounts feature to the "account" table of the `PostgresSQLSource`
+# that we instantiated above.
 pg.with_table(
     name="accounts",
     features=Account,
