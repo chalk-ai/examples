@@ -12,7 +12,7 @@ from chalk.features import features, DataFrame, has_many, FeatureTime
 from chalk.sql import PostgreSQLSource
 
 # This example assumes a postgres database has been added through the chalk
-# dashboard, where it was assigned a name of "CLOUD_DB". The database should
+# dashboard where it was assigned a name of "CLOUD_DB". The database should
 # contain an accounts table with 'id', 'bank_bank_account_number', 'decision',
 # 'user_id', 'created_at', and 'updated_at' fields.
 
