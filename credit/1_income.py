@@ -123,7 +123,7 @@ def get_plaid_income(
     return txns[Transaction.amount].sum()
 
 
-# Below, we have a couple resolvers that generate basic test users and transactions,
+# Below, we have a couple resolvers that generate basic test users and transactions.
 # these resolvers allow this test code to be run without configuring any datasources.
 
 
