@@ -31,8 +31,8 @@ Identify users with multiple accounts.
 ```python
 @features
 class User:
-    id: str
-    accounts: DataFrame[Account] = has_many(lambda: Account.uid == User.id)
+    id: Account.user_id
+    accounts: DataFrame[Account]
 ```
 
 https://docs.chalk.ai/docs/has-many
