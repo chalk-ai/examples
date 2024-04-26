@@ -17,9 +17,9 @@ class Tradeline:
 
 @features
 class User:
-    id: int
+    id: Tradeline.user_id
     delinquent_amount: float
-    tradelines: DataFrame[Tradeline] = has_many(lambda: User.id == Tradeline.user_id)
+    tradelines: DataFrame[Tradeline]
 
 
 @online

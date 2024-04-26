@@ -28,11 +28,11 @@ import pytz
 @features
 class Transaction:
     id: int
-    user_id: int
     amount: float
     memo: str
     on: FeatureTime
 
+    user_id: int
     user: "User"
 
     # Computed properties
@@ -42,10 +42,10 @@ class Transaction:
 
 @features
 class User:
-    id: int
+    id: Transaction.user_id
     self_reported_employer: str
 
-    transactions: DataFrame[Transaction] = has_many(lambda: Transaction.user_id == User.id)
+    transactions: DataFrame[Transaction]
 
     # Computed properties
     computed_income_30: float

@@ -27,7 +27,7 @@ class CreditReport:
 
 @features
 class User:
-    id: str
+    id: CreditReport.user_id
     first_name: str
     last_name: str
     # Adds the pii tag to the ssn feature (https://docs.chalk.ai/docs/feature-discovery#tags)
@@ -35,7 +35,7 @@ class User:
     ssn: str
     city: str
     state: str
-    credit_report: DataFrame[CreditReport] = has_many(lambda: CreditReport.user_id == User.id)
+    credit_report: DataFrame[CreditReport]
 
 
 # Inject a secret through the Chalk dashboard (https://docs.chalk.ai/docs/env-vars)

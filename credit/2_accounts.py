@@ -24,7 +24,7 @@ class Account:
     id: int
     bank_account_number: int
     decision: str
-    user_id: str
+    user_id: int
     created_at: datetime
     # https://docs.chalk.ai/docs/features#feature-time
     updated_at: FeatureTime
@@ -47,9 +47,9 @@ pg.with_table(
 
 @features
 class User:
-    id: str
+    id: Account.user_id
     name: str
-    accounts: DataFrame[Account] = has_many(lambda: Account.user_id == User.id)
+    accounts: DataFrame[Account]
 
     # computed
     number_of_accounts: int
