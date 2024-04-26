@@ -16,7 +16,7 @@ import pytz
 # specify what you want your data to look like),
 # 2. setting up resolvers (these populate your features by pulling
 # values directly from upstream raw data sources or by calling python
-# functions on your upstream resolved features).
+# functions on your upstream computed features).
 # 3. setting up your upstream raw data sources.
 #
 # this tutorial focusses on the first two steps and uses dummy resolvers
