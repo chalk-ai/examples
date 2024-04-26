@@ -87,7 +87,7 @@ def get_transaction_payroll(
         return False
 
     # Too small and it's unlikely to really be payroll
-    if (-1*amount) < MIN_PAYCHECK_SIZE:
+    if -amount < MIN_PAYCHECK_SIZE:
         return False
 
     # If any of the standard payroll providers are in the memo, it's payroll
