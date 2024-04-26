@@ -32,7 +32,17 @@ class Account:
 
 # this call, connects the Accounts feature to the "account" table of the connected
 # postgres datasource.
-pg.with_table(name="accounts", features=Account)
+pg.with_table(
+    name="accounts",
+    features=Account,
+    column_to_feature={
+        "id": Account.id,
+        "bank_account_number": Account.bank_account_number,
+        "user_id": Account.user_id,
+        "created_at": Account.created_at,
+        "updated_at": Account.updated_at,
+    },
+)
 
 
 @features
