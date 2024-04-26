@@ -117,7 +117,7 @@ def get_plaid_income(
 ) -> User.computed_income_30:
     """
     Each user has an associated set of transactions, this resolver filters a users
-    transactions based on another resolved `is_payroll` feature and selects
+    transactions based on the upstream computed `is_payroll` feature and selects
     only features from the previous 30 days.
     """
     return txns[Transaction.amount].sum()
