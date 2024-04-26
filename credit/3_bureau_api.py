@@ -12,12 +12,13 @@ import requests
 
 from chalk import online
 
-from chalk.features import features, has_many, DataFrame
+from chalk.features import features, has_many, DataFrame, Primary
 
 
 @features
 class CreditReport:
-    report_id: str
+    # if a feature doesn't have an id field, the Primary key must be specified
+    report_id: Primary[str]
     user_id: str
     # The raw report, which we'll save as a plain string
     # to parse and extract later.
