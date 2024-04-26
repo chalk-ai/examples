@@ -1,7 +1,16 @@
+"""An example of connecting Users to Credit Stores from a
+third part API.
+
+In this example, we are getting Credit Reports for our
+users through a third part API. This example shows how
+you can run arbitrary python code (and conncet to third
+party APIs in a python resolver.
+"""
+
 import os
 import requests
 
-from chalk import realtime
+from chalk import online
 
 from chalk.features import features, has_many, DataFrame
 
@@ -20,6 +29,7 @@ class User:
     id: str
     first_name: str
     last_name: str
+    # Adds the pii tag to the ssn feature (https://docs.chalk.ai/docs/feature-discovery#tags)
     # :tags: pii
     ssn: str
     city: str
@@ -27,11 +37,11 @@ class User:
     credit_report: DataFrame[CreditReport] = has_many(lambda: CreditReport.user_id == User.id)
 
 
-# Inject a secret through the Chalk dashboard
+# Inject a secret through the Chalk dashboard (https://docs.chalk.ai/docs/env-vars)
 url = os.getenv("MY_VENDOR_URL")
 
 
-@realtime
+@online
 def get_credit_report(
     first_name: User.first_name,
     last_name: User.last_name,
@@ -39,7 +49,11 @@ def get_credit_report(
     state: User.state,
     id: User.id,
 ) -> CreditReport:
-    res = requests.post(
+    """
+    This resolver populates the credit report feature for a user by making a request to
+    a third party API.
+    """
+    res = requests.get(
         f"{url}/transunion/credit-report",
         json={
             "firstName": first_name,

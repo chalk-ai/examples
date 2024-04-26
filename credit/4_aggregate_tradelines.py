@@ -1,5 +1,10 @@
-from chalk import realtime
+"""An example of connecting Users to Tradelines. In
+particular, this example show how to filter transactions
+in a resolver for a computed feature.
+"""
+from chalk import online
 from chalk.features import features, DataFrame, has_many
+from chalk.sql
 
 
 @features
@@ -17,7 +22,7 @@ class User:
     tradelines: DataFrame[Tradeline] = has_many(lambda: User.id == Tradeline.user_id)
 
 
-@realtime
+@online
 def tradeline_rollup(
     accounts: User.tradelines[
         Tradeline.is_delinquent is True
