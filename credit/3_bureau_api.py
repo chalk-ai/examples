@@ -2,7 +2,7 @@
 third part API.
 
 In this example, we are getting Credit Reports for our
-users through a third part API. This example shows how
+users through a third party API. This example shows how
 you can run arbitrary python code (and connect to third
 party APIs in a python resolver.
 """
