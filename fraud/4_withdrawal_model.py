@@ -1,3 +1,10 @@
+"""In this example we set up a withdrawl model in Chalk
+with Users, Accounts, and Transfers.
+
+In it, we implement flexible withdrawl limits based on
+a User risk scores.
+"""
+
 import dataclasses
 
 from chalk import online

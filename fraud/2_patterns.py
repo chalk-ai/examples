@@ -1,9 +1,13 @@
+"""An example of calculating non-sufficient fund (NSF) amount from
+a user's transactions
+"""
+
 from chalk import online
-from chalk.features import features, DataFrame, has_many, before, after, FeatureTime
+from chalk.features import features, DataFrame, before, after, FeatureTime
 
 
 @features
-class PlaidTransaction:
+class Transaction:
     id: int
     amount: float
     memo: str
@@ -15,7 +19,7 @@ class PlaidTransaction:
 @features
 class User:
     id: int
-    plaid_transactions: DataFrame[PlaidTransaction]
+    plaid_transactions: DataFrame[Transaction]
 
     # percentage change last 30 days vs a year ago
     change_from_last_year: float
@@ -30,6 +34,6 @@ def get_transaction_trend(
     Calculates the percentage change in total transaction amount between
     30 day windows.
     """
-    sum_last = last_year_txns[PlaidTransaction.amount].sum()
-    sum_this = this_year_txns[PlaidTransaction.amount].sum()
+    sum_last = last_year_txns[Transaction.amount].sum()
+    sum_this = this_year_txns[Transaction.amount].sum()
     return (sum_last - sum_this) * 100 / sum_last

@@ -1,3 +1,12 @@
+"""An example of connecting Users to Credit Reports from a
+third part API (in this case socure).
+
+In this example, we use the requests library to make
+get a client's socure score from the socure REST API. This
+example shows how you can run arbitrary python code (and connect
+to third party APIs) in a python resolver.
+"""
+
 import requests
 
 from chalk import online
@@ -16,8 +25,9 @@ class User:
 
 @online
 def get_socure_score(uid: User.id) -> User.socure_score:
-    """
-
+    """This resolver approximates how one might make a REST
+    API call to socure in a python resolver for a specific
+    user.
     """
     return requests.get(
         "https://api.socure.com",

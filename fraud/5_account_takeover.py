@@ -1,3 +1,7 @@
+"""An example of using streams and windowed features to calculate
+the number of failed logins for a user, at different time slices.
+"""
+
 from enum import Enum
 from pydantic import BaseModel
 
@@ -18,6 +22,8 @@ class User:
     failed_logins: Windowed[int] = windowed("10m", "30m", "1h")
 
 
+# setup a stream source, this can be configured from your chalk
+# dashboard, in the datasources tab.
 source = KafkaSource(name="sensor_stream")
 
 
@@ -36,7 +42,7 @@ def agg_logins(df: DataFrame[LoginMessage]) -> DataFrame[User]:
     # If a resolver returns a dataframe and takes a dataframe,
     # but the function returns a string, Chalk treats the return
     # value as a SQL query, which it will execute on the passed
-    # in dataframe
+    # in dataframe.
     return f"""
         select
             count(*) as failed_logins,
