@@ -11,6 +11,10 @@ from chalk.streams import KafkaSource, stream, windowed, Windowed
 @features
 class User:
     id: str
+
+    # Chalk make it easy to calculate time windowed features,
+    # below we calculate the number of failed logins in the
+    # past 10 minutes, 30 minutes, and 1 hour.
     failed_logins: Windowed[int] = windowed("10m", "30m", "1h")
 
 
@@ -29,6 +33,10 @@ class LoginMessage(BaseModel):
 
 @stream(source=source, mode="continuous")
 def agg_logins(df: DataFrame[LoginMessage]) -> DataFrame[User]:
+    # If a resolver returns a dataframe and takes a dataframe,
+    # but the function returns a string, Chalk treats the return
+    # value as a SQL query, which it will execute on the passed
+    # in dataframe
     return f"""
         select
             count(*) as failed_logins,

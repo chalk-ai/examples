@@ -143,14 +143,14 @@ def get_test_plaid_transactions() -> (
 ):
     return DataFrame(
         [
-            Transaction(id=1, user_id=1, amount=-277.0, memo="directdep", on=datetime.today()),
-            Transaction(id=2, user_id=1, amount=-10_001, memo="other", on=datetime.today()),
-            Transaction(id=3, user_id=1, amount=423.0, memo="test", on=datetime.today()),
-            Transaction(id=4, user_id=1, amount=-1303.0, memo="paycheck", on=datetime.today()),
-            Transaction(id=5, user_id=1, amount=124.0, memo="test", on=datetime.today()),
-            Transaction(id=7, user_id=2, amount=2132.04, memo="undefined", on=datetime.now(pytz.utc)),
-            Transaction(id=6, user_id=2, amount=-1, memo="rippling", on=datetime.today()),
-            Transaction(id=8, user_id=2, amount=-30, memo="payroll", on=datetime.today()),
-            Transaction(id=9, user_id=2, amount=-999.99, memo="payroll", on=datetime.today()),
+            Transaction(id=1, user_id=1, amount=-277.0, memo="directdep", on=datetime(2014,8, 12)),
+            Transaction(id=2, user_id=1, amount=-10_001, memo="other", on=datetime(2014,8, 12)),
+            Transaction(id=3, user_id=1, amount=423.0, memo="test", on=datetime(2014,8, 12)),
+            Transaction(id=4, user_id=1, amount=-1303.0, memo="paycheck", on=datetime(2014,8, 12)),
+            Transaction(id=5, user_id=1, amount=124.0, memo="test", on=datetime(2014,8, 12)),
+            Transaction(id=7, user_id=2, amount=2132.04, memo="undefined", on=datetime(2014,8, 12)),
+            Transaction(id=6, user_id=2, amount=-1, memo="rippling", on=datetime(2014,8, 12)),
+            Transaction(id=8, user_id=2, amount=-30, memo="payroll", on=datetime(2014,8, 12)),
+            Transaction(id=9, user_id=2, amount=-999.99, memo="payroll", on=datetime(2014,8, 12)),
         ]
     )

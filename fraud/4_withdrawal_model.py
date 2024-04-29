@@ -1,25 +1,18 @@
 import dataclasses
 
-from mocks import AccountKind
-from chalk import realtime
+from chalk import online
 from chalk.features import (
     DataFrame,
     before,
     features,
     feature,
 )
+from enum import Enum
 
 
-@features
-class Transfer:
-    id: str
-    amount: float
-
-    from_account_id: str
-    from_account: "Account"
-
-    to_account_id: str
-    to_account: "Account"
+class AccountKind(Enum):
+    savings = 0
+    checking = 1
 
 
 @dataclasses.dataclass
@@ -38,8 +31,23 @@ class Holdback:
 
 
 @features
+class Transfer:
+    id: str
+    amount: float
+
+    from_account_id: str
+    from_account: "Account"
+
+    to_account_id: str
+    to_account: "Account"
+
+
+@features
 class User:
     id: str
+
+    # min and max value for the feature are set
+    # to 0 and 100 respectively
     risk_score: float = feature(min=0, max=100)
     holdback: Holdback
     transfers: DataFrame[Transfer]
@@ -65,12 +73,12 @@ class TransferLimit:
     to_account: Account
 
 
-@realtime
+@online
 def is_internal(kind: Account.kind) -> Account.is_internal:
     return kind in {AccountKind.savings, AccountKind.checking}
 
 
-@realtime(when=TransferLimit.from_account.is_internal and TransferLimit.to_account.is_internal)
+@online(when=TransferLimit.from_account.is_internal and TransferLimit.to_account.is_internal)
 def internal_transfer_limit(
     source_balance: TransferLimit.from_account.balances,
 ) -> TransferLimit.amount:
@@ -80,7 +88,7 @@ def internal_transfer_limit(
     return source_balance
 
 
-@realtime(when=TransferLimit.from_account.is_internal is False and TransferLimit.to_account.is_internal is False)
+@online(when=TransferLimit.from_account.is_internal is False and TransferLimit.to_account.is_internal is False)
 def deposit_limit() -> TransferLimit.amount:
     """
     We can't make a transfer between two external accounts
@@ -88,7 +96,7 @@ def deposit_limit() -> TransferLimit.amount:
     return 0
 
 
-@realtime(when=TransferLimit.from_account.is_internal is False)
+@online(when=TransferLimit.from_account.is_internal is False)
 def deposit_limit(
     from_balance: TransferLimit.from_account.available_balance,
 ) -> TransferLimit.amount:
@@ -100,7 +108,7 @@ def deposit_limit(
     return max(0, from_balance - 30)
 
 
-@realtime
+@online
 def get_settlement_time(risk_score: User.risk_score) -> User.holdback:
     """
     Users will have a holdback configuration decided by their risk score.
@@ -128,7 +136,7 @@ def get_settlement_time(risk_score: User.risk_score) -> User.holdback:
     )
 
 
-@realtime(when=TransferLimit.to_account.is_internal is False)
+@online(when=TransferLimit.to_account.is_internal is False)
 def withdrawal_limit(
     internal_accounts: TransferLimit.user.accounts[Account.is_internal is True],
     deposits_last_90: TransferLimit.user.transfers[Transfer.from_account.is_internal is False, before(days_ago=90)],
