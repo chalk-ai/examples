@@ -4,8 +4,8 @@ from chalk.features import features, DataFrame, has_many, before, after, Feature
 
 @features
 class PlaidTransaction:
-    id: str
-    user_id: str
+    id: int
+    user_id: int
     amount: float
     memo: str
     on: FeatureTime
