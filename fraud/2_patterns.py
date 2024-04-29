@@ -5,16 +5,16 @@ from chalk.features import features, DataFrame, has_many, before, after, Feature
 @features
 class PlaidTransaction:
     id: int
-    user_id: int
     amount: float
     memo: str
     on: FeatureTime
+    user_id: "User.id"
     user: "User"
 
 
 @features
 class User:
-    id: PlaidTransaction.user_id
+    id: int
     plaid_transactions: DataFrame[PlaidTransaction]
 
     # percentage change last 30 days vs a year ago

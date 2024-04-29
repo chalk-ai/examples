@@ -32,7 +32,7 @@ class Transaction:
     memo: str
     on: FeatureTime
 
-    user_id: int
+    user_id: "User.id"
     user: "User"
 
     # Computed properties
@@ -42,7 +42,7 @@ class Transaction:
 
 @features
 class User:
-    id: Transaction.user_id
+    id: int
     self_reported_employer: str
 
     transactions: DataFrame[Transaction]

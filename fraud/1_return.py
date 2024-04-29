@@ -12,10 +12,10 @@ import pytz
 @features
 class Transaction:
     id: str
-    user_id: int
     amount: float
     memo: str
     on: FeatureTime
+    user_id: "User.id"
     user: "User"
 
     # Computed properties
@@ -25,7 +25,7 @@ class Transaction:
 
 @features
 class User:
-    id: Transaction.user_id
+    id: int
     transactions: DataFrame[Transaction]
 
     # Computed properties

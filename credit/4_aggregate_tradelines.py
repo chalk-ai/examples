@@ -10,14 +10,14 @@ from chalk.features import features, DataFrame, has_many
 @features
 class Tradeline:
     id: int
-    user_id: int
+    user_id: "User.id"
     outstanding: float
     is_delinquent: bool
 
 
 @features
 class User:
-    id: Tradeline.user_id
+    id: int
     delinquent_amount: float
     tradelines: DataFrame[Tradeline]
 
