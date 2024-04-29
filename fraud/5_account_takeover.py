@@ -39,10 +39,9 @@ class LoginMessage(BaseModel):
 
 @stream(source=source, mode="continuous")
 def agg_logins(df: DataFrame[LoginMessage]) -> DataFrame[User]:
-    # If a resolver returns a dataframe and takes a dataframe,
-    # but the function returns a string, Chalk treats the return
-    # value as a SQL query, which it will execute on the passed
-    # in dataframe.
+    # If a resolver annotation returns a dataframe and takes a dataframe,
+    # but the function actually returns a string, Chalk treats the return
+    # value as a SQL query, which it will execute on the passed in dataframe.
     return f"""
         select
             count(*) as failed_logins,
