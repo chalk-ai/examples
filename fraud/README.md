@@ -8,18 +8,19 @@ scientists and machine learning engineers collaborate
 on solutions.
 
 ## 1. Returns
+
 Identify transactions returned for non-sufficient funds.
 
 **[1_return.py](1_return.py)**
 
 ```python
-@realtime
+@online
 def get_transaction_is_nsf(
     memo_clean: Transaction.clean_memo,
 ) -> Transaction.is_nsf:
     return "nsf" in memo_clean.lower()
 
-@realtime
+@online
 def get_nsf_amount(
     amounts: User.transactions[
         Transaction.is_nsf is True,
@@ -28,20 +29,22 @@ def get_nsf_amount(
 ) -> User.nsf_amount:
     return amounts.sum()
 ```
+
 https://docs.chalk.ai/docs/resolver-inputs
 
 ## 2. Changes in Behavior
+
 Detect changes in user behavior over time.
 
 **[2_patterns.py](2_patterns.py)**
 
 ```python
-@realtime
+@online
 def get_transaction_trend(
     this_year_txns: User.transactions[after(days_ago=30)],
     last_year_txns: User.transactions[
-        before(days_ago=365), 
-        after(days_ago=365 + 30)
+        before(days_ago=30),
+        after(days_ago=30 * 2)
     ]
 ) -> User.change_from_last_year:
     sum_last = last_year_txns[Transaction.amount].sum()
@@ -71,9 +74,11 @@ def get_socure_score(uid: User.id) -> Features[User.socure_score]:
         }).json()['socure_score']
     )
 ```
+
 https://docs.chalk.ai/docs/feature-caching
 
 ## 4. Withdrawal Model
+
 Decide and enforce withdrawal limits with custom hold times.
 
 **[4_withdrawal_model.py](4_withdrawal_model.py)**
@@ -87,6 +92,7 @@ def withdrawal_limit(
 ) -> TransferLimit.amount:
     ...
 ```
+
 https://docs.chalk.ai/docs/resolver-overview
 
 ## 5. Account Takeover

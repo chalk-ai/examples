@@ -19,7 +19,7 @@ from chalk.features import features, has_many, DataFrame, Primary
 class CreditReport:
     # if a feature doesn't have an id field, the Primary key must be specified
     report_id: Primary[str]
-    user_id: str
+    user_id: "User.id"
     # The raw report, which we'll save as a plain string
     # to parse and extract later.
     report: str
@@ -27,7 +27,7 @@ class CreditReport:
 
 @features
 class User:
-    id: CreditReport.user_id
+    id: int
     first_name: str
     last_name: str
     # Adds the pii tag to the ssn feature (https://docs.chalk.ai/docs/feature-discovery#tags)
