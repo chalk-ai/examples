@@ -45,7 +45,7 @@ def run_chalk_resolver():
 ## Isolated Python Environment
 
 To isolate the chalkpy dependency from your python environment, you can use airflow's `@task.virtualenv` decorator. Note,
-this will be slightly slower since a python virtual environment will be created for each task.
+this slightly slower since a python virtual environment is created for the task.
 
 ```python
 from airflow.decorators import task
