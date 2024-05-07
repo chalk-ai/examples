@@ -36,7 +36,7 @@ def taskflow_with_chalk():
         """
         from chalk.client import ChalkClient
 
-        # This assumes that CHALK_CLIENT_SECRET & CHALK_CLIENT_ID environment variables
+        # This assumes that CHALK_CLIENT_SECRET, CHALK_CLIENT_ID, & CHALK_ENVIRONMENT environment variables
         # are passed to airflow.
         client = ChalkClient()
 
@@ -50,7 +50,7 @@ def taskflow_with_chalk():
         Trigger the resolver.get_email_domain resolver
         """
 
-        # This assumes that CHALK_CLIENT_SECRET & CHALK_CLIENT_ID environment variables
+        # This assumes that CHALK_CLIENT_SECRET, CHALK_CLIENT_ID, & CHALK_ENVIRONMENT environment variables
         # are passed to airflow.
         client = ChalkClient()
 
