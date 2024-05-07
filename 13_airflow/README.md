@@ -20,7 +20,8 @@ The task can either use a shared python environment or an isolated python enviro
 ## Shared Python Environment
 
 If you plan to use a shared python environment, you need to add the `chalkpy` package to your
-set of airflow dependencies. Then you can simply define a task that creates a `ChalkClient` and triggers a resolver run.
+set of airflow dependencies. Then you can simply define a task that triggers a resolver from 
+a `ChalkClient` and add it to your dag.
 
 ```python
 from airflow.decorators import task
@@ -29,7 +30,7 @@ from chalk.client import ChalkClient
 @task
 def run_chalk_resolver():
     """
-    Trigger the resolver.get_email_domain resolver in a virtual environment
+    Trigger the resolver.get_email_domain resolver
     """
 
     # This assumes that CHALK_CLIENT_SECRET & CHALK_CLIENT_ID environment variables

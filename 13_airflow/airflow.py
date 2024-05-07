@@ -2,6 +2,7 @@ import os
 
 from airflow.decorators import dag, task
 import pendulum
+from chalk.client import ChalkClient
 
 
 @dag(
@@ -30,7 +31,7 @@ def taskflow_with_chalk():
     @task.virtualenv(
         task_id="virtualenv_python", requirements=["chalkpy"], system_site_packages=False
     )
-    def run_chalk_resolver():
+    def run_chalk_resolver_virtual_env():
         """
         Trigger the resolver.get_email_domain resolver in a virtual environment
         """
@@ -44,23 +45,14 @@ def taskflow_with_chalk():
             "resolver.get_email_domain"
         )
 
-    @task.docker(
-        image="chalk-ai:base",
-        environment={
-            "CHALK_CLIENT_SECRET": os.environ.get("CHALK_CLIENT_SECRET"),
-            "CHALK_CLIENT_ID": os.environ.get("CHALK_CLIENT_ID")
-        }
-    )
+    @task
     def run_chalk_resolver():
         """
-        Trigger the resolver.get_email_domain resolver in a chalk docker container environment
+        Trigger the resolver.get_email_domain resolver
         """
-        from chalk.client import ChalkClient
-        import os
 
         # This assumes that CHALK_CLIENT_SECRET & CHALK_CLIENT_ID environment variables
-        # are configured for the airflow.
-
+        # are passed to airflow.
         client = ChalkClient()
 
         client.trigger_resolver_run(
@@ -71,6 +63,7 @@ def taskflow_with_chalk():
     transform()
     load()
     run_chalk_resolver()
+    # run_chalk_resolver_virtual_env()
 
 
 taskflow_with_chalk()
