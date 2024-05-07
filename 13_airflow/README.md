@@ -20,7 +20,7 @@ The task can either use a shared python environment or an isolated python enviro
 ## Shared Python Environment
 
 If you plan to use a shared python environment, you need to add the `chalkpy` package to your
-set of airflow dependencies.
+set of airflow dependencies. Then you can simply define a task that creates a `ChalkClient` and triggers a resolver run.
 
 ```python
 from airflow.decorators import task
@@ -43,7 +43,7 @@ def run_chalk_resolver():
 
 ## Isolated Python Environment
 
-To isolate the Chalk operator from your python environment, you can use airflow's `@task.virtualenv` decorator. Note,
+To isolate the chalkpy dependency from your python environment, you can use airflow's `@task.virtualenv` decorator. Note,
 this will be slightly slower since a python virtual environment will be created for each task.
 
 ```python
