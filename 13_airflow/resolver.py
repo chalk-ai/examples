@@ -1,21 +1,13 @@
 from chalk import online
 from chalk.features import features
-from chalk.sql import PostgreSQLSource
-
-pg = PostgreSQLSource()
 
 
 @features
 class User:
     id: int
+    name: str
     email: str
     email_domain: str
-
-
-pg.with_table(
-    name="users",
-    features=User,
-)
 
 
 @online

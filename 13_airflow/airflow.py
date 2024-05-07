@@ -42,7 +42,7 @@ def taskflow_with_chalk():
         client = ChalkClient()
 
         client.trigger_resolver_run(
-            "resolver.get_email_domain"
+            "get_users" # this is the name of our sql file resolver {name}.chalk.sql
         )
 
     @task
@@ -56,7 +56,7 @@ def taskflow_with_chalk():
         client = ChalkClient()
 
         client.trigger_resolver_run(
-            "resolver.get_email_domain"
+            "get_users" # this is the name of our sql file resolver {name}.chalk.sql
         )
 
     extract()
