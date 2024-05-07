@@ -12,7 +12,7 @@ If you want to create a specific access token for airflow, this can be done in t
 page of the Chalk dashboard:
 ![access_token](./airflow.png)
 
-With this done, you'll be able to create a ChalkClient instance in an  airflow task and trigger 
+With this done, you'll be able to create a `ChalkClient` in an airflow task and trigger 
 a resolver run.
 
 The task can either use a shared python environment or an isolated python environment.
