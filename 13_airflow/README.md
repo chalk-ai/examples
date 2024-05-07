@@ -5,11 +5,11 @@ variables, the `chalkpy` python dependency, and create a new resolver task.
 
 ## Setup
 
-To run a chalk resolver in airflow, you'll need to add `CHALK_CLIENT_ID` and `CHALK_CLIENT_SECRET` environment
+To run a Chalk resolver in airflow, you'll need to add `CHALK_CLIENT_ID` and `CHALK_CLIENT_SECRET` environment
 variables to airflow. 
 
 If you want to create a specific access token for airflow, this can be done in the settings -> Access Tokens 
-page of the chalk dashboard:
+page of the Chalk dashboard:
 ![access_token](./airflow.png)
 
 With this done, you'll be able to create a ChalkClient instance in an  airflow task and trigger 
