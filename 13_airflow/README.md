@@ -10,7 +10,7 @@ To run a Chalk resolver in airflow, you'll need to add `CHALK_CLIENT_ID` and `CH
 
 If you want to create a specific access token for airflow, this can be done in the settings -> Access Tokens
 page of the Chalk dashboard:
-![access_token](./airflow.png)
+![access_token](./airflow.jpg)
 
 With this done, you'll be able to create a `ChalkClient` in an airflow task and trigger a resolver run.
 
@@ -37,7 +37,7 @@ def run_chalk_resolver():
     client = ChalkClient()
 
     client.trigger_resolver_run(
-        "resolver.get_email_domain"
+        "get_users"
     )
 ```
 
@@ -63,6 +63,6 @@ def run_chalk_resolver():
     client = ChalkClient()
 
     client.trigger_resolver_run(
-        "resolver.get_email_domain"
+        "get_users"
     )
 ```
