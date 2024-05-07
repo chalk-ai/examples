@@ -1,4 +1,3 @@
-import os
 
 from airflow.decorators import dag, task
 import pendulum
