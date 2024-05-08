@@ -1,7 +1,9 @@
-
 from airflow.decorators import dag, task
+from airflow.sensors.base import PokeReturnValue
 import pendulum
 from chalk.client import ChalkClient
+from airflow.exceptions import AirflowFailException
+from time import sleep
 
 
 @dag(
@@ -40,12 +42,15 @@ def taskflow_with_chalk():
         # are passed to airflow.
         client = ChalkClient()
 
-        client.trigger_resolver_run(
-            "get_users" # this is the name of our sql file resolver {name}.chalk.sql
+        result = client.trigger_resolver_run(
+            "get_users"  # this is the name of our sql file resolver {name}.chalk.sql
         )
+        if result.status == "failed":
+            raise AirflowFailException(f"Resolver run failed: {result}")
+        return result.id
 
-    @task
-    def run_chalk_resolver():
+    @task()
+    def run_chalk_resolver() -> str:
         """
         Trigger the resolver.get_email_domain resolver
         """
@@ -54,14 +59,35 @@ def taskflow_with_chalk():
         # are passed to airflow.
         client = ChalkClient()
 
-        client.trigger_resolver_run(
-            "get_users" # this is the name of our sql file resolver {name}.chalk.sql
+        result = client.trigger_resolver_run(
+            "get_users"  # this is the name of our sql file resolver {name}.chalk.sql
         )
+        if result.status == "failed":
+            raise AirflowFailException(f"Resolver run failed: {result}")
+        return result.id
+
+    @task.sensor(poke_interval=30, timeout=60 * 5)
+    def poll_resolver_run(run_id) -> PokeReturnValue:
+        """
+        Poll the running chalk resolver
+        """
+
+        # This assumes that CHALK_CLIENT_SECRET, CHALK_CLIENT_ID, & CHALK_ENVIRONMENT environment variables
+        # are passed to airflow.
+        client = ChalkClient()
+
+        if (status := client.get_run_status(run_id).status) == 'succeeded':
+            if status == "succeeded":
+                return PokeReturnValue(True, run_id)
+            elif status == "failed":
+                raise AirflowFailException(f"Chalk resolver resolver run: {run_id}")
+        return PokeReturnValue(False)
 
     extract()
     transform()
     load()
-    run_chalk_resolver()
+    rid = run_chalk_resolver()
+    poll_resolver_run(rid)
     # run_chalk_resolver_virtual_env()
 
 
