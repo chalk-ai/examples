@@ -49,7 +49,8 @@ def run_chalk_resolver() -> str:
 ## Isolated Python Environment
 
 To isolate the chalkpy dependency from your python environment, you can use airflow's `@task.virtualenv` decorator.
-Note, this is slightly slower since a python virtual environment is created for the task.
+Note, this is slightly slower since a python virtual environment is created for the task, but it might be a useful
+approach if you want to avoid conflicts with other python dependencies.
 
 ```python
 from airflow.decorators import task
@@ -97,12 +98,12 @@ def poll_resolver_run(run_id) -> PokeReturnValue:
     # This assumes that CHALK_CLIENT_SECRET, CHALK_CLIENT_ID, & CHALK_ENVIRONMENT environment variables
     # are passed to airflow.
     client = ChalkClient()
+    status = client.get_run_status(run_id).status
 
-    if (status := client.get_run_status(run_id).status) == 'succeeded':
-        if status == "succeeded":
-            return PokeReturnValue(True, run_id)
-        elif status == "failed":
-            raise AirflowFailException(f"Chalk resolver resolver run: {run_id}")
+    if status == "succeeded":
+        return PokeReturnValue(True, run_id)
+    elif status == "failed":
+        raise AirflowFailException(f"Chalk resolver resolver run: {run_id}")
     return PokeReturnValue(False)
 ```
 
