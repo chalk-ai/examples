@@ -25,9 +25,11 @@ a `ChalkClient` and add it to your dag.
 ```python
 from airflow.decorators import task
 from chalk.client import ChalkClient
+from airflow.exceptions import AirflowFailException
+
 
 @task
-def run_chalk_resolver():
+def run_chalk_resolver() -> str:
     """
     Trigger the resolver.get_email_domain resolver
     """
@@ -36,23 +38,29 @@ def run_chalk_resolver():
     # are passed to airflow.
     client = ChalkClient()
 
-    client.trigger_resolver_run(
+    result = client.trigger_resolver_run(
         "get_users"
     )
+    if result.status == "failed":
+        raise AirflowFailException(f"Resolver run failed: {result}")
+    return result.id
 ```
 
 ## Isolated Python Environment
 
-To isolate the chalkpy dependency from your python environment, you can use airflow's `@task.virtualenv` decorator. Note,
-this is slightly slower since a python virtual environment is created for the task.
+To isolate the chalkpy dependency from your python environment, you can use airflow's `@task.virtualenv` decorator.
+Note, this is slightly slower since a python virtual environment is created for the task, but it might be a useful
+approach if you want to avoid conflicts with other python dependencies.
 
 ```python
 from airflow.decorators import task
+from airflow.exceptions import AirflowFailException
+
 
 @task.virtualenv(
     task_id="virtualenv_python", requirements=["chalkpy"], system_site_packages=False
 )
-def run_chalk_resolver():
+def run_chalk_resolver() -> str:
     """
     Trigger the resolver.get_email_domain resolver in a virtual environment
     """
@@ -62,7 +70,40 @@ def run_chalk_resolver():
     # are passed to airflow.
     client = ChalkClient()
 
-    client.trigger_resolver_run(
+    result = client.trigger_resolver_run(
         "get_users"
     )
+    if result.status == "failed":
+        raise AirflowFailException(f"Resolver run failed: {result}")
+    return result.id
 ```
+
+## Polling the Resolver Run
+
+To wait for the resolver run to complete in airflow, you can use the `get_run_status` Chalk method to poll the status
+of the resolver run. One way to accomplish this is by using Airflow's Sensor framework.
+
+```python
+from airflow.decorators import task
+from airflow.sensors.base import PokeReturnValue
+from chalk.client import ChalkClient
+from airflow.exceptions import AirflowFailException
+
+
+@task.sensor(poke_interval=30, timeout=60 * 5)
+def poll_resolver_run(run_id) -> PokeReturnValue:
+    """
+    Poll the running chalk resolver
+    """
+    # This assumes that CHALK_CLIENT_SECRET, CHALK_CLIENT_ID, & CHALK_ENVIRONMENT environment variables
+    # are passed to airflow.
+    client = ChalkClient()
+    status = client.get_run_status(run_id).status
+
+    if status == "succeeded":
+        return PokeReturnValue(True, run_id)
+    elif status == "failed":
+        raise AirflowFailException(f"Chalk resolver resolver run: {run_id}")
+    return PokeReturnValue(False)
+```
+
