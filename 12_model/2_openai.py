@@ -22,10 +22,11 @@ def hash_prompt(prompt: str, length=16) -> str:
     return int(hashlib.sha256(prompt.encode('utf-8')).hexdigest(), 16) % 10 ** length
 
 
-def get_openai_yes_no_answer(response) -> bool | None:
+def get_openai_yes_no_answer(response: str) -> bool | None:
+    """Tests whether the response is a yes or no answer. If it is ambiguous, returns None."""
     yes = 'yes' in response
     no = 'no' in response
-    if yes and no or len(response) > 50:
+    if (yes and no) or len(response) > 50:
         # our answer is a bit ambiguous, let's not make a decision
         return None
     if yes:
