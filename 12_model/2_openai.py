@@ -22,6 +22,18 @@ def hash_prompt(prompt: str, length=16) -> str:
     return int(hashlib.sha256(prompt.encode('utf-8')).hexdigest(), 16) % 10 ** length
 
 
+def get_openai_yes_no_answer(response) -> bool | None:
+    yes = 'yes' in response
+    no = 'no' in response
+    if yes and no or len(response) > 50:
+        # our answer is a bit ambiguous, let's not make a decision
+        return None
+    if yes:
+        return True
+    if no:
+        return False
+
+
 @before_all
 def initialize_open_ai_client():
     # Note, one should be cautious when using global to give access to custom
@@ -114,15 +126,7 @@ def get_openai_is_director(
     """does openai think our user is a director?"""
     try:
         result_cleaned = result[0].result.lower()
-        yes = 'yes' in result_cleaned
-        no = 'no' in result_cleaned
-        if yes and no or len(result_cleaned) > 50:
-            # our answer is a bit ambiguous, let's not make a decision
-            return None
-        if yes:
-            return True
-        if no:
-            return False
+        return get_openai_yes_no_answer(result_cleaned)
     except IndexError:
         return None
 
@@ -134,15 +138,7 @@ def get_openai_is_swe(
     """does openai think our user is a software engineer?"""
     try:
         result_cleaned = result[0].result.lower()
-        yes = 'yes' in result_cleaned
-        no = 'no' in result_cleaned
-        if yes and no or len(result_cleaned) > 70:
-            # our answer is a bit ambiguous, let's not make a decision
-            return None
-        if yes:
-            return True
-        if no:
-            return False
+        return get_openai_yes_no_answer(result_cleaned)
     except IndexError:
         return None
 
