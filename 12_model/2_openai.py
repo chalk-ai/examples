@@ -1,5 +1,5 @@
 from chalk import online
-from chalk.features import features, has_many, DataFrame, has_one, before_all
+from chalk.features import features, has_many, DataFrame, before_all
 
 from openai import OpenAI
 
@@ -122,7 +122,7 @@ def get_openai_is_director(
 def get_openai_is_swe(
     result: User.open_ai_queries[OpenAiQuery.category == "is_swe"].prompt_result,
 ) -> User.is_swe:
-    """does openai think our user is a swe?"""
+    """does openai think our user is a software engineer?"""
     return result[0].result.lower() in ("yes", "true")
 
 
