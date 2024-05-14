@@ -9,6 +9,12 @@ from openai import OpenAI
 
 openai_client: OpenAI
 
+# A list of prompts that we can run based on our user's titles
+TITLE_PROMPTS = dict(
+    is_exec="Does the job title `{title}` mean that the person is a executive at their company? Please answer with one word, either: `Yes` or `No`.",
+    is_swe="Does the job title `{title}` mean the person is a software engineer? Please answer with one word, either: `Yes` or `No`"
+)
+
 
 @lru_cache
 def hash_prompt(prompt: str, length=16) -> str:
@@ -27,13 +33,6 @@ def initialize_open_ai_client():
         # deployment: https://docs.chalk.ai/docs/env-vars
         api_key=os.environ.get("OPEN_AI_API_KEY"),
     )
-
-
-# A list of prompts that we can run based on our user's titles
-title_prompts = dict(
-    is_exec="Does the job title `{title}` mean that the person is a executive at their company? Please answer with one word, either: `Yes` or `No`.",
-    is_swe="Does the job title `{title}` mean the person is a software engineer? Please answer with one word, either: `Yes` or `No`"
-)
 
 
 @features
@@ -71,7 +70,7 @@ def get_openai_title_queries(
     title: User.title,
 ) -> User.open_ai_queries:
     open_ai_title_queries = []
-    for category, title_prompt in title_prompts.items():
+    for category, title_prompt in TITLE_PROMPTS.items():
         prompt = title_prompt.format(title=title)
         prompt_hash = hash_prompt(prompt)
         open_ai_title_queries.append(
