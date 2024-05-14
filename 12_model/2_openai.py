@@ -112,7 +112,19 @@ def get_openai_is_director(
     result: User.open_ai_queries[OpenAiQuery.category == "is_exec"].prompt_result,
 ) -> User.is_exec:
     """does openai think our user is a director?"""
-    return result[0].result.lower() in ("yes", "true")
+    try:
+        result_cleaned = result[0].result.lower()
+        yes = 'yes' in result_cleaned
+        no = 'no' in result_cleaned
+        if yes and no or len(result_cleaned) > 50:
+            # our answer is a bit ambiguous, let's not make a decision
+            return None
+        if yes:
+            return True
+        if no:
+            return False
+    except IndexError:
+        return None
 
 
 @online
@@ -120,7 +132,19 @@ def get_openai_is_swe(
     result: User.open_ai_queries[OpenAiQuery.category == "is_swe"].prompt_result,
 ) -> User.is_swe:
     """does openai think our user is a software engineer?"""
-    return result[0].result.lower() in ("yes", "true")
+    try:
+        result_cleaned = result[0].result.lower()
+        yes = 'yes' in result_cleaned
+        no = 'no' in result_cleaned
+        if yes and no or len(result_cleaned) > 70:
+            # our answer is a bit ambiguous, let's not make a decision
+            return None
+        if yes:
+            return True
+        if no:
+            return False
+    except IndexError:
+        return None
 
 
 @online
