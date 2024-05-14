@@ -46,7 +46,6 @@ class OpenAiQuery:
     prompt_result: "OpenAiQueryResult"
 
 
-
 # By setting a high max scaleness, we can cache the openai query, limiting our api calls
 # for users with equivalent titles
 @features(max_staleness="1000d")
@@ -54,6 +53,7 @@ class OpenAiQueryResult:
     id: str
     result: str
     queries: DataFrame[OpenAiQuery] = has_many(lambda: OpenAiQuery.prompt_hash == OpenAiQueryResult.id)
+
 
 @features
 class User:
@@ -117,12 +117,14 @@ def get_openai_is_director(
     """does openai think our user is a director?"""
     return result[0].result.lower() in ("yes", "true")
 
+
 @online
 def get_openai_is_swe(
     result: User.open_ai_queries[OpenAiQuery.category == "is_swe"].prompt_result,
 ) -> User.is_swe:
     """does openai think our user is a swe?"""
     return result[0].result.lower() in ("yes", "true")
+
 
 @online
 def dummy_users() -> DataFrame[User.id, User.title]:
