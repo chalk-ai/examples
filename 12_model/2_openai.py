@@ -52,7 +52,7 @@ def initialize_open_ai_client():
 class OpenAiQuery:
     id: str
     user_id: str
-    # this is one of `is_exec`, `other_quest`, random_question (it is is the question "type")
+    # currently, this is one of `is_exec` or `is_swe` (it is is the question "type")
     category: str
     prompt: str
     prompt_hash: str
