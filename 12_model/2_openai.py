@@ -46,7 +46,7 @@ class OpenAiQuery:
     prompt_result: "OpenAiQueryResult"
 
 
-# Setting no max scaleness caches our openai queries, limiting our api calls
+# Setting no max staleness caches our openai queries, limiting our api calls
 # for users with equivalent titles.
 @features(max_staleness="infinity")
 class OpenAiQueryResult:
