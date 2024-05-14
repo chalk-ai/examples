@@ -1,11 +1,11 @@
 from chalk import online
 from chalk.features import features, has_many, DataFrame, before_all
 
-from openai import OpenAI
-
 import hashlib
 import os
 from functools import lru_cache
+
+from openai import OpenAI
 
 openai_client: OpenAI
 
@@ -23,7 +23,8 @@ def initialize_open_ai_client():
     global openai_client
 
     openai_client = OpenAI(
-        # This is the default and can be omitted
+        # This assumes that the OPEN_AI_API_KEY is set in your chalk
+        # deployment: https://docs.chalk.ai/docs/env-vars
         api_key=os.environ.get("OPEN_AI_API_KEY"),
     )
 
@@ -46,9 +47,9 @@ class OpenAiQuery:
     prompt_result: "OpenAiQueryResult"
 
 
-# By setting a high max scaleness, we can cache the openai query, limiting our api calls
-# for users with equivalent titles
-@features(max_staleness="1000d")
+# Setting no max scaleness caches our openai queries, limiting our api calls
+# for users with equivalent titles.
+@features(max_staleness="infinity")
 class OpenAiQueryResult:
     id: str
     result: str
@@ -69,9 +70,6 @@ def get_openai_title_queries(
     user_id: User.id,
     title: User.title,
 ) -> User.open_ai_queries:
-    is_exec_prompt = title_prompts["is_exec"].format(title=title)
-    prompt_hash = hash_prompt(is_exec_prompt)
-
     open_ai_title_queries = []
     for category, title_prompt in title_prompts.items():
         prompt = title_prompt.format(title=title)
