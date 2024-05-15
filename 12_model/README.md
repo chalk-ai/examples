@@ -69,7 +69,7 @@ def get_user_churn_probability(
 ## 2. OpenAI
 
 Chalk also makes it easy to integrate third party models, like ChatGPT, into your resolvers. In the
-following example, we use the OpenAI GPT-3 model to answer questions about our Users.
+following example, we use GPT-3 model to answer questions about our Users.
 
 Additionally, since our questions are often repeated, we cache the results of the queries,
 limiting the number of API requests we need to make.
