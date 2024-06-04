@@ -3,9 +3,9 @@
 With Chalk, it's easy to run models in resolvers.
 
 ## 1. Models
+The example code below shows how to integrate a predictive model into a resolver.
 
-The example code below, which can be found in its entirety in the **[1_model.py](1_model.py)** file,
-shows how to integrate a predictive model into a resolver.
+**[1_model.py](1_model.py)**
 
 ```python
 class PredictionModel:

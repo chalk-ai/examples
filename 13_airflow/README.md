@@ -16,11 +16,15 @@ With this done, you'll be able to create a `ChalkClient` in an airflow task and 
 
 The task can either use a shared python environment or an isolated python environment.
 
+**[airflow.py](airflow.py)**
+
 ## Shared Python Environment
 
 If you plan to use a shared python environment, you need to add the `chalkpy` package to your
 set of airflow dependencies. Then you can simply define a task that triggers a resolver from
 a `ChalkClient` and add it to your dag.
+
+**[shared_environment.py](shared_environment.py)**
 
 ```python
 from airflow.decorators import task
@@ -52,6 +56,8 @@ To isolate the chalkpy dependency from your python environment, you can use airf
 Note, this is slightly slower since a python virtual environment is created for the task, but it might be a useful
 approach if you want to avoid conflicts with other python dependencies.
 
+**[isolated_environment.py](isolated_environment.py)**
+
 ```python
 from airflow.decorators import task
 from airflow.exceptions import AirflowFailException
@@ -82,6 +88,8 @@ def run_chalk_resolver() -> str:
 
 To wait for the resolver run to complete in airflow, you can use the `get_run_status` Chalk method to poll the status
 of the resolver run. One way to accomplish this is by using Airflow's Sensor framework.
+
+**[polling.py](polling.py)**
 
 ```python
 from airflow.decorators import task
