@@ -57,8 +57,7 @@ def generate_response(
 
 
 @online
-def get_movies() -> DataFrame[
-    FAQDocument.id, FAQDocument.title, FAQDocument.body, FAQDocument.link]:
+def get_faqs() -> DataFrame[FAQDocument.id, FAQDocument.title, FAQDocument.body, FAQDocument.link]:
     return DataFrame([
         FAQDocument(
             id=1,
