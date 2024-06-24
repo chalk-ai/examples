@@ -2,7 +2,6 @@ import attrs
 from dataclasses import dataclass
 from pydantic import BaseModel, constr
 from typing import Optional
-import pyarrow as pa
 
 from chalk.features import features, feature
 
