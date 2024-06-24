@@ -1,5 +1,6 @@
-from chalk.features import features, DataFrame
 import pandas as pd
+
+from chalk.features import DataFrame, features
 
 
 @features

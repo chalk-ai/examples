@@ -1,4 +1,4 @@
-from chalk.features import features, DataFrame, _
+from chalk.features import DataFrame, _, features
 
 
 @features
