@@ -2,7 +2,7 @@ import requests
 
 from chalk import realtime
 from chalk.client import ChalkClient
-from chalk.features import features, feature
+from chalk.features import feature, features
 
 
 @features
@@ -29,7 +29,7 @@ def get_fico_score(name: User.name) -> User.fico_score:
     return response["fico"]
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     # The first time that we run this query,
     # `get_fico_score` will call out to Experian,
     # because the FICO score is not available.

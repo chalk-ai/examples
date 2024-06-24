@@ -1,9 +1,10 @@
-import requests
 from enum import Enum
+
+import requests
 
 from chalk import realtime
 from chalk.client import ChalkClient
-from chalk.features import features, feature
+from chalk.features import feature, features
 
 
 class FICOBucket(str, Enum):
@@ -34,7 +35,7 @@ def discretize_fico_score(score: User.fico_score) -> User.fico_bucket:
     return FICOBucket.LOW
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     # Specifying the max-staleness value also holds when
     # the cached feature is an intermediate result for your
     # query, but not a desired output.

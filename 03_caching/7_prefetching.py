@@ -1,8 +1,9 @@
-import requests
 from datetime import datetime
 
+import requests
+
 from chalk import online
-from chalk.features import features, feature
+from chalk.features import feature, features
 
 
 @features

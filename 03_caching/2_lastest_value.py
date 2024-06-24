@@ -2,7 +2,7 @@ import requests
 
 from chalk import online
 from chalk.client import ChalkClient
-from chalk.features import features, feature
+from chalk.features import feature, features
 
 
 @features
@@ -21,7 +21,7 @@ def get_fico_score(name: User.name) -> User.fico_score:
     return requests.get("...").json()["fico"]
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     # This time, when the FICO score feature is requested,
     # we'll receive the most recently computed value
     # Infinite caching plays well with prefetching.

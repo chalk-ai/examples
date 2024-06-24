@@ -2,7 +2,7 @@ import requests
 
 from chalk import realtime
 from chalk.client import ChalkClient
-from chalk.features import features, feature
+from chalk.features import feature, features
 
 
 @features
@@ -17,7 +17,7 @@ def get_fico_score(name: User.name) -> User.fico_score:
     return requests.get("https://experian.com").json()["score"]
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     # You can force cache invalidation by specifying a
     # maximum staleness of 0 seconds at the time of making the query:
     ChalkClient().query(
