@@ -1,8 +1,9 @@
-import requests
 from datetime import datetime, timedelta
 
-from chalk import online, Cron, Now
-from chalk.features import features, feature
+import requests
+
+from chalk import Cron, Now, online
+from chalk.features import feature, features
 
 
 @features
@@ -18,7 +19,9 @@ class User:
 # Filter functions can take in any features as arguments, and must
 # output True or False to indicate whether to consider a given entity
 # in a scheduled run
-def only_active_filter(last_login: User.last_login, status: User.status, now: Now) -> bool:
+def only_active_filter(
+    last_login: User.last_login, status: User.status, now: Now
+) -> bool:
     return status == "active" and last_login > (now - timedelta(days=30))
 
 

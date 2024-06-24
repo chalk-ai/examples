@@ -39,6 +39,7 @@ class User:
 # or take a crontab-formatted string:
 # i.e.: @online(cron="*/5 * * * *")
 
+
 @online(cron="30d")
 def get_credit_score(name: User.name, email: User.email) -> User.credit_score:
     return requests.get("https://experian.com").json()["score"]
