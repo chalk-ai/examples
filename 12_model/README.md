@@ -69,10 +69,13 @@ def get_user_churn_probability(
 ## 2. OpenAI
 
 Chalk also makes it easy to integrate third party models, like ChatGPT, into your resolvers. In the
-following example, we use GPT-3 model to answer questions about our Users.
+following example, we use Chat-GPT to answer questions about our Users.
 
 Additionally, since our questions are often repeated, we cache the results of the queries,
 limiting the number of API requests we need to make.
+
+The example code below, which can be found in its entirety in the **[2_openai.py](2_openai.py)** file,
+shows how to run a API request in a python resolver:
 
 ```python
 # run queries by the hash of the prompt
@@ -95,4 +98,42 @@ def get_openai_answer(
         id=prompt_hash,
         result=result.choices[0].message.content,
     )
+```
+
+## 3. Embeddings
+
+Chalk supports embeddings for your text features.
+
+The example code below, which can be found in its entirety in the **[3_embedding.py](3_embedding.py)** file,
+shows how to create embedding features and join feature sets based on their similarity:
+
+```python
+@features(max_staleness="infinity")
+class FAQDocument:
+    id: int
+    title: str
+    body: str
+    link: str
+    embedding_text: str
+    embedding: Vector = embedding(
+        input=lambda: FAQDocument.embedding_text,
+        provider="openai",
+        model="text-embedding-ada-002",
+    )
+
+
+@features
+class SearchQuery:
+    query: Primary[str]
+    max_runtime: int = None
+    embedding_text: str
+    embedding: Vector = embedding(
+        input=lambda: SearchQuery.embedding_text,
+        provider="openai",
+        model="text-embedding-ada-002",
+    )
+    faqs: DataFrame[FAQDocument] = has_many(
+        lambda: SearchQuery.embedding.is_near(FAQDocument.embedding)
+    )
+    response: str
 ```
