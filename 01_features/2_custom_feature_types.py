@@ -1,9 +1,10 @@
-import attrs
 from dataclasses import dataclass
-from pydantic import BaseModel, constr
 from typing import Optional
 
-from chalk.features import features, feature
+import attrs
+from pydantic import BaseModel, constr
+
+from chalk.features import feature, features
 
 
 # A dataclass can be used as a feature (Book.jacket_info below)
@@ -46,6 +47,7 @@ class Book:
 
 # Finally, if you have an object that you want to serialize that isn't
 # from `dataclass`, `attrs`, or `pydantic`, you can write a custom codec.
+
 
 # Consider the custom class below:
 class CustomStruct:

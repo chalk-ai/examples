@@ -1,5 +1,5 @@
 from chalk import is_primary
-from chalk.features import features, feature, Primary
+from chalk.features import Primary, feature, features
 
 
 # Feature classes have exactly one primary key,
