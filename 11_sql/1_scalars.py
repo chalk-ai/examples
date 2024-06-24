@@ -1,4 +1,4 @@
-from chalk import realtime
+from chalk import online
 from chalk.features import features
 from chalk.sql import SQLiteInMemorySource
 
@@ -25,7 +25,7 @@ def get_views(user: User.id) -> User.viewed_minutes:
     ).one()
 
 
-@realtime
+@online
 def get_views(user: User.id) -> User.viewed_minutes:
     """
     This resolver executes the same query as above,

@@ -1,5 +1,5 @@
 from chalk import is_primary
-from chalk.features import features, feature, Primary
+from chalk.features import Primary, feature, features
 
 
 # Feature classes have exactly one primary key,
@@ -7,7 +7,7 @@ from chalk.features import features, feature, Primary
 # the name `id`.
 @features
 class Book1:
-    bid: str
+    id: str
 
 
 # If you want to name your primary key something other than `id`,

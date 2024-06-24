@@ -1,5 +1,5 @@
-from chalk import realtime
-from chalk.features import features, DataFrame
+from chalk import online
+from chalk.features import DataFrame, features
 from chalk.sql import SQLiteInMemorySource
 
 
@@ -12,7 +12,7 @@ class User:
 db = SQLiteInMemorySource()
 
 
-@realtime
+@online
 def get_views() -> DataFrame[User]:
     """
     Chalk is able to perform push down filters on the returned type here,

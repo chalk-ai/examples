@@ -2,7 +2,7 @@ import requests
 
 from chalk import realtime
 from chalk.client import ChalkClient
-from chalk.features import features, feature
+from chalk.features import feature, features
 
 
 @features
@@ -29,19 +29,20 @@ def get_fico_score(name: User.name) -> User.fico_score:
     return response["fico"]
 
 
-# The first time that we run this query,
-# `get_fico_score` will call out to Experian,
-# because the FICO score is not available.
-ChalkClient().query(
-    input={User.name: "Katherine Johnson"},
-    output=[User.fico_score],
-)
+if __name__ == "__main__":
+    # The first time that we run this query,
+    # `get_fico_score` will call out to Experian,
+    # because the FICO score is not available.
+    ChalkClient().query(
+        input={User.name: "Katherine Johnson"},
+        output=[User.fico_score],
+    )
 
-# The second time that we run this query with
-# the same name, however, `get_fico_score` will
-# NOT call out to Experian, because we have computed
-# the FICO score for this user in the last 30 days.
-ChalkClient().query(
-    input={User.name: "Katherine Johnson"},
-    output=[User.fico_score],
-)
+    # The second time that we run this query with
+    # the same name, however, `get_fico_score` will
+    # NOT call out to Experian, because we have computed
+    # the FICO score for this user in the last 30 days.
+    ChalkClient().query(
+        input={User.name: "Katherine Johnson"},
+        output=[User.fico_score],
+    )

@@ -1,9 +1,10 @@
-import attrs
 from dataclasses import dataclass
-from pydantic import BaseModel, constr
 from typing import Optional
 
-from chalk.features import features, feature
+import attrs
+from pydantic import BaseModel, constr
+
+from chalk.features import feature, features
 
 
 # A dataclass can be used as a feature (Book.jacket_info below)
@@ -47,6 +48,7 @@ class Book:
 # Finally, if you have an object that you want to serialize that isn't
 # from `dataclass`, `attrs`, or `pydantic`, you can write a custom codec.
 
+
 # Consider the custom class below:
 class CustomStruct:
     def __init__(self, foo: str, bar: int) -> None:
@@ -64,12 +66,21 @@ class CustomStruct:
         return hash((self.foo, self.bar))
 
 
+@dataclass
+class CustomStructDC(BaseModel):
+    foo: str
+    bar: int
+
+
 @features
 class Book:
-    # Here, we use the custom class as a feature, and provide an encoder and decoder.
-    custom_field: CustomStruct = feature(
+    id: int
+    jacket_info: JacketInfo
+    title: TitleInfo
+    table_of_contents: list[TableOfContentsItem]
+    custom_field: CustomStructDC = feature(
         # The encoder takes an instance of the custom type and outputs a Python object
-        encoder=lambda x: dict(foo=x.foo, bar=x.bar),
+        encoder=lambda x: CustomStructDC(foo=x.foo, bar=x.bar),
         # The decoder takes output of the encoder and creates an instance of the custom type
         decoder=lambda x: CustomStruct(**x),
     )

@@ -1,7 +1,7 @@
 from datetime import date
 
 from chalk import owner
-from chalk.features import features, feature
+from chalk.features import feature, features
 
 
 @features

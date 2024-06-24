@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from chalk import offline
-from chalk.features import features, Features
+from chalk.features import Features, features
 
 
 @features

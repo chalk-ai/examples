@@ -1,9 +1,10 @@
-from chalk.features import features, DataFrame
+from chalk.features import DataFrame, features
 
 
 @features
 class Transaction:
     id: int
+    user_id: "User.id"
     memo: str
     merchant: str
     amount: float

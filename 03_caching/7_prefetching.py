@@ -1,8 +1,9 @@
-import requests
 from datetime import datetime
 
-from chalk import realtime
-from chalk.features import features, feature
+import requests
+
+from chalk import online
+from chalk.features import feature, features
 
 
 @features
@@ -19,6 +20,6 @@ class User:
 # Here, the maximum-staleness for the FICO score is 30 days,
 # and the cron schedule means that this function will run
 # every 29 days and 11 hours. So, the cache will always be warm.
-@realtime(cron="29d 11h")
+@online(cron="29d 11h")
 def get_fico_score(name: User.name, email: User.email) -> User.fico_score:
     return requests.get("https://experian.com").json()["score"]

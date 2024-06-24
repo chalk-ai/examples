@@ -1,5 +1,5 @@
 from chalk import realtime
-from chalk.features import features, Features
+from chalk.features import Features, features
 
 
 # First, we'll define a set of features and resolvers:
