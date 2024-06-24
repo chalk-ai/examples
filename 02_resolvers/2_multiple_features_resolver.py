@@ -1,7 +1,8 @@
+from mocks import user_service
+
 from chalk import online
 from chalk.client import ChalkClient
-from chalk.features import features, Features
-from mocks import user_service
+from chalk.features import Features, features
 
 
 @features
@@ -26,7 +27,7 @@ def get_user_details(uid: User.id) -> Features[User.name, User.email]:
     )
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     # We can then query features as we did in the previous example.
     result = ChalkClient().query(
         input={User.id: 4},

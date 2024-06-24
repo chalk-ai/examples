@@ -1,6 +1,6 @@
 from chalk import online
 from chalk.client import ChalkClient
-from chalk.features import features, DataFrame, has_many
+from chalk.features import DataFrame, features, has_many
 
 
 @features
@@ -35,7 +35,7 @@ def is_banned_email(domain: Email.domain) -> Email.is_banned:
 # Note that all of this can be computed real-time, and Chalk will run the
 # `is_banned_email` resolver for each of the emails that the user has.
 @online
-def banned_user(domains: User.emails[Email.is_banned==True]) -> User.banned:
+def banned_user(domains: User.emails[Email.is_banned == True]) -> User.banned:
     return len(domains) > 0
 
 

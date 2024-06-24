@@ -17,7 +17,7 @@ def get_email_domain(email: User.email) -> User.email_domain:
     return email.split("@")[1].lower()
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     # Once you've deployed your features, you can query them by providing
     # the data you know that's already in scope, and asking for any feature
     # value that can be computed downstream from that data

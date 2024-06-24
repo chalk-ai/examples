@@ -2,7 +2,7 @@ from datetime import datetime
 
 from chalk import online
 from chalk.client import ChalkClient, OnlineQueryContext
-from chalk.features import features, DataFrame, Features, has_many
+from chalk.features import DataFrame, Features, features, has_many
 from chalk.sql import MySQLSource, PostgreSQLSource
 
 
@@ -19,7 +19,9 @@ class WatchSession:
 class User:
     id: int
     count_long_sessions: int
-    sessions: DataFrame[WatchSession] = has_many(lambda: WatchSession.user_id == User.id)
+    sessions: DataFrame[WatchSession] = has_many(
+        lambda: WatchSession.user_id == User.id
+    )
 
 
 # Imagine that we have two video streaming customers, HBO and Disney.

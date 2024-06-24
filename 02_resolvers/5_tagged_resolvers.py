@@ -1,9 +1,10 @@
 from random import random
 
+from mocks import lexus_nexus
+
 from chalk import online
 from chalk.client import ChalkClient, OnlineQueryContext
 from chalk.features import features
-from mocks import lexus_nexus
 
 
 @features

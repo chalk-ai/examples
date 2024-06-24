@@ -1,6 +1,6 @@
 from chalk import online
 from chalk.client import ChalkClient
-from chalk.features import *
+from chalk.features import DataFrame, FeatureTime, after, features, has_many, has_one
 from chalk.sql import PostgreSQLSource
 
 
