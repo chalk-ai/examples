@@ -2,8 +2,7 @@ from pydantic import BaseModel
 
 from chalk import stream
 from chalk.features import DataFrame, Features, features
-from chalk.streams import KafkaSource
-from chalk.streams import Windowed, windowed
+from chalk.streams import KafkaSource, Windowed, windowed
 
 src = KafkaSource(
     bootstrap_server='kafka.website.com:9092',

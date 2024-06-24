@@ -17,8 +17,7 @@ class UserUpdateBody(BaseModel):
 
 
 src = KafkaSource(
-    bootstrap_server='kafka.website.com:9092',
-    topic='user_favorite_color_updates'
+    bootstrap_server="kafka.website.com:9092", topic="user_favorite_color_updates"
 )
 
 

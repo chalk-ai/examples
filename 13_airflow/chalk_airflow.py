@@ -1,9 +1,11 @@
-from airflow.decorators import dag, task
-from airflow.sensors.base import PokeReturnValue
-import pendulum
-from chalk.client import ChalkClient
-from airflow.exceptions import AirflowFailException
 from time import sleep
+
+import pendulum
+from airflow.decorators import dag, task
+from airflow.exceptions import AirflowFailException
+from airflow.sensors.base import PokeReturnValue
+
+from chalk.client import ChalkClient
 
 
 @dag(
@@ -18,19 +20,18 @@ def taskflow_with_chalk():
     """
 
     @task()
-    def extract():
-        ...
+    def extract(): ...
 
     @task(multiple_outputs=True)
-    def transform():
-        ...
+    def transform(): ...
 
     @task()
-    def load():
-        ...
+    def load(): ...
 
     @task.virtualenv(
-        task_id="virtualenv_python", requirements=["chalkpy"], system_site_packages=False
+        task_id="virtualenv_python",
+        requirements=["chalkpy"],
+        system_site_packages=False,
     )
     def run_chalk_resolver_virtual_env():
         """
@@ -76,7 +77,7 @@ def taskflow_with_chalk():
         # are passed to airflow.
         client = ChalkClient()
 
-        if (status := client.get_run_status(run_id).status) == 'succeeded':
+        if (status := client.get_run_status(run_id).status) == "succeeded":
             if status == "succeeded":
                 return PokeReturnValue(True, run_id)
             elif status == "failed":
