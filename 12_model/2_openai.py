@@ -1,31 +1,31 @@
-from chalk import online
-from chalk.features import features, has_many, DataFrame, before_all
-
 import hashlib
 import os
 from functools import lru_cache
 
 from openai import OpenAI
 
+from chalk import online
+from chalk.features import DataFrame, before_all, features, has_many
+
 openai_client: OpenAI
 
 # A list of prompts that we can run based on our user's titles
 TITLE_PROMPTS = dict(
     is_exec="Does the job title `{title}` mean that the person is a executive at their company? Please answer with one word, either: `Yes` or `No`.",
-    is_swe="Does the job title `{title}` mean the person is a software engineer? Please answer with one word, either: `Yes` or `No`"
+    is_swe="Does the job title `{title}` mean the person is a software engineer? Please answer with one word, either: `Yes` or `No`",
 )
 
 
 @lru_cache
 def hash_prompt(prompt: str, length=16) -> str:
     """Hash a prompt to a fixed length string. This is useful for caching open ai API requests"""
-    return int(hashlib.sha256(prompt.encode('utf-8')).hexdigest(), 16) % 10 ** length
+    return int(hashlib.sha256(prompt.encode("utf-8")).hexdigest(), 16) % 10**length
 
 
 def get_openai_yes_no_answer(response: str) -> bool | None:
     """Tests whether the response is a yes or no answer. If it is ambiguous, returns None."""
-    yes = 'yes' in response
-    no = 'no' in response
+    yes = "yes" in response
+    no = "no" in response
     if (yes and no) or len(response) > 50:
         # our answer is a bit ambiguous, let's not make a decision
         return None
@@ -65,7 +65,9 @@ class OpenAiQuery:
 class OpenAiQueryResult:
     id: str
     result: str
-    queries: DataFrame[OpenAiQuery] = has_many(lambda: OpenAiQuery.prompt_hash == OpenAiQueryResult.id)
+    queries: DataFrame[OpenAiQuery] = has_many(
+        lambda: OpenAiQuery.prompt_hash == OpenAiQueryResult.id
+    )
 
 
 @features
@@ -74,7 +76,9 @@ class User:
     title: str
     is_exec: bool
     is_swe: bool
-    open_ai_queries: DataFrame[OpenAiQuery] = has_many(lambda: User.id == OpenAiQuery.user_id)
+    open_ai_queries: DataFrame[OpenAiQuery] = has_many(
+        lambda: User.id == OpenAiQuery.user_id
+    )
 
 
 @online
@@ -107,8 +111,8 @@ def get_openai_answer(
     result = openai_client.chat.completions.create(
         messages=[
             {
-                'role': 'user',
-                'content': prompt,
+                "role": "user",
+                "content": prompt,
             }
         ],
         model="gpt-3.5-turbo",
@@ -151,9 +155,9 @@ def dummy_users() -> DataFrame[User.id, User.title]:
         [
             User(id=1, title="CEO"),
             User(id=2, title="Queen of Scots"),
-            User(id=3, title='VP of Finance'),
-            User(id=4, title='SWE'),
-            User(id=5, title='Principal Software Engineer'),
-            User(id=6, title='Ingénieur Logiciel'),
+            User(id=3, title="VP of Finance"),
+            User(id=4, title="SWE"),
+            User(id=5, title="Principal Software Engineer"),
+            User(id=6, title="Ingénieur Logiciel"),
         ]
     )
