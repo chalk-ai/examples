@@ -7,7 +7,7 @@ from chalk.features import features, feature, Primary
 # the name `id`.
 @features
 class Book1:
-    bid: str
+    id: str
 
 
 # If you want to name your primary key something other than `id`,

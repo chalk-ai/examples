@@ -1,7 +1,7 @@
 import requests
 from datetime import datetime, timedelta
 
-from chalk import realtime, Cron
+from chalk import online, Cron, Now
 from chalk.features import features, feature
 
 
@@ -18,8 +18,8 @@ class User:
 # Filter functions can take in any features as arguments, and must
 # output True or False to indicate whether to consider a given entity
 # in a scheduled run
-def only_active_filter(last_login: User.last_login, status: User.status) -> bool:
-    return status == "active" and last_login > datetime.now() - timedelta(days=30)
+def only_active_filter(last_login: User.last_login, status: User.status, now: Now) -> bool:
+    return status == "active" and last_login > (now - timedelta(days=30))
 
 
 # You may want to run your cron jobs only on a subset of your userbase.
@@ -33,6 +33,6 @@ def only_active_filter(last_login: User.last_login, status: User.status) -> bool
 #
 # Note that in this example, our active filter depends on two features
 # that are not part of our resolver's arguments.
-@realtime(cron=Cron(schedule="29d 11h", filter=only_active_filter))
+@online(cron=Cron(schedule="29d 11h", filter=only_active_filter))
 def get_fico_score(name: User.name, email: User.email) -> User.fico_score:
     return requests.get("https://experian.com").json()["score"]

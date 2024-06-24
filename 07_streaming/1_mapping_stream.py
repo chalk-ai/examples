@@ -23,8 +23,8 @@ src = KafkaSource(
 
 
 @stream(source=src)
-def fn(message: UserUpdateBody) -> Features[User.uid, User.favorite_color]:
+def fn(message: UserUpdateBody) -> Features[User.id, User.favorite_color]:
     return User(
-        uid=message.user_id,
+        id=message.user_id,
         favorite_color=message.favorite_color,
     )

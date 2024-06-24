@@ -22,11 +22,11 @@ def taskflow_with_chalk():
         ...
 
     @task(multiple_outputs=True)
-    def transform(order_data_dict: dict):
+    def transform():
         ...
 
     @task()
-    def load(order_data_dict: dict):
+    def load():
         ...
 
     @task.virtualenv(

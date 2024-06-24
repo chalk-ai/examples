@@ -1,8 +1,7 @@
 from pydantic import BaseModel
 
 from chalk import stream
-from chalk.features import DataFrame
-from chalk.features import features
+from chalk.features import DataFrame, Features, features
 from chalk.streams import KafkaSource
 from chalk.streams import Windowed, windowed
 
@@ -15,22 +14,17 @@ src = KafkaSource(
 @features
 class User:
     id: str
-    distinct_ips: Windowed[int] = windowed("10m", "30m", "1d")
+    num_failed_logins: Windowed[int] = windowed("10m", "30m", "1d")
 
 
 class LoginMessage(BaseModel):
     user_id: int
-    ip_address: int
+    success: bool
 
 
-@stream(source=src, mode='continuous', keys=["user_id": User.id])
-def failed_logins(events: DataFrame[LoginMessage]) -> DataFrame[
+@stream(source=src, mode='continuous', keys={"user_id": User.id})
+def failed_logins(events: DataFrame[LoginMessage]) -> Features[
     User.id,
-    User.distinct_ips
+    User.num_failed_logins
 ]:
-    return f"""
-        select
-          user_id as id,
-          approximate_count_distinct(id_address) as distinct_ips
-        from {events}
-    """
+    return User(id=events[0].user_id, num_failed_logins=sum(1 for e in events if e.success))

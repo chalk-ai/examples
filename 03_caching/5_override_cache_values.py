@@ -34,14 +34,15 @@ def discretize_fico_score(score: User.fico_score) -> User.fico_bucket:
     return FICOBucket.LOW
 
 
-# You can also override the cached _value_ (in addition to the cache
-# duration, as described in 4_override_max_staleness) by providing
-# the value as an input to the query.
-#
-# Here, we specify that the FICO score is 700. That value is passed
-# to the resolver `discritize_fico_score` to compute `User.fico_bucket`,
-# instead of running `get_fico_score`.
-ChalkClient().query(
-    input={User.name: "Katherine Johnson", User.fico_score: 700},
-    output=[User.fico_bucket],
-)
+if __name__=="__main__":
+    # You can also override the cached _value_ (in addition to the cache
+    # duration, as described in 4_override_max_staleness) by providing
+    # the value as an input to the query.
+    #
+    # Here, we specify that the FICO score is 700. That value is passed
+    # to the resolver `discritize_fico_score` to compute `User.fico_bucket`,
+    # instead of running `get_fico_score`.
+    ChalkClient().query(
+        input={User.name: "Katherine Johnson", User.fico_score: 700},
+        output=[User.fico_bucket],
+    )

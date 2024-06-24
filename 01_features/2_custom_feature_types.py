@@ -27,22 +27,22 @@ class TableOfContentsItem:
     bar: int
 
 
-@features
-class Book:
-    id: int
-    # You can use any `dataclass` as a struct feature.
-    # Struct types should be used for objects that don't have ids.
-    # If an object has an id, consider using has_one.
-    jacket_info: JacketInfo
-
-    # If you prefer `pydantic` to `dataclass`, you can use that instead.
-    title: TitleInfo
-
-    # Alternatively, you can use `attrs`. Any of these struct types
-    # (`dataclass`, `pydantic`, and `attrs`) can be used with
-    # `set[...]` or `list[...]`.
-    table_of_contents: list[TableOfContentsItem]
-
+# @features
+# class Book:
+#     id: int
+#     # You can use any `dataclass` as a struct feature.
+#     # Struct types should be used for objects that don't have ids.
+#     # If an object has an id, consider using has_one.
+#     jacket_info: JacketInfo
+#
+#     # If you prefer `pydantic` to `dataclass`, you can use that instead.
+#     title: TitleInfo
+#
+#     # Alternatively, you can use `attrs`. Any of these struct types
+#     # (`dataclass`, `pydantic`, and `attrs`) can be used with
+#     # `set[...]` or `list[...]`.
+#     table_of_contents: list[TableOfContentsItem]
+#
 
 # Finally, if you have an object that you want to serialize that isn't
 # from `dataclass`, `attrs`, or `pydantic`, you can write a custom codec.

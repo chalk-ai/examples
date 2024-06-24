@@ -4,6 +4,7 @@ from chalk.features import features, DataFrame
 @features
 class Transaction:
     id: int
+    user_id: "User.id"
     memo: str
     merchant: str
     amount: float

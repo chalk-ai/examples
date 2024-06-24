@@ -1,6 +1,6 @@
 import requests
 
-from chalk import realtime
+from chalk import online
 from chalk.features import features
 
 
@@ -34,13 +34,11 @@ class User:
 # Note that we don't sample (elliot.marx@chalk.ai, Elliot),
 # for example, as those features are not the latest values
 # for a given id.
-@realtime(cron="30d")
-def get_fico_score(name: User.name, email: User.email) -> User.fico_score:
-    return requests.get("https://experian.com").json()["score"]
-
-
+#
 # The argument to cron can use the Chalk duration type,
 # or take a crontab-formatted string:
-@realtime(cron="*/5 * * * *")
-def get_fico_score(name: User.name, email: User.email) -> User.fico_score:
+# i.e.: @online(cron="*/5 * * * *")
+
+@online(cron="30d")
+def get_credit_score(name: User.name, email: User.email) -> User.credit_score:
     return requests.get("https://experian.com").json()["score"]
