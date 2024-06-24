@@ -1,8 +1,9 @@
-import requests
 from datetime import datetime
 
-from chalk import realtime, Cron
-from chalk.features import features, feature, DataFrame
+import requests
+
+from chalk import Cron, online
+from chalk.features import DataFrame, feature, features
 from chalk.sql import PostgreSQLSource
 
 
@@ -28,6 +29,6 @@ def get_active_users() -> DataFrame[User.id]:
 # The sample function can pull the primary keys or any subset of
 # the arguments that you'd like to sample, and Chalk will sample
 # the other arguments.
-@realtime(cron=Cron(schedule="29d 11h", sample=get_active_users))
+@online(cron=Cron(schedule="29d 11h", sample=get_active_users))
 def get_fico_score(name: User.name, email: User.email) -> User.fico_score:
     return requests.get("https://experian.com").json()["score"]

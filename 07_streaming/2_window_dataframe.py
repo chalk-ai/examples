@@ -16,7 +16,7 @@ src = KafkaSource(
 @features
 class User:
     id: str
-    num_failed_logins: Windowed[int] = windowed("10m**", "30", "1d")
+    num_failed_logins: Windowed[int] = windowed("10m", "30m", "1d")
 
 
 class LoginMessage(BaseModel):

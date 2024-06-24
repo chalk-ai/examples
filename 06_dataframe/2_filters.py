@@ -1,11 +1,12 @@
 from datetime import datetime
 
-from chalk.features import features, DataFrame
+from chalk.features import DataFrame, features
 
 
 @features
 class Transaction:
     id: int
+    user_id: "User.id"
     memo: str
     merchant: str
     amount: float
@@ -22,19 +23,25 @@ class User:
 # properties on the transaction
 credits = User.txns[Transaction.amount < 0]
 
-# You can also check for set or list membership with `in`:
-rideshare_txns = User.txns[Transaction.merchant in {"uber", "lyft"}]
-
-# Filters separated by commas function as `and` filters:
-rideshare_credits = User.txns[Transaction.amount < 0, Transaction.merchant in {"uber", "lyft"}]
-
-# Equivalently, you can use the keyword `and` instead of separating by commas
-rideshare_credits = User.txns[Transaction.amount < 0 and Transaction.merchant in {"uber", "lyft"}]
-
 # Or works much like `and`:
 rideshare_income = User.txns[
-    Transaction.amount < 0 and (Transaction.merchant in {"uber", "lyft"} or "uberpmts" in Transaction.memo)
+    Transaction.amount < 0
+    and (Transaction.merchant in ("uber", "lyft") or "uberpmts" == Transaction.memo)
 ]
+
+# You can also check for set or list membership with `in`:
+rideshare_txns = User.txns[Transaction.merchant in ("uber", "lyft")]
+
+# Filters separated by commas function as `and` filters:
+rideshare_credits = User.txns[
+    Transaction.amount < 0, Transaction.merchant in ("uber", "lyft")
+]
+
+# Equivalently, you can use the keyword `and` instead of separating by commas
+rideshare_credits = User.txns[
+    Transaction.amount < 0 and Transaction.merchant in ("uber", "lyft")
+]
+
 
 # Filters can also check for None the same way you check for None in Python
 valid_txns = User.txns[Transaction.canceled_at is not None]

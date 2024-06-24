@@ -17,14 +17,13 @@ class UserUpdateBody(BaseModel):
 
 
 src = KafkaSource(
-    bootstrap_server='kafka.website.com:9092',
-    topic='user_favorite_color_updates'
+    bootstrap_server="kafka.website.com:9092", topic="user_favorite_color_updates"
 )
 
 
 @stream(source=src)
-def fn(message: UserUpdateBody) -> Features[User.uid, User.favorite_color]:
+def fn(message: UserUpdateBody) -> Features[User.id, User.favorite_color]:
     return User(
-        uid=message.user_id,
+        id=message.user_id,
         favorite_color=message.favorite_color,
     )

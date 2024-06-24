@@ -71,3 +71,29 @@ User.transactions[Transaction.amount].count()
 User.transactions[Transaction.amount].max()
 ```
 https://docs.chalk.ai/docs/dataframe#aggregations
+
+## 6. Self Joins
+
+Join a feature set back to itself.
+
+**[6_self_joins.py](6_self_joins.py)**
+
+```python
+@features
+class PrequelLink:
+    id: int
+    prequel_id: int
+    book: "Book" = has_one(lambda: Book.id == PrequelLink.prequel_id)
+
+
+@features
+class Book:
+    id: int
+    title: str
+    author_id: Author.id
+    prequel_id: PrequelLink.id | None
+    prequel: PrequelLink | None = has_one(lambda: Book.id == PrequelLink.prequel_id)
+    series_id: SeriesLink.id | None
+    series: SeriesLink = has_one(lambda: SeriesLink.id == Book.series_id)
+```
+

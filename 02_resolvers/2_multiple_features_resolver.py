@@ -1,7 +1,8 @@
-from chalk import realtime
-from chalk.client import ChalkClient
-from chalk.features import features, Features
 from mocks import user_service
+
+from chalk import online
+from chalk.client import ChalkClient
+from chalk.features import Features, features
 
 
 @features
@@ -13,7 +14,7 @@ class User:
 
 # Unlike with our scalar resolvers, here we need to wrap our output in
 # the class `Features[...]`.
-@realtime
+@online
 def get_user_details(uid: User.id) -> Features[User.name, User.email]:
     details = user_service.get_identity(uid)
     # Note that we don't need to supply all arguments to `User`.
@@ -26,8 +27,9 @@ def get_user_details(uid: User.id) -> Features[User.name, User.email]:
     )
 
 
-# We can then query features as we did in the previous example.
-result = ChalkClient().query(
-    input={User.id: 4},
-    output=[User.name, User.email],
-)
+if __name__ == "__main__":
+    # We can then query features as we did in the previous example.
+    result = ChalkClient().query(
+        input={User.id: 4},
+        output=[User.name, User.email],
+    )

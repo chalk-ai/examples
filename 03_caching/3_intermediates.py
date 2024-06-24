@@ -1,9 +1,10 @@
-import requests
 from enum import Enum
+
+import requests
 
 from chalk import realtime
 from chalk.client import ChalkClient
-from chalk.features import features, feature
+from chalk.features import feature, features
 
 
 class FICOBucket(str, Enum):
@@ -34,16 +35,17 @@ def discretize_fico_score(score: User.fico_score) -> User.fico_bucket:
     return FICOBucket.LOW
 
 
-# Specifying the max-staleness value also holds when
-# the cached feature is an intermediate result for your
-# query, but not a desired output.
-ChalkClient().query(
-    input={User.name: "Katherine Johnson"},
-    # User.fico_score is not requested in the output
-    output=[User.risk_score],
-    # ...but is necessary to compute User.risk_score.
-    # The requested feature `User.risk_score` is computed
-    # by running `discretize_fico_score`, which in turn
-    # depends on `User.fico_score`.
-    staleness={User.fico_score: "10m"},
-)
+if __name__ == "__main__":
+    # Specifying the max-staleness value also holds when
+    # the cached feature is an intermediate result for your
+    # query, but not a desired output.
+    ChalkClient().query(
+        input={User.name: "Katherine Johnson"},
+        # User.fico_score is not requested in the output
+        output=[User.fico_bucket],
+        # ...but is necessary to compute User.fico_bucket.
+        # The requested feature `User.fico_bucket` is computed
+        # by running `discretize_fico_score`, which in turn
+        # depends on `User.fico_score`.
+        staleness={User.fico_score: "10m"},
+    )

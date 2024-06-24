@@ -2,7 +2,7 @@ from datetime import datetime
 
 from chalk import online
 from chalk.client import ChalkClient, OnlineQueryContext
-from chalk.features import features, DataFrame, Features, has_many
+from chalk.features import DataFrame, Features, features, has_many
 from chalk.sql import MySQLSource, PostgreSQLSource
 
 
@@ -19,7 +19,9 @@ class WatchSession:
 class User:
     id: int
     count_long_sessions: int
-    sessions: DataFrame[WatchSession] = has_many(lambda: WatchSession.user_id == User.id)
+    sessions: DataFrame[WatchSession] = has_many(
+        lambda: WatchSession.user_id == User.id
+    )
 
 
 # Imagine that we have two video streaming customers, HBO and Disney.
@@ -86,22 +88,23 @@ def num_long_sessions(
     return long_sessions.count()
 
 
-# When you go to make a query, you can specify the
-# environment in which to evaluate the query, which will
-# determine which cluster to send your query to.
-ChalkClient().query(
-    input={User.id: 123},
-    output=[User.count_long_sessions],
-    context=OnlineQueryContext(environment="hbo"),
-)
+if __name__ == "__main__":
+    # When you go to make a query, you can specify the
+    # environment in which to evaluate the query, which will
+    # determine which cluster to send your query to.
+    ChalkClient().query(
+        input={User.id: 123},
+        output=[User.count_long_sessions],
+        context=OnlineQueryContext(environment="hbo"),
+    )
 
-# You can also scope your access tokens to an environment,
-# and don't need to specify an environment id when the
-# token is valid in only one environment.
-#
-# For example, here the client_id and client_secret could
-# be scoped to the "disney" environment.
-ChalkClient(client_id="...", client_secret="...").query(
-    input={User.id: 345},
-    output=[User.count_long_sessions],
-)
+    # You can also scope your access tokens to an environment,
+    # and don't need to specify an environment id when the
+    # token is valid in only one environment.
+    #
+    # For example, here the client_id and client_secret could
+    # be scoped to the "disney" environment.
+    ChalkClient(client_id="...", client_secret="...").query(
+        input={User.id: 345},
+        output=[User.count_long_sessions],
+    )

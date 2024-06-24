@@ -7,12 +7,14 @@ assumes we have already trained a simple model on `age`, `num_friends` and
 named `'churn_model.skops'`—can be found in this file's directory).
 """
 
-from chalk.features import features, DataFrame
-from chalk import online
+import os
+from functools import cached_property
+
 import numpy as np
 from skops.io import load
-from functools import cached_property
-import os
+
+from chalk import online
+from chalk.features import DataFrame, features
 
 
 @features
@@ -69,9 +71,15 @@ class PredictionModel:
         # of class 1.
         class_prediction_probabilities = {
             class_: prob
-            for class_, prob in zip(self._model.classes_, self._model.predict_proba(data).squeeze(), strict=True)
+            for class_, prob in zip(
+                self._model.classes_,
+                self._model.predict_proba(data).squeeze(),
+                strict=True,
+            )
         }
-        return class_prediction_probabilities[target_class].item()  # item converts numpy array to float
+        return class_prediction_probabilities[
+            target_class
+        ].item()  # item converts numpy array to float
 
 
 # the model has been trained and saved in our local Chalk directory
