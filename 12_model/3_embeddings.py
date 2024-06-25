@@ -16,9 +16,8 @@ class FAQDocument:
     title: str
     body: str
     link: str
-    embedding_text: str
     embedding: Vector = embedding(
-        input=lambda: FAQDocument.embedding_text,
+        input=lambda: FAQDocument.body,
         provider="openai",
         model="text-embedding-ada-002",
     )
@@ -28,9 +27,8 @@ class FAQDocument:
 class SearchQuery:
     query: Primary[str]
     max_runtime: int = None
-    embedding_text: str
     embedding: Vector = embedding(
-        input=lambda: SearchQuery.embedding_text,
+        input=lambda: SearchQuery.query,
         provider="openai",
         model="text-embedding-ada-002",
     )
@@ -38,20 +36,6 @@ class SearchQuery:
         lambda: SearchQuery.embedding.is_near(FAQDocument.embedding)
     )
     response: str
-
-
-@online
-def generate_query_embedding_text(
-    query: SearchQuery.query,
-) -> SearchQuery.embedding_text:
-    return f"query: {query}"
-
-
-@online
-def get_movie_embedding_text(
-    body: FAQDocument.body, title: FAQDocument.title
-) -> FAQDocument.embedding_text:
-    return f"passage: {title}. {body}"
 
 
 @online
@@ -63,7 +47,7 @@ def generate_response(
 
 
 @online
-def get_movies() -> (
+def get_faqs() -> (
     DataFrame[FAQDocument.id, FAQDocument.title, FAQDocument.body, FAQDocument.link]
 ):
     return DataFrame(
