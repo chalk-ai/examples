@@ -56,7 +56,7 @@ def get_movie_embedding_text(
 
 @online
 def generate_response(
-    # Query for the five most relevant documents, and select their links
+    # Query for the three most relevant documents, and select their links
     nearest_faqs: SearchQuery.faqs[FAQDocument.link, :3]
 ) -> SearchQuery.response:
     return "\n".join(nearest_faqs[FAQDocument.link])
