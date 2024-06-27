@@ -14,8 +14,11 @@ class Transaction:
 class User:
     id: int
     txns: DataFrame[Transaction]
+    num_credits: int
 
 
 # You can filter down the transactions by any of the
 # properties on the transaction
-num_credits = User.txns[Transaction.amount < 0].count()
+@online
+def get_num_credits(credits: User.txns[Transaction.amount < 0]) -> User.num_credits:
+    return len(credits)
