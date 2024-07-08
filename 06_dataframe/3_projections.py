@@ -14,8 +14,13 @@ class Transaction:
 class User:
     id: int
     txns: DataFrame[Transaction]
+    txn_total: int
 
 
-# You can filter down the transactions by any of the
-# properties on the transaction
-credits = User.txns[Transaction.amount]
+def get_transaction_total(
+    txns: User.txns[Transaction.amount]
+) -> User.txn_total:
+    """we do not need the other fields in our transaction, so we can project, filtering out all columns except amount,
+    making the sum operation more efficient
+    """
+    return txns.sum()
