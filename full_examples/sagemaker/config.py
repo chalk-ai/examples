@@ -28,5 +28,6 @@ STRATIFY_FEATURE = "transaction.merchant_id"
 
 MIN_F1 = 0.8
 
+# small validatity checks
 assert STRATIFY_FEATURE is None or STRATIFY_FEATURE in TRAINING_FEATURES, f"straify feature '{STRATIFY_FEATURE}' not in training features: {TRAINING_FEATURES}."
 assert TARGET_FEATURE in TRAINING_FEATURES, f"target feature '{TARGET_FEATURE}' not in training features: {TRAINING_FEATURES}."
