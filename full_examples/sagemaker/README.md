@@ -1,17 +1,16 @@
 # Integrating Chalk with AWS Sagemaker
 
-Chalk can be easily integrated into a model training pipeline like AWS Sagemaker.
+Chalk can be easily integrated into a model training framework like AWS Sagemaker.
 
 You can use Chalk to define your transformed features and pull datasets directly into your 
-model training pipeline. Use Chalk for the dataset generation and feature transformation 
-provides some nice benefits:
-- Feature transformation code is consistent between training and serving
+model training pipeline. Using Chalk for the dataset generation ensures that feature transformation 
+is consistent between training and serving.
 
 ## Setup
 
-To pull a dataset from Chalk into sagemaker, run an offline query with Chalk's python API client. 
-Chalk offline queries return datasets, which can then be and uploaded to a bucket or
-local directory to be used in the subsequent steps of the training pipeline.
+To pull a dataset from Chalk into Sagemaker, run an offline query with Chalk's python API client
+in a Sagemaker step. Chalk offline queries return datasets, which can then be and uploaded to a 
+bucket or local directory to be used in the subsequent steps of the training pipeline.
 
 **[steps/dataset.py](./steps/dataset.py)**
 
@@ -41,8 +40,8 @@ def create_dataset(test_size, run_bucket):
     from sklearn.model_selection import train_test_split
 
     # a Chalk client id & client secret for a token with permission to create datasets
-    # should be added to the sagemaker environment—these are passed automatically to the
-    # ChalkClient but can also be exlicitly passed as arguments.
+    # should be added to the Sagemaker environment—these are passed automatically to the
+    # ChalkClient but can also be explicitly passed as arguments.
 
     chalk_dataset = ChalkClient(
         # client_id=os.environ['CHALK_CLIENT_ID'],           # automatically loaded by the Chalk Client but expected
@@ -73,4 +72,4 @@ def create_dataset(test_size, run_bucket):
     return xtrain_path, xtest_path, ytrain_path, ytest_path
 ```
 
-Subsequent sagemaker steps can then pull the dataset created in the `create_dataset` step from the paths returned by the step.
+Subsequent Sagemaker steps can then pull the dataset created in the `create_dataset` step from the paths returned by the step.
