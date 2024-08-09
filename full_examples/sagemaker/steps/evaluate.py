@@ -5,7 +5,7 @@ from sagemaker.workflow.function_step import step
     instance_type='ml.t3.medium',
     keep_alive_period_in_seconds=300,
 )
-def evaluate(model, xtest_path: str, ytest_path: str, run_bucket: str) -> dict:
+def evaluate(model, xtest_path: str, ytest_path: str, run_bucket: str) -> str:
     import pandas as pd
     from sklearn.metrics import (
         accuracy_score,
@@ -30,9 +30,10 @@ def evaluate(model, xtest_path: str, ytest_path: str, run_bucket: str) -> dict:
 
     # Upload evaluation report to s3
     s3_fs = s3fs.S3FileSystem()
+    eval_src_s3 = f"{run_bucket}/evaluation/evaluation.json"
 
-    with s3_fs.open(f"{run_bucket}/evaluation/evaluation.json", "wb") as file:
+    with s3_fs.open(eval_src_s3, "wb") as file:
         file.write(json.dumps(results).encode("utf-8"))
 
-    return results
+    return eval_src_s3
 

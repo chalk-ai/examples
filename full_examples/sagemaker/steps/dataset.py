@@ -1,9 +1,9 @@
+import pandas as pd
 from chalk.client import ChalkClient
 from sagemaker.workflow.function_step import step
 
 
 TRAINING_FEATURES = [
-
     "transaction.amt",
     "transaction.customer.age",
     "transaction.customer.income",
@@ -37,6 +37,7 @@ def create_dataset(test_size, run_bucket):
         wait=True
     )
     dataset = chalk_dataset.to_pandas()
+
     X_train, X_test, y_train, y_test = train_test_split(
         dataset.drop(columns=[TARGET_FEATURE]),  # X
         dataset[TARGET_FEATURE],  # y

@@ -16,7 +16,6 @@ from uuid import uuid4
 BUCKET_PREFIX = "s3://chalk-sagemaker-models/"
 
 if __name__ == "__main__":
-
     # Create Run Parameters
     model_package_group = "chalk-sagemaker-xgb"
     run_bucket = f"s3://chalk-sagemaker-models/{model_package_group}/{uuid4()}/"
@@ -34,15 +33,15 @@ if __name__ == "__main__":
     model_approval_status = ParameterString(name="ModelApprovalStatus", default_value="PendingManualApproval")
 
     # Instantiate Steps
-    xtrain_path, xtest_path, ytrain_path, ytest_path = create_dataset(test_size=test_size, run_bucket=run_bucket)
-    delayed_model = train(xtrain_path=xtrain_path, ytrain_path=ytrain_path)
-    delayed_evaluation = evaluate(model=delayed_model, xtest_path=xtest_path, ytest_path=ytest_path)
+    delayed_data = create_dataset(test_size=test_size, run_bucket=run_bucket)
+    delayed_model = train(xtrain_path=delayed_data[0], ytrain_path=delayed_data[2], num_rounds=num_rounds)
+    delayed_evaluation = evaluate(model=delayed_model, xtest_path=delayed_data[1], ytest_path=delayed_data[3], run_bucket=run_bucket)
     delayed_register = register(
         model=delayed_model,
-        evaluation=delayed_evaluation,
-        sample_data=xtest_path,
+        sample_data=delayed_data[2],
         model_package_group=model_package_group,
         model_approval_status=model_approval_status,
+        eval_source_s3=delayed_evaluation
     )
 
     conditionally_register = ConditionStep(
@@ -58,8 +57,7 @@ if __name__ == "__main__":
             FailStep(
                 name="fail",
                 error_message=(
-                    f"Model performance of {delayed_evaluation['f1']} "
-                    f"is not greater than required f1 of {f1_threshold}"
+                    f"Model performance  is not greater than required f1 threshold"
                 )
             )
         ],
@@ -67,7 +65,7 @@ if __name__ == "__main__":
 
     # Create Pipeline
     pipeline = Pipeline(
-        name="chalkai_sagemaker_pipeline",
+        name="ChalkaiSagemakerPipeline",
         steps=[conditionally_register],
         parameters=[
             f1_threshold,

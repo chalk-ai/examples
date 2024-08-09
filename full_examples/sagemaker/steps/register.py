@@ -18,7 +18,6 @@ def register(
     from sagemaker.serve.builder.model_builder import ModelBuilder
     from sagemaker.serve.builder.schema_builder import SchemaBuilder
 
-    # Create model_metrics as per evaluation report in s3
     model_metrics = ModelMetrics(
         model_statistics=MetricsSource(
             s3_uri=eval_source_s3,
@@ -33,7 +32,6 @@ def register(
         sample_output=model.predict(sample_data),
     )
 
-    # Build the trained model and register it
     model_builder = ModelBuilder(
         model=model,
         schema_builder=schema_builder,
