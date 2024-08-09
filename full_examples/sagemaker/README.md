@@ -1,6 +1,6 @@
 # Integrating Chalk with AWS Sagemaker
 
-Chalk integrates nicely with model training frameworks like AWS Sagemaker.
+Chalk integrates nicely with machine learning frameworks like AWS Sagemaker.
 
 You can use Chalk to define your transformed features and pull datasets directly into your 
 model training pipeline. Using Chalk for dataset generation ensures that feature transformation 
@@ -10,7 +10,7 @@ code is consistent between training and serving.
 
 To pull a dataset from Chalk into Sagemaker, run an offline query with Chalk's python API client
 in a Sagemaker step. Chalk offline queries return datasets, which can be uploaded to a 
-bucket and used in the subsequent steps of the training pipeline.
+bucket and used in the subsequent steps of your machine learning pipeline.
 
 **[steps/dataset.py](./steps/dataset.py)**
 
