@@ -35,7 +35,6 @@ def create_dataset(test_size, run_bucket):
         max_samples=100_000,  # reads 100,000 samples from the Chalk dataset
         output=TRAINING_FEATURES,
         dataset_name="transactions_fraud_model",
-        wait=True,
     )
     dataset = chalk_dataset.to_pandas()
 
