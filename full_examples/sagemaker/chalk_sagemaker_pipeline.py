@@ -57,7 +57,7 @@ if __name__ == "__main__":
             FailStep(
                 name="fail",
                 error_message=(
-                    f"Model performance  is not greater than required f1 threshold"
+                    "Model performance is not greater than required f1 threshold"
                 )
             )
         ],
