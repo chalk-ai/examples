@@ -38,7 +38,7 @@ if __name__ == "__main__":
     delayed_evaluation = evaluate(model=delayed_model, xtest_path=delayed_data[1], ytest_path=delayed_data[3], run_bucket=run_bucket)
     delayed_register = register(
         model=delayed_model,
-        sample_data=delayed_data[2],
+        sample_data_path=delayed_data[2],
         model_package_group=model_package_group,
         model_approval_status=model_approval_status,
         eval_source_s3=delayed_evaluation

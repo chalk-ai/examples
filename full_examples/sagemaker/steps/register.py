@@ -8,7 +8,7 @@ from sagemaker.workflow.function_step import step
 )
 def register(
     model,
-    sample_data: str,
+    sample_data_path: str,
     eval_source_s3: str,
     model_package_group: str,
     model_approval_status: str
@@ -25,7 +25,7 @@ def register(
         )
     )
 
-    sample_data = pd.read_parquet(sample_data, nrows=10)
+    sample_data = pd.read_parquet(sample_data_path, nrows=10)
 
     schema_builder = SchemaBuilder(
         sample_input=sample_data.to_numpy(),

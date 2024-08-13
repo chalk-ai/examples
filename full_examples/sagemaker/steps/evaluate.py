@@ -33,7 +33,7 @@ def evaluate(model, xtest_path: str, ytest_path: str, run_bucket: str) -> str:
     eval_src_s3 = f"{run_bucket}/evaluation/evaluation.json"
 
     with s3_fs.open(eval_src_s3, "wb") as file:
-        file.write(json.dumps(results).encode("utf-8"))
+        file.write(json.dumps(results))
 
     return eval_src_s3
 
