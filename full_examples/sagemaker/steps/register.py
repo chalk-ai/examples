@@ -6,7 +6,7 @@ from sagemaker.workflow.function_step import step
     instance_type='ml.t3.medium',
     keep_alive_period_in_seconds=300,
 )
-def register(
+def deploy(
     model,
     sample_data_path: str,
     eval_source_s3: str,

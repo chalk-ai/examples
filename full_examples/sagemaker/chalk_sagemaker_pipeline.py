@@ -30,49 +30,22 @@ if __name__ == "__main__":
     num_rounds = ParameterInteger(name="NumRounds", default_value=50)
     run_bucket = ParameterString(name="RunBucket", default_value=run_bucket)
     model_package_group = ParameterString(name="ModelPackageGroup", default_value="chalk-sagemaker-xgb")
-    model_approval_status = ParameterString(name="ModelApprovalStatus", default_value="PendingManualApproval")
+
 
     # Instantiate Steps
     delayed_data = create_dataset(test_size=test_size, run_bucket=run_bucket)
     delayed_model = train(xtrain_path=delayed_data[0], ytrain_path=delayed_data[2], num_rounds=num_rounds)
     delayed_evaluation = evaluate(model=delayed_model, xtest_path=delayed_data[1], ytest_path=delayed_data[3], run_bucket=run_bucket)
-    delayed_register = register(
-        model=delayed_model,
-        sample_data_path=delayed_data[2],
-        model_package_group=model_package_group,
-        model_approval_status=model_approval_status,
-        eval_source_s3=delayed_evaluation
-    )
-
-    conditionally_register = ConditionStep(
-        name="conditionally_register",
-        conditions=[
-            ConditionGreaterThan(
-                left=delayed_evaluation["f1"],
-                right=f1_threshold,
-            )
-        ],
-        if_steps=[delayed_register],
-        else_steps=[
-            FailStep(
-                name="fail",
-                error_message=(
-                    "Model performance is not greater than required f1 threshold"
-                )
-            )
-        ],
-    )
 
     # Create Pipeline
     pipeline = Pipeline(
         name="ChalkaiSagemakerPipeline",
-        steps=[conditionally_register],
+        steps=[delayed_evaluation],
         parameters=[
             f1_threshold,
             test_size,
             run_bucket,
             model_package_group,
-            model_approval_status,
             num_rounds,
         ]
     )
