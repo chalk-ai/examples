@@ -5,7 +5,6 @@ from sagemaker.workflow.fail_step import FailStep
 from steps.dataset import create_dataset
 from steps.training import train
 from steps.evaluate import evaluate
-from steps.register import register
 from sagemaker.workflow.parameters import (
     ParameterInteger,
     ParameterString,
