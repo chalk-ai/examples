@@ -29,8 +29,8 @@ def create_dataset(test_size, run_bucket):
     # ChalkClient but can also be explicitly passed as arguments.
 
     chalk_dataset = ChalkClient(
-        # client_id=os.environ['CHALK_CLIENT_ID'],           # automatically loaded by the Chalk Client but expected in the environment
-        # client_secret=os.environ['CHALK_CLIENT_SECRET']        # automatically loaded by the Chalk Client but expected
+        # client_id=os.environ['CHALK_CLIENT_ID'],           # automatically loaded by the Chalk Client if in the environment
+        # client_secret=os.environ['CHALK_CLIENT_SECRET']    # automatically loaded by the Chalk Client if in the environment
     ).offline_query(
         max_samples=100_000,  # reads 100,000 samples from the Chalk dataset
         output=TRAINING_FEATURES,
