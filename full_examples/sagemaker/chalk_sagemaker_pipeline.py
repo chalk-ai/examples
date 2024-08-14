@@ -1,7 +1,4 @@
 from sagemaker.workflow.pipeline import Pipeline
-from sagemaker.workflow.condition_step import ConditionStep
-from sagemaker.workflow.conditions import ConditionGreaterThan
-from sagemaker.workflow.fail_step import FailStep
 from steps.dataset import create_dataset
 from steps.training import train
 from steps.evaluate import evaluate
