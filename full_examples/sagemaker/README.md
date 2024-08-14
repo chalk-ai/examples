@@ -51,7 +51,7 @@ def create_dataset(test_size, run_bucket):
         output=TRAINING_FEATURES,
         dataset_name="transactions_fraud_model",
     )
-    dataset = chalk_dataset.get_data_as_pandas()
+    dataset = chalk_dataset.to_pandas()
     
     X_train, X_test, y_train, y_test = train_test_split(
         dataset.drop(columns=[TARGET_FEATURE]),  # X
