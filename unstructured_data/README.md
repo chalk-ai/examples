@@ -5,8 +5,8 @@ and any other APIs you rely on. You can convert this data into features that
 will live along with the rest of your feature codebase, making it simple to
 build models combining structured and unstructured data.
 
-In this example, you will learn:
-- How to use an LLM to classify your card transaction data to determine its
+In this example, you will:
+- Learn how to use an LLM to classify your card transaction data to determine its
   purchase category and other information
 - Define features representing the structured results of the LLM response
 - Define resolvers showing how to send the LLM request and parse it
