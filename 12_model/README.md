@@ -65,3 +65,37 @@ def get_user_churn_probability(
     """
     return churn_model.predict(np.array([[age, num_friends, viewed_minutes]]))
 ```
+
+## 2. OpenAI
+
+Chalk also makes it easy to integrate third party models, like ChatGPT, into your resolvers. In the
+following example, we use Chat-GPT to answer questions about our Users.
+
+Additionally, since our questions are often repeated, we cache the results of the queries,
+limiting the number of API requests we need to make.
+
+The example code below, which can be found in its entirety in the **[2_openai.py](2_openai.py)** file,
+shows how to run a API request in a python resolver:
+
+```python
+# run queries by the hash of the prompt
+@online
+def get_openai_answer(
+        prompt_hash: OpenAiQuery.prompt_hash,
+        prompt: OpenAiQuery.prompt,
+) -> OpenAiQuery.prompt_result:
+    result = openai_client.chat.completions.create(
+        messages=[
+            {
+                'role': 'user',
+                'content': prompt,
+            }
+        ],
+        model="gpt-3.5-turbo",
+    )
+
+    return OpenAiQueryResult(
+        id=prompt_hash,
+        result=result.choices[0].message.content,
+    )
+```
