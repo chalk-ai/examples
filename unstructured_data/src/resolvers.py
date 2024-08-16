@@ -12,7 +12,7 @@ model = genai.GenerativeModel(model_name="models/gemini-1.5-flash-latest")
 
 
 @online
-async def get_transaction_category(memo: Transaction.memo) -> Transaction.completion:
+async def get_transaction_classification(memo: Transaction.memo) -> Transaction.completion:
     """Here, we pull out the raw response from calling out to Gemini.
     The feature `Transaction.completion` is a string, but we can use the
     `get_structured_outputs` function to convert it to a structured output.
