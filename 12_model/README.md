@@ -3,9 +3,9 @@
 With Chalk, it's easy to run models in resolvers.
 
 ## 1. Models
-The example code below shows how to integrate a predictive model into a resolver.
 
-**[1_model.py](1_model.py)**
+The example code below, which can be found in its entirety in the **[1_model.py](1_model.py)** file,
+shows how to integrate a predictive model into a resolver.
 
 ```python
 class PredictionModel:
@@ -55,13 +55,85 @@ churn_model = PredictionModel("churn_model.skops")
 
 @online
 def get_user_churn_probability(
-    age: User.age,
-    num_friends: User.num_friends,
-    viewed_minutes: User.viewed_minutes,
+        age: User.age,
+        num_friends: User.num_friends,
+        viewed_minutes: User.viewed_minutes,
 ) -> User.probability_of_churn:
     """
     This resolver runs a model that has been trained on a user's age, num_friends
     and viewed_minutes. It returns a platform churn prediction.
     """
     return churn_model.predict(np.array([[age, num_friends, viewed_minutes]]))
+```
+
+## 2. OpenAI
+
+Chalk also makes it easy to integrate third party models, like ChatGPT, into your resolvers. In the
+following example, we use Chat-GPT to answer questions about our Users.
+
+Additionally, since our questions are often repeated, we cache the results of the queries,
+limiting the number of API requests we need to make.
+
+The example code below, which can be found in its entirety in the **[2_openai.py](2_openai.py)** file,
+shows how to run a API request in a python resolver:
+
+```python
+# run queries by the hash of the prompt
+@online
+def get_openai_answer(
+        prompt_hash: OpenAiQuery.prompt_hash,
+        prompt: OpenAiQuery.prompt,
+) -> OpenAiQuery.prompt_result:
+    result = openai_client.chat.completions.create(
+        messages=[
+            {
+                'role': 'user',
+                'content': prompt,
+            }
+        ],
+        model="gpt-3.5-turbo",
+    )
+
+    return OpenAiQueryResult(
+        id=prompt_hash,
+        result=result.choices[0].message.content,
+    )
+```
+
+## 3. Embeddings
+
+Chalk supports embeddings for your text features.
+
+The example code below, which can be found in its entirety in the **[3_embedding.py](3_embedding.py)** file,
+shows how to create embedding features and join feature sets based on their similarity:
+
+```python
+@features(max_staleness="infinity")
+class FAQDocument:
+    id: int
+    title: str
+    body: str
+    link: str
+    embedding_text: str
+    embedding: Vector = embedding(
+        input=lambda: FAQDocument.embedding_text,
+        provider="openai",
+        model="text-embedding-ada-002",
+    )
+
+
+@features
+class SearchQuery:
+    query: Primary[str]
+    max_runtime: int = None
+    embedding_text: str
+    embedding: Vector = embedding(
+        input=lambda: SearchQuery.embedding_text,
+        provider="openai",
+        model="text-embedding-ada-002",
+    )
+    faqs: DataFrame[FAQDocument] = has_many(
+        lambda: SearchQuery.embedding.is_near(FAQDocument.embedding)
+    )
+    response: str
 ```
