@@ -1,5 +1,5 @@
 # Features
-Chalk lets you spell our your features directly in Python.
+Chalk lets you spell out your features directly in Python.
 To create a new FeatureSet, apply the `@features` decorator
 to a Python class with typed attributes.
 
