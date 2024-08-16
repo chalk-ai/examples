@@ -68,7 +68,7 @@ def get_user_churn_probability(
 
 ## 2. OpenAI
 
-Chalk also makes it easy to integrate third party models, like ChatGPT, into your resolvers. In the
+Chalk also makes it easy to integrate LLMs like ChatGPT, into your resolvers. In the
 following example, we use Chat-GPT to answer questions about our Users.
 
 Additionally, since our questions are often repeated, we cache the results of the queries,
