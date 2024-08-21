@@ -1,4 +1,4 @@
--- resolves: customer
+-- resolves: Customer
 -- source: postgres
 select
   id,

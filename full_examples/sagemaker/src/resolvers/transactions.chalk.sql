@@ -1,4 +1,4 @@
--- resolves: transaction
+-- resolves: Transaction
 -- source: postgres
 select
   id,
