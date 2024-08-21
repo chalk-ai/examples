@@ -8,7 +8,7 @@ code is consistent between training and serving.
 
 ## Setup
 
-To pull a dataset from Chalk into Sagemaker, run an offline query with Chalk's python API client
+To pull a dataset from Chalk into Sagemaker, run an offline query with Chalk's Python API client
 in a Sagemaker step. Chalk offline queries return datasets, which can be uploaded to a 
 bucket and used in the subsequent steps of your machine learning pipeline.
 
