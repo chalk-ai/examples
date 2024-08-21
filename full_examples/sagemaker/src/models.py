@@ -5,7 +5,8 @@ from chalk.features import features
 
 
 @features
-class Transaction: id: int
+class Transaction: 
+    id: int
     amt: float
     confirmed_fraud: bool
     customer_id: "Customer.id"
