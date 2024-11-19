@@ -51,7 +51,7 @@ class Hotel:
     pricing: bytes = feature(
         expression=F.sagemaker_predict(F.string_to_bytes(_.features_csv))
         # by setting a max staleness of 30m, we cache this feature and don't rerun prediction
-        # if the feature has been computed in the last 30m
+        # if the pricing feature for a particular hotel has been computed in the last 30m
         max_staleness="30m",
     )
 
