@@ -29,7 +29,7 @@ class Hotel:
         "30m",
         "1h",
         expression=_.hotel_interactions[
-            _.customer_id, _.ts> _.chalk_window
+            _.view_time_s, _.ts> _.chalk_window
         ].sum(),
         materialization={"bucket_duration": "15m"},
     )
