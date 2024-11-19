@@ -38,7 +38,7 @@ class Hotel:
         "30m",
         "1h",
         expression=_.hotel_interactions[
-            _.customer_id, _.ts> _.chalk_window
+            _.customer_id, _.ts > _.chalk_window
         ].approx_count_distinct(),
         materialization={"bucket_duration": "15m"},
     )
