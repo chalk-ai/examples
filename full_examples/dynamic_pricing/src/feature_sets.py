@@ -17,7 +17,7 @@ class Hotel:
 
     hotel_interactions: "DataFrame[HotelInteraction]"
 
-    # We define two windowed materialized aggregates, which will be calculated from our stream:
+    # We define two windowed materialized aggregates which will be calculated from our stream:
     # every time a message from the hotel_interaction topic is processed
     # these windowed aggregate features are updated.
 
