@@ -46,7 +46,7 @@ class Hotel:
     # using a python online resolver.
     features_csv: str
 
-    # We can run a sagemaker prediction directly from chalk by encoded our prediction
+    # We can run a sagemaker prediction directly from chalk on a set of encoded prediction
     # features
     pricing: bytes = feature(
         F.sagemaker_predict(F.string_to_bytes(_.features_csv))
