@@ -30,7 +30,7 @@ class Hotel:
         "1h",
         expression=_.hotel_interactions[
             _.view_time_s, _.ts > _.chalk_window
-        ].sum(),
+        ].mean(),
         materialization={"bucket_duration": "15m"},
     )
     count_distinct_views: Windowed[int] = windowed(
