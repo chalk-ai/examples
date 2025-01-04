@@ -30,7 +30,7 @@ def get_nsf_amount(
     return amounts.sum()
 ```
 
-https://docs.chalk.ai/docs/resolver-inputs
+https://docs.chalk.ai/docs/python-resolvers
 
 ## 2. Changes in Behavior
 
