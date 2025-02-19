@@ -15,6 +15,11 @@ class Author:
     name: str
     nickname: str | None
     books: DataFrame[Book] = has_many(lambda: Book.author_id == Author.id)
+
+@features
+class Book:
+    id: str
+    author_id: str
 ```
 
 ## [2_resolvers](02_resolvers)
@@ -26,11 +31,11 @@ you use Python type annotations to define these dependencies and
 outputs.
 
 ```python
-@realtime
+@online
 def get_email_domain(email: User.email) -> User.email_domain:
     return email.split("@")[1].lower()
 
-@realtime
+@online
 def is_banned_email(domain: User.email_domain) -> User.banned_email:
     return domain in {"pergi.id", ...}
 ```
