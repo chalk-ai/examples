@@ -233,7 +233,8 @@ http://chalk.ai/solutions/credit
 
 Finding a balance between user experience and
 risk management is a complex task for banking
-products. Chalk helps you express complex business
+products.
+Chalk helps you express complex business
 logic with features and resolvers, and lets data
 scientists and machine learning engineers collaborate
 on solutions.
