@@ -1,7 +1,7 @@
 [project]
-name = "arrive-chalk"
+name = "image-chalk"
 version = "0.1.0"
-description = "Arrive Chalk Demo"
+description = "Image Chalk Demo"
 readme = "README.md"
 dependencies = []
 
