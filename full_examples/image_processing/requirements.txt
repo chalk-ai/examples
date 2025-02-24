@@ -1,4 +1,4 @@
-chalkpy[runtime,postgresql]
+chalkpy[runtime]
 beautifulsoup4
 requests
 pillow
