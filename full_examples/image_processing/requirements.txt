@@ -1,1 +1,4 @@
 chalkpy[runtime,postgresql]
+beautifulsoup4
+requests
+pillow

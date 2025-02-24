@@ -1,4 +1,4 @@
-project: Demo
+project: fraud-template
 environments:
     default:
         runtime: python311

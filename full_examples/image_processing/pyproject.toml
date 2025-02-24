@@ -1,0 +1,9 @@
+[project]
+name = "arrive-chalk"
+version = "0.1.0"
+description = "Arrive Chalk Demo"
+readme = "README.md"
+dependencies = []
+
+[tool.setuptools.package-dir]
+src = 'src'
