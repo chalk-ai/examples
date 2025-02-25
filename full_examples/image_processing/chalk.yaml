@@ -1,0 +1,6 @@
+project: fraud-template
+environments:
+    default:
+        runtime: python311
+        requirements: requirements.txt
+

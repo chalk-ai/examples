@@ -1,0 +1,5 @@
+chalkpy[runtime]
+beautifulsoup4
+requests
+pillow
+CairoSVG==2.5.2
