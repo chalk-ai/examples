@@ -1,6 +1,6 @@
+
 import chalk.functions as F
 from chalk.features import DataFrame, Primary, _, feature, features
-
 
 @features
 class Image:
@@ -8,6 +8,17 @@ class Image:
 
     # The website that the image was scraped from.
     source_url: "Website.url"
+
+    # Image type: svg, png, jpg, unknown
+    type: str = (
+        F.when(F.ends_with(_.url, ".svg"))
+        .then("svg")
+        .when(F.ends_with(_.url, ".jpeg") | F.ends_with(_.url, ".jpg"))
+        .then("jpg")
+        .when(F.ends_with(_.url, ".png"))
+        .then("png")
+        .otherwise("unknown")
+    )
 
     # The raw bytes of the image
     image_bytes: bytes
@@ -31,6 +42,8 @@ class Image:
 @features
 class Website:
     url: Primary[str]
+
+    host: str = F.url_extract_host(_.url)
 
     # The html of the website
     html: str
