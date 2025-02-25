@@ -2,4 +2,4 @@ chalkpy[runtime]
 beautifulsoup4
 requests
 pillow
-CairoSVG==2.5.2
+CairoSVG==2.7.0
