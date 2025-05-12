@@ -1,0 +1,22 @@
+
+# Python artifacts
+venv
+*venv*
+virtualenv
+__pycache__
+*.pyc
+*.py~
+.eggs
+*.egg-info
+dist
+
+# VSCode
+.vscode
+
+# Intellij
+*.iml
+idea
+
+# Git artifacts
+.git
+.github

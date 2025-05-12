@@ -1,0 +1,5 @@
+project: Demo Project
+environments:
+    default:
+        runtime: python311
+        requirements: requirements.txt
