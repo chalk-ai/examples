@@ -1,7 +1,8 @@
-from chalk import online
-from chalk.sql import PostgreSQLSource, ChalkClient
-from chalk.features import features, DataFrame, FeatureTime
 from enum import Enum
+
+from chalk import online
+from chalk.features import DataFrame, FeatureTime, features
+from chalk.sql import ChalkClient, PostgreSQLSource
 
 
 @features
@@ -15,7 +16,7 @@ class User:
     id: str
     age: int
     favorite_categories: set[str]
-    interactions: DataFrame["Interaction"]
+    interactions: "DataFrame[Interaction]"
 
 
 @features

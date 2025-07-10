@@ -1,9 +1,10 @@
-from chalk import stream, online, ChalkClient
+import uuid
+from enum import Enum
+
+from chalk import ChalkClient, online, stream
+from chalk.features import DataFrame, Features, FeatureTime, features
 from chalk.sql import PostgreSQLSource
 from chalk.streams import KafkaSource
-from chalk.features import Features, features, DataFrame, FeatureTime, Features
-from enum import Enum
-import uuid
 from pydantic import BaseModel
 
 
@@ -18,7 +19,7 @@ class User:
     id: str
     age: int
     favorite_categories: set[str]
-    interactions: DataFrame["Interaction"]
+    interactions: "DataFrame[Interaction]"
 
 
 @features
