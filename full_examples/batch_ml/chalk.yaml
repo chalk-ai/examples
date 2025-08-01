@@ -1,0 +1,5 @@
+project: Sandbox
+environments:
+  default:
+    runtime: python311
+    requirements: pyproject.toml
