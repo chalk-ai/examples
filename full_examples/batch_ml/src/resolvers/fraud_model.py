@@ -39,7 +39,13 @@ class PredictionModel:
             os.environ.get("TARGET_ROOT", ROOT_DIR), "models", self.filename
         )
 
-        session = rt.InferenceSession(filepath)
+        if not os.path.exists(filepath):
+            raise FileNotFoundError(f"Model file not found: {filepath}")
+
+        try:
+            session = rt.InferenceSession(filepath)
+        except Exception as e:
+            raise RuntimeError(f"Failed to load ONNX model from {filepath}: {e}")
 
         self.input_name = session.get_inputs()[0].name
         self.output_name = session.get_outputs()[0].name
@@ -69,7 +75,7 @@ def run_fraud_model(
         Transaction.user.num_distinct_merchants_transacted["30d"],
     ],
 ) -> DataFrame[Transaction.id, Transaction.is_fraud]:
-    """Predict whether new transactions are fradulant based on transaction and user data."""
+    """Predict whether new transactions are fraudulent based on transaction and user data."""
 
     predictions = fraud_model.predict(
         features.to_pandas().astype(np.float32).drop(columns=[Transaction.id]).values,
