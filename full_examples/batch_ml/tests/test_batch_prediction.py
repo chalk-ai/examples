@@ -1,6 +1,6 @@
 from chalk import DataFrame
 from datetime import datetime, timedelta
-from src.resolvers.user_churn_model import run_fraud_model
+from src.resolvers.fraud_model import run_fraud_model
 from src.models import User, Transaction
 
 # Chalk provides a simple interface for unit tests that works with
@@ -14,7 +14,6 @@ def test_fraud_model():
     input = DataFrame(
         {
             Transaction.id: [1, 2, 3, 4],
-            Transaction.amount: [10, 100, 50, 200],
             Transaction.amount: [10, 100, 50, 200],
             Transaction.user.time_since_last_transaction: [
                 timedelta(days=30).total_seconds(),
