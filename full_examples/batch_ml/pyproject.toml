@@ -1,0 +1,32 @@
+[project]
+name = "batch_ml_example"
+version = "1.0.0"
+description = "Batch Machine Learning Example using Chalk"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "chalkpy[runtime,postgresql,snowflake]",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "black>=23.0",
+    "isort>=5.0",
+    "flake8>=6.0",
+    "ipython>=8.37.0",
+    "jupyter>=1.1.1",
+    "ipykernel>=6.29.5",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+
+[tool.ruff.lint.per-file-ignores]
+"*.ipynb" = ["F821","F401"]
+
+[tool.pyright]
+reportUninitializedInstanceVariable = false
+reportAssignmentType = false
+reportInvalidTypeForm = false
