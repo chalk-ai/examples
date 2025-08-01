@@ -1,11 +1,12 @@
 -- get transactions from postgres
 -- source: pg
--- resolves: User
+-- resolves: Transaction
 SELECT
     transaction_id as id,
     user_id,
     merchant_id,
     amount,
-    ts
+    ts,
+    category
 FROM
     transactions
