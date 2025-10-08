@@ -1,0 +1,15 @@
+chalkpy[bigquery,openai,postgresql,runtime,vertexai,clickhouse]
+google-generativeai
+httpx~=0.27.2
+lancedb~=0.24.1
+openai>=1.52.2
+orjson~=3.11.0
+pydantic~=1.10.22
+pygithub~=2.6.1
+requests~=2.32.3
+numpy~=1.26.4
+protobuf~=5.29.5
+pyarrow~=18.1.0
+marimo~=0.14.13
+pandas~=2.2.3
+pytest~=8.4.2
