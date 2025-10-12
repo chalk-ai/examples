@@ -20,7 +20,7 @@ class Transaction:
 
     # Computed properties
     clean_memo: str
-    is_nsf: bool
+    is_nsf: bool # non-sufficient funds
 
 
 @features
