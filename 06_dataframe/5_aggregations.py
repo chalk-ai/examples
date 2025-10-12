@@ -1,4 +1,5 @@
 from chalk.features import DataFrame, features
+from chalk import online
 
 
 @features
@@ -20,5 +21,7 @@ class User:
 # You can filter down the transactions by any of the
 # properties on the transaction
 @online
-def get_num_credits(credits: User.txns[Transaction.amount < 0]) -> User.num_credits:
+def get_num_credits(
+    credits: User.txns[Transaction.amount < 0]
+) -> User.num_credits:
     return len(credits)
