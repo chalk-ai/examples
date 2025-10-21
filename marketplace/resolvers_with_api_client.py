@@ -4,10 +4,12 @@ from chalk.features import Features, before_all, online
 from chalk.logging import chalk_logger
 from openai import OpenAI
 from pydantic import BaseModel
+import requests
 
 from src.marketplace import (
     Item,
     Seller,
+    User,
 )
 from src.marketplace.item_category.item_category_value_enum import ItemCategoryValueEnum
 from src.marketplace.item_category.item_category_value_llm_prompts import (
@@ -23,6 +25,12 @@ def init_client() -> None:
     global client
     client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
     chalk_logger.info(msg="Initializing OpenAI client...")
+
+    global salesforce_access_token
+    salesforce_access_token = os.getenv("SALESFORCE_ACCESS_TOKEN")
+
+    global salesforce_instance_url
+    salesforce_instance_url = os.getenv("SALESFORCE_INSTANCE_URL")
 
 
 @online
@@ -111,3 +119,35 @@ def get_seller_username(
         username = username.split("+")[0].replace(".", "")
 
     return username.lower()
+
+
+@online
+def get_user_data_from_crm(
+    contact_id: User.id,
+) -> Features[
+    User.phone,
+    User.account_name,
+    User.salesforce_lookup_success,
+]:
+    # we can actually parse this function and run the equivalent but in C++
+    # https://docs.chalk.ai/docs/static-resolver-optimization
+    # we'll rebuild the function but using chalk expressions e.g. https://docs.chalk.ai/api-docs#http_request
+    endpoint = f"{salesforce_instance_url}/services/data/v59.0/sobjects/Contact/{contact_id}"
+    headers = {
+        "Authorization": f"Bearer {salesforce_access_token}",
+        "Content-Type": "application/json"
+    }
+    response = requests.get(endpoint, headers=headers)
+    if response.status_code == 200:
+        contact_data = response.json()
+        return User(
+            phone=contact_data.get("Phone"),
+            account_name=contact_data.get("Account", {}).get("Name") if contact_data.get("Account") else None,
+            salesforce_lookup_success=True,
+        )
+
+    return User(
+        phone=None,
+        account_name=None,
+        salesforce_lookup_success=False,
+    )

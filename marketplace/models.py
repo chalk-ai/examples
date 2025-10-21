@@ -97,6 +97,12 @@ class Review:
     review_headline: str
     review_body: str
 
+    ### From Salesforce
+    phone: float | None
+    account_name: str | None
+    salesforce_lookup_success: str | None
+    ###
+
     # :tags: team:qa, priority:high
     star_rating: int = feature(min=1, max=5)
 
