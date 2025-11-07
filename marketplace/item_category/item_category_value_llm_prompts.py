@@ -11,31 +11,13 @@ def prompt_item_category_value_user(
             "book_title": {book_title}
         }}
 
-        Additional Information (include if available):
-        Author: [Author name]
-        Description: [Book description from Amazon]
-        Cover Details: [Brief description of cover imagery]
-        Keywords: [Any tags or keywords from the listing]
-
         Please provide:
         1. The primary genre
         2. Your confidence level (1-5)
         3. Brief reasoning for your classification
 
-        For best results:
-        - Include the complete title as it appears on Amazon
-        - Copy the official book description if available
-        - Mention any relevant keywords or categories listed on the Amazon page
-        - Include notable cover imagery details if they might help with classification
-
         Example Request:
         Title: "The Midnight Library"
-        Author: Matt Haig
-        Description: Between life and death there is a library, and within that library, the shelves go on forever. Every book provides a chance to try another life you could have lived. To see how things would be if you had made other choices... Would you have done anything different, if you had the chance to undo your regrets?
-        Cover Details: Dark blue cover with golden library shelves
-        Keywords: Literary Fiction, Magical Realism, Contemporary Fiction
-
-        Feel free to provide the information in any order, but please clearly label each piece of information for accurate classification.
     """
 
 
@@ -86,14 +68,12 @@ def prompt_item_category_value_system() -> str:
         Input: "The Silent Patient"
         Output:
         Primary Genre: Mystery/Thriller
-        Secondary Genres: Psychological Fiction, Contemporary Fiction
         Confidence: 4
         Reasoning: Title suggests suspense/mystery elements. "Patient" indicates medical/psychological context.
 
         Input: "Python Programming: A Beginner's Guide to Learning the Basics"
         Output:
         Primary Genre: Science/Technology
-        Secondary Genres: Education
         Confidence: 5
         Reasoning: Clear technical/educational content, specifically programming. "Beginner's Guide" indicates instructional nature.
 

@@ -19,7 +19,7 @@ NamedQuery(
         Review.created_at,
         # Product features
         Review.item.title,
-        Review.item.genre_from_llm,
+        Review.item.genre_with_llm_from_title,
         Review.item.average_rating,
         Review.item.total_reviews,
         # User features
@@ -53,9 +53,9 @@ NamedQuery(
         # Product information
         Review.item_id,
         Review.item.title,
-        Review.item.genre_from_llm,
-        Review.item.genre_from_llm_confidence,
-        Review.item.genre_from_llm_reasoning,
+        Review.item.genre_with_llm_from_title,
+        Review.item.genre_with_llm_from_title_confidence,
+        Review.item.genre_with_llm_from_title_reasoning,
         Review.item.average_rating,
         Review.item.total_reviews,
         Review.item.review_count,
