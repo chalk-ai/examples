@@ -2,5 +2,6 @@
 -- source: postgres
 select
     hid as id,
-    title
+    title,
+    description
 from marketplace_products

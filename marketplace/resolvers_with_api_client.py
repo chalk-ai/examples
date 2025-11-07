@@ -34,12 +34,12 @@ def init_client() -> None:
 
 
 @online
-def get_item_category_value(
+def get_item_genre(
     item_title: Item.title,
 ) -> Features[
-    Item.genre_from_llm,
-    Item.genre_from_llm_confidence,
-    Item.genre_from_llm_reasoning,
+    Item.genre_with_llm_from_title,
+    Item.genre_with_llm_from_title_confidence,
+    Item.genre_with_llm_from_title_reasoning,
 ]:
     def fetch_chat_response(
         system_prompt: str,
@@ -98,15 +98,15 @@ def get_item_category_value(
     )
     if structured_ouput is not None:
         return Item(
-            genre_from_llm=structured_ouput.genre,
-            genre_from_llm_confidence=structured_ouput.confidence_score,
-            genre_from_llm_reasoning=structured_ouput.reasoning,
+            genre_with_llm_from_title=structured_ouput.genre,
+            genre_with_llm_from_title_confidence=structured_ouput.confidence_score,
+            genre_with_llm_from_title_reasoning=structured_ouput.reasoning,
         )
 
     return Item(
-        genre=None,
-        genre_confidence_score=None,
-        genre_reasoning=None,
+        genre_with_llm_from_title=None,
+        genre_with_llm_from_title_confidence=None,
+        genre_with_llm_from_title_reasoning=None,
     )
 
 

@@ -11,7 +11,7 @@ from chalk.features import (
 from chalk.logging import chalk_logger
 from lancedb.db import DBConnection
 
-from src.marketplace.models import ReviewDocument, ReviewSearch
+from src.marketplace.models import ItemDocument, ItemSearch
 
 if TYPE_CHECKING:
     from lancedb.table import Table
@@ -19,7 +19,7 @@ if TYPE_CHECKING:
 db: DBConnection | None = None
 
 DB_URI: str = "db://marketplace-x205j4"
-TABLE_NAME: str = "marketplace_products"
+TABLE_NAME: str = "marketplace_product_descriptions"
 VECTOR_COLUMN_NAME: str = "embedding"
 REGION: str = "us-east-1"
 
@@ -44,12 +44,12 @@ def init_client() -> None:
 
 
 @online
-def get_review_search_results(
-    vector: ReviewSearch.vector,
-    q: ReviewSearch.q,
-    query_type: ReviewSearch.query_type,
-) -> DataFrame[ReviewDocument]:
-    def execute_vector_search(vector, q: str) -> DataFrame[ReviewDocument]:
+def get_vector_search_results(
+    vector: ItemSearch.vector,
+    q: ItemSearch.q,
+    query_type: ItemSearch.query_type,
+) -> DataFrame[ItemDocument]:
+    def execute_vector_search(vector, q: str) -> DataFrame[ItemDocument]:
         tbl: Table = db.open_table(
             name=TABLE_NAME,
         )
@@ -61,22 +61,24 @@ def get_review_search_results(
             )
             .select(
                 columns=[
-                    "id",
+                    "hid",
                     "title",
+                    # "description",
                 ],
             )
             .limit(
-                limit=10,
+                limit=30,
             )
             .to_list()
         )
-        documents: list[ReviewDocument] = [
-            ReviewDocument(
+        documents: list[ItemDocument] = [
+            ItemDocument(
                 query=q,
-                id=result["id"],
+                id=result["hid"],
                 distance=result["_distance"],
                 query_type=query_type,
                 title=result["title"],
+                # description=result["description"],
             )
             for result in results
         ]

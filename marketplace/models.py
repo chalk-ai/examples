@@ -64,23 +64,23 @@ class StructuredOutput(BaseModel):
 
 
 @features
-class ReviewSearch:
+class ItemSearch:
     q: Primary[str]
     # from chalk.features import embed
     vector: Vector = embed(
-        input=lambda: ReviewSearch.q,
+        input=lambda: ItemSearch.q,
         provider="vertexai",
         model="text-embedding-005",
     )
     query_type: str = "vector"
 
-    results: "DataFrame[ReviewDocument]"
+    results: "DataFrame[ItemDocument]"
 
 
 @features
-class ReviewDocument:
+class ItemDocument:
     # result of a vector database query
-    query: ReviewSearch.q = ""
+    query: ItemSearch.q = ""
     id: int
     distance: float | None
     query_type: str = "vector"
@@ -186,9 +186,11 @@ class ItemPrice:
 class Item:
     id: str
     title: str
-    genre_from_llm: str = feature(max_staleness="infinity")
-    genre_from_llm_confidence: float = feature(max_staleness="infinity")
-    genre_from_llm_reasoning: str = feature(max_staleness="infinity")
+    description: str
+
+    genre_with_llm_from_title: str = feature(max_staleness="infinity")
+    genre_with_llm_from_title_confidence: float = feature(max_staleness="infinity")
+    genre_with_llm_from_title_reasoning: str = feature(max_staleness="infinity")
 
     reviews: "DataFrame[Review]"
     average_rating: float | None = _.reviews[_.star_rating].mean()
@@ -239,9 +241,9 @@ class User:
     top_genres: list[str] = feature(
         max_staleness="30d",
         expression=_.interactions[
-            _.item.genre_from_llm,
-            _.interaction_type == "productInquiry"
-        ].approx_top_k(k=10)
+            _.item.genre_with_llm_from_title,
+            _.interaction_type == "productInquiry",
+        ].approx_top_k(k=10),
     )
 
 @features
