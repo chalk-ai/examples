@@ -1,5 +1,4 @@
-from chalk import ChalkClient, online
-from chalk.sql import PostgreSQLSource
+from chalk import online
 from chalk.features import features
 
 
@@ -19,10 +18,10 @@ class User:
 @features
 class UserSeller:
     id: str
-    user_id: str
-    user: User.id
-    seller_id: str
-    seller: Seller.id
+    user_id: User.id
+    user: User
+    seller_id: Seller.id
+    seller: Seller
     favorites_match: bool
 
 
@@ -30,14 +29,12 @@ class UserSeller:
 def get_similarity(
     fc: UserSeller.user.favorite_categories, fc2: UserSeller.seller.categories
 ) -> UserSeller.favorites_match:
-    return fc & fc2  # check whether sets overlap
+    return len(fc & fc2) > 0
 
-
-pg_database = PostgreSQLSource(name="CLOUD_DB")
-pg_database.with_table(name="users", features=User)
-pg_database.with_table(name="sellers", features=Seller)
 
 if __name__ == "__main__":
+    from chalk.client import ChalkClient
+
     client = ChalkClient()
     user_stores = client.query(
         input=[

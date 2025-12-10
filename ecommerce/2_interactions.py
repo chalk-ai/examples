@@ -1,8 +1,7 @@
 from enum import Enum
 
 from chalk import online
-from chalk.features import DataFrame, FeatureTime, features
-from chalk.sql import ChalkClient, PostgreSQLSource
+from chalk.features import DataFrame, FeatureTime, features, _
 
 
 @features
@@ -16,18 +15,21 @@ class User:
     id: str
     age: int
     favorite_categories: set[str]
-    interactions: "DataFrame[Interaction]"
 
 
 @features
 class UserSeller:
     id: str
-    user_id: str
-    user: User.id
-    seller_id: str
-    seller: Seller.id
+    user_id: User.id
+    user: user
+    seller_id: Seller.id
+    seller: Seller
     favorites_match: bool
     user_seller_score: int
+    interactions: "DataFrame[Interaction]" = has_many(
+        lambda: (User.id == Interaction.user_id) & (Seller.id == Interaction.seller_id)
+    )
+    number_of_interactions: int = _.interactions.count()
 
 
 class InteractionKind(Enum):
@@ -44,36 +46,24 @@ class InteractionKind(Enum):
 @features
 class Interaction:
     id: str
-    user: User.id
-    user_id: str
-    seller: Seller.id
+    user_id: User.id
+    user: User
     seller_id: Seller.id
+    seller: Seller
     interaction_kind: InteractionKind
     on: FeatureTime
-
-
-pg_database = PostgreSQLSource(name="CLOUD_DB")
-pg_database.with_table(name="users", features=User)
-pg_database.with_table(name="sellers", features=Seller)
-pg_database.with_table(name="user_interactions", features=Interaction)
-
-
-@online
-def get_number_of_interactions(
-    user_interactions: UserSeller.user.interactions,
-    seller_id: UserSeller.seller.id,
-) -> UserSeller.number_of_interactions:
-    return len(user_interactions.loc[Interaction.seller_id == seller_id])
 
 
 @online
 def get_similarity(
     fc: UserSeller.user.favorite_categories, fc2: UserSeller.seller.categories
 ) -> UserSeller.favorites_match:
-    return fc & fc2  # check whether sets overlap
+    return len(fc & fc2) > 0
 
 
 if __name__ == "__main__":
+    from chalk.client import ChalkClient
+
     client = ChalkClient()
     user_stores = client.query(
         input=[
