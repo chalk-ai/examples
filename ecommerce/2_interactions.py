@@ -1,7 +1,7 @@
 from enum import Enum
 
 from chalk import online
-from chalk.features import DataFrame, FeatureTime, features, _
+from chalk.features import DataFrame, FeatureTime, features, _, has_many
 
 
 @features
@@ -21,7 +21,7 @@ class User:
 class UserSeller:
     id: str
     user_id: User.id
-    user: user
+    user: User
     seller_id: Seller.id
     seller: Seller
     favorites_match: bool

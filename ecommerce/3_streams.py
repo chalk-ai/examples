@@ -3,7 +3,7 @@ from datetime import datetime
 
 from chalk import online
 from chalk.features.resolver import make_stream_resolver
-from chalk.features import DataFrame, FeatureTime, features, _
+from chalk.features import DataFrame, FeatureTime, features, _, has_many
 from chalk.streams import KafkaSource
 from pydantic import BaseModel
 
