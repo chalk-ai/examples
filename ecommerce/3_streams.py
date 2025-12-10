@@ -1,9 +1,9 @@
-import uuid
 from enum import Enum
+from datetime import datetime
 
-from chalk import ChalkClient, online, stream
-from chalk.features import DataFrame, Features, FeatureTime, features
-from chalk.sql import PostgreSQLSource
+from chalk import online
+from chalk.features.resolver import make_stream_resolver
+from chalk.features import DataFrame, FeatureTime, features, _, has_many
 from chalk.streams import KafkaSource
 from pydantic import BaseModel
 
@@ -19,18 +19,23 @@ class User:
     id: str
     age: int
     favorite_categories: set[str]
-    interactions: "DataFrame[Interaction]"
 
 
 @features
 class UserSeller:
     id: str
-    user_id: str
-    user: User.id
-    seller_id: str
-    seller: Seller.id
+    user_id: User.id
+    user: User
+    seller_id: Seller.id
+    seller: Seller
     favorites_match: bool
     user_seller_score: int
+
+    interactions: "DataFrame[Interaction]" = has_many(
+        lambda: (User.id == Interaction.user_id) & (Seller.id == Interaction.seller_id)
+    )
+
+    number_of_interactions: int = _.interactions.count()
 
 
 class InteractionKind(Enum):
@@ -47,18 +52,14 @@ class InteractionKind(Enum):
 @features
 class Interaction:
     id: str
-    user: User.id
-    user_id: str
-    seller: Seller.id
+    user_id: User.id
+    user: User
     seller_id: Seller.id
+    seller: Seller
     interaction_kind: InteractionKind
     on: FeatureTime
 
 
-pg_database = PostgreSQLSource(name="CLOUD_DB")
-pg_database.with_table(name="users", features=User)
-pg_database.with_table(name="sellers", features=Seller)
-pg_database.with_table(name="user_interactions", features=Interaction)
 interaction_stream = KafkaSource(name="interactions")
 
 
@@ -67,36 +68,33 @@ class InteractionMessage(BaseModel):
     user_id: str
     seller_id: str
     interaction_kind: str
+    ingestion_time: datetime
 
 
-@stream(source=interaction_stream)
-def interactions_handler(
-    message: InteractionMessage,
-) -> Features[Interaction]:
-    return Interaction(
-        id=uuid.uuid4(),
-        interaction_kind=message.interaction_kind,
-        user_id=message.user_id,
-        seller_id=message.seller_id,
-    )
-
-
-@online
-def get_number_of_interactions(
-    user_interactions: UserSeller.user.interactions,
-    seller_id: UserSeller.seller.id,
-) -> UserSeller.number_of_interactions:
-    return len(user_interactions.loc[Interaction.seller_id == seller_id])
+process_interactions = make_stream_resolver(
+    name="process_interactions",
+    source=interaction_stream,
+    message_type=InteractionMessage,
+    output_features={
+        Interaction.id: _.message.id,
+        Interaction.user_id: _.message.user_id,
+        Interaction.seller_id: _.message.seller_id,
+        Interaction.interaction_kind: _.message.interaction_kind,
+        Interaction.on: _.ingestion_time,
+    },
+)
 
 
 @online
 def get_similarity(
     fc: UserSeller.user.favorite_categories, fc2: UserSeller.seller.categories
 ) -> UserSeller.favorites_match:
-    return fc & fc2  # check whether sets overlap
+    return len(fc & fc2) > 0
 
 
 if __name__ == "__main__":
+    from chalk.client import ChalkClient
+
     client = ChalkClient()
     user_stores = client.query(
         input=[
