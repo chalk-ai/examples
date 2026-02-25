@@ -54,7 +54,7 @@ def fit(model, train_loader):
             # Measure training accuracy
             predictions = torch.max(output.data, 1)[1]
             correct += (predictions == y_batch).sum()
-            if batch_idx % 50 == 49:
+            if (batch_idx+1) % 50 == 0:
                 # Print a progress report every 50 batches
                 print('Epoch : {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}\t Accuracy:{:.3f}%'.format(
                     epoch,
