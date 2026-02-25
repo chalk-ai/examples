@@ -7,8 +7,8 @@ produce a PyTorch dataset directly via `Dataset.create_torch_map_dataset()` and 
 import torch.utils.data
 
 ds = ChalkClient().offline_query(
-    outputs=[User.id, User.name, User.preferences],
-    max_samples=100000,
+    outputs=[MNISTDataPoint.id, MNISTDataPoint.label, MNISTDataPoint.pixels],
+    max_samples=10000,
 )
 torch_dataset = ds.create_torch_map_dataset()
 torch_dataloader = torch.utils.data.DataLoader(torch_dataset, shuffle=True)
