@@ -14,5 +14,5 @@ torch_dataset = ds.create_torch_map_dataset()
 torch_dataloader = torch.utils.data.DataLoader(torch_dataset, shuffle=True)
 ```
 
-If you find yourself repeating the same pattern for many of these resolvers, codegen
-can be helpful to dry up your definitions.
+This example shows a sample Chalk project that contains the [MNIST Dataset](https://en.wikipedia.org/wiki/MNIST_database),
+and a script that runs Chalk queries to retrieve the information to fit and evaluate a CNN.
