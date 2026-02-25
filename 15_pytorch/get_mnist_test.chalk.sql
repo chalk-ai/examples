@@ -1,5 +1,6 @@
 -- Example SQL resolver to retrieve the test set for MNIST.
 -- resolves: MNISTDataPoint
+-- source: postgres
 -- tags: ['test']
 
 select
