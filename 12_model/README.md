@@ -74,8 +74,9 @@ following example, we use Chat-GPT to answer questions about our Users.
 Additionally, since our questions are often repeated, we cache the results of the queries,
 limiting the number of API requests we need to make.
 
-The example code below, which can be found in its entirety in the **[2_openai.py](2_openai.py)** file,
-shows how to run a API request in a python resolver:
+The example code below shows how to run a API request in a python resolver:
+
+**[2_openai.py](2_openai.py)**
 
 ```python
 # run queries by the hash of the prompt
