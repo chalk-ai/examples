@@ -59,7 +59,7 @@ def detect_bot_behavior(
 
 
 # ---------------------------------------------------------------------------
-# Unit tests — run with: pytest 3_bot_detection.py
+# Unit tests — run with: pytest 2_bot_detection.py
 # ---------------------------------------------------------------------------
 
 def test_normal_player():

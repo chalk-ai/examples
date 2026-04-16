@@ -51,7 +51,7 @@ def detect_cheating(
 
 
 # ---------------------------------------------------------------------------
-# Unit tests — run with: pytest 2_anti_cheat.py
+# Unit tests — run with: pytest 1_anti_cheat.py
 # ---------------------------------------------------------------------------
 
 def test_clean_player_not_flagged():

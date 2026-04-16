@@ -27,7 +27,7 @@ class Player:
     cheat_rate: Windowed[float] = windowed(
         "1d", "7d", "30d",
         expression=_.matches[
-            _.sanction_record.is_flagged,
+            F.cast(_.sanction_record.is_flagged, int),
             _.time > _.chalk_window,
             _.time < _.chalk_now
         ].mean(),
@@ -78,7 +78,7 @@ class SanctionRecord:
     hit_accuracy: float = _.stats.shots_hit / _.stats.shots_fired
     kd_ratio: float = _.stats.kills / _.stats.deaths
 
-    # Computed by Python resolvers (see 2_anti_cheat.py and 3_bot_detection.py).
+    # Computed by Python resolvers (see 1_anti_cheat.py and 2_bot_detection.py).
     is_flagged: int
     suspicious_aim: bool
     suspicious_reactions: bool

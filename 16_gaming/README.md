@@ -64,7 +64,7 @@ https://docs.chalk.ai/docs/features
 Rule-based cheat detection combining aim anomalies with client
 performance signals (FPS patterns, memory pause timing).
 
-**[2_anti_cheat.py](2_anti_cheat.py)**
+**[1_anti_cheat.py](1_anti_cheat.py)**
 
 ```python
 @online
@@ -95,7 +95,7 @@ https://docs.chalk.ai/docs/resolver-overview
 Behavioral fingerprinting from ADS (aim-down-sights) toggle patterns and
 reaction time variance. Returns multiple features from a single resolver.
 
-**[3_bot_detection.py](3_bot_detection.py)**
+**[2_bot_detection.py](2_bot_detection.py)**
 
 ```python
 @online
@@ -117,42 +117,51 @@ https://docs.chalk.ai/docs/resolver-overview
 ## 3. Feature Preprocessing
 
 Push transformations into Chalk so training and inference never call
-`transform_features()`. Three patterns: native expressions, joblib
-artifacts, and ONNX Model Registry.
+`transform_features()`. Prefer native expressions for arithmetic (they run in
+Chalk's vectorized engine with zero Python overhead) and the Chalk Model
+Registry for fitted models.
 
-**[4_preprocessing.py](4_preprocessing.py)**
+**[features.py](features.py)** — Pattern A: native expressions
 
 ```python
+# Population stats stored as features — scaling runs entirely in Chalk's engine
+engagement_scaled: float = (_.engagement_score - _.engagement_mean) / _.engagement_std
+session_length_scaled: float = (_.session_length - _.session_length_mean) / _.session_length_std
+win_rate_scaled: float = (_.win_rate - _.win_rate_mean) / _.win_rate_std
+```
+
+**[3_preprocessing.py](3_preprocessing.py)** — Pattern B: Chalk Model Registry
+
+```python
+from chalk.ml import ModelReference
+
+categorical_encoder = ModelReference.from_alias(
+    name="PlayerCategoricalEncoder", alias="latest",
+)
+
 @online
-def transform_player_features(
-    engagement_score: PlayerFeatures.engagement_score,
-    session_length: PlayerFeatures.session_length,
-    win_rate: PlayerFeatures.win_rate,
+def encode_player_categoricals(
     player_tier: PlayerFeatures.player_tier,
     region: PlayerFeatures.region,
 ) -> Features[
-    PlayerFeatures.engagement_scaled,
-    PlayerFeatures.session_length_scaled,
-    PlayerFeatures.win_rate_scaled,
     PlayerFeatures.player_tier_encoded,
     PlayerFeatures.region_encoded,
 ]:
-    scaled = load_scaler().transform(np.array([[engagement_score, session_length, win_rate]]))[0]
-    encoded = load_encoder().transform(np.array([[player_tier, region]]))[0]
+    encoded = categorical_encoder.predict(np.array([[player_tier, region]]))[0]
     return PlayerFeatures(
-        engagement_scaled=float(scaled[0]),
-        ...
+        player_tier_encoded=int(encoded[0]),
+        region_encoded=int(encoded[1]),
     )
 ```
 
-https://docs.chalk.ai/docs/resolver-overview
+https://docs.chalk.ai/docs/model-registry
 
 ## 4. PyTorch Training
 
 Four patterns for feeding Chalk datasets into PyTorch training loops —
 from simple batch queries to DDP multi-GPU.
 
-**[5_training.py](5_training.py)**
+**[4_training.py](4_training.py)**
 
 ```python
 # Streaming DataLoader — no local files, no ETL
@@ -171,7 +180,7 @@ Serve pre-computed features to a trained model with zero training-serving
 skew. Both `query()` and `query_bulk()` execute the same resolver DAG
 as `offline_query`.
 
-**[6_inference.py](6_inference.py)**
+**[5_inference.py](5_inference.py)**
 
 ```python
 # Same features, same values — online inference

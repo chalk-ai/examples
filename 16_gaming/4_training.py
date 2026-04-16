@@ -9,7 +9,7 @@ Four patterns for feeding Chalk features into a training loop:
   3. DDP multi-GPU     — staged download + DistributedSampler
 
 All patterns query the same feature contract. Transformations are pushed
-upstream into Chalk resolvers (4_preprocessing.py), so the collate_fn
+upstream into Chalk resolvers (3_preprocessing.py), so the collate_fn
 only splits the dict — no local scaling, encoding, or DataFrame round-trip.
 """
 
@@ -160,7 +160,7 @@ def make_map_dataloader(
 # ---------------------------------------------------------------------------
 # Pattern 3 — DDP multi-GPU
 #
-# Launch: torchrun --nproc_per_node=4 5_training.py
+# Launch: torchrun --nproc_per_node=4 4_training.py
 # ---------------------------------------------------------------------------
 
 def make_ddp_dataloader(
