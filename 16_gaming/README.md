@@ -1,7 +1,7 @@
 # Gaming
 
 Anti-cheat detection, bot fingerprinting, player risk scoring, and ML
-training pipelines for competitive FPS games. Chalk's feature
+training pipelines for any type of game. Chalk's feature
 store handles the full lifecycle — from raw match telemetry to real-time
 cheat scoring and model training with zero training-serving skew.
 
