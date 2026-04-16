@@ -8,7 +8,7 @@ Four patterns for feeding Chalk features into a training loop:
   2b. Staged download  — download_data() + create_torch_map_dataset()
   3. DDP multi-GPU     — staged download + DistributedSampler
 
-All patterns query the same feature contract. Transforms are pushed
+All patterns query the same feature contract. Transformations are pushed
 upstream into Chalk resolvers (4_preprocessing.py), so the collate_fn
 only splits the dict — no local scaling, encoding, or DataFrame round-trip.
 """

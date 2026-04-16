@@ -116,7 +116,7 @@ https://docs.chalk.ai/docs/resolver-overview
 
 ## 3. Feature Preprocessing
 
-Push transforms into Chalk so training and inference never call
+Push transformations into Chalk so training and inference never call
 `transform_features()`. Three patterns: native expressions, joblib
 artifacts, and ONNX Model Registry.
 

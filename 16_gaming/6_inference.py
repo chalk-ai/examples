@@ -6,7 +6,7 @@ Two interfaces for serving pre-computed features to a trained model:
   1. Single-player — client.query() for real-time, one-at-a-time scoring.
   2. Batch — client.query_bulk() for bulk scoring jobs.
 
-Key point: transforms are pushed upstream into Chalk resolvers. The
+Key point: transformations are pushed upstream into Chalk resolvers. The
 inference code requests the FINAL, already-transformed features — no
 local transform_features() step, no sklearn artifact loading. This
 guarantees zero training-serving skew.

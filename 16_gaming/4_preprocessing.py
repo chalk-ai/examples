@@ -1,7 +1,7 @@
 """
 On-the-fly feature preprocessing for ML training and inference.
 
-Three patterns for pushing transforms into Chalk so that training
+Three patterns for pushing transformations into Chalk so that training
 and inference code never loads a .joblib or calls transform_features():
 
   Pattern A — Native Chalk expressions (see features.py)
@@ -61,7 +61,7 @@ def load_encoder():
 
 
 # ---------------------------------------------------------------------------
-# Pattern B — sklearn artifact-based transforms
+# Pattern B — sklearn artifact-based transformations
 # ---------------------------------------------------------------------------
 
 @online
