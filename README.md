@@ -212,6 +212,26 @@ def get_views() -> DataFrame[User]:
 
 https://docs.chalk.ai/docs/sql
 
+## [16_gaming](16_gaming)
+
+Anti-cheat detection, bot fingerprinting, player risk scoring, and ML
+training pipelines for competitive FPS games.
+
+```python
+@online
+def detect_cheating(
+    headshot_rate: SanctionRecord.headshot_rate,
+    low_fps_rate: SanctionRecord.telemetry.low_fps_rate,
+    mem_pause_freq: SanctionRecord.telemetry.mem_pause_freq,
+) -> SanctionRecord.is_flagged:
+    score = 0
+    if headshot_rate > 0.6:
+        score += 0.2
+    if low_fps_rate > 0.4 or low_fps_rate == 0:
+        score += 0.25
+    ...
+```
+
 ## [credit](credit)
 
 Chalk can help you build insight into the financial transactions
