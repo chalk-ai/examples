@@ -19,36 +19,50 @@ aggregations.
 **[data_model.py](data_model.py)**
 
 ```python
-@features
+@features(owner="gaming-platform@chalk.ai", tags=["gaming", "anti-cheat"])
 class Player:
     id: int
-    matches: "DataFrame[Match]" = has_many(lambda: Player.id == Match.player_id)
+    matches: "DataFrame[Match]"  # FK inferred from Match.player_id
 
     # Rolling cheat rate over 1d / 7d / 30d windows
     cheat_rate: Windowed[float] = windowed(
         "1d", "7d", "30d",
         expression=_.matches[
-            _.sanction_record.is_flagged,
+            F.cast(_.sanction_record.is_flagged, int),
             _.time > _.chalk_window,
             _.time < _.chalk_now
         ].mean(),
-        default=0
+        default=0,
     )
+
+    # ML features and population stats for training-serving consistency
+    engagement_score: float; win_rate: float; player_tier: str; region: str
+    engagement_mean: float; engagement_std: float
+    # Pattern A — native expressions, evaluated in Chalk's C++ engine
+    engagement_scaled: float = (_.engagement_score - _.engagement_mean) / _.engagement_std
+    player_tier_encoded: int  # written by a model resolver (see 3_preprocessing.py)
 
 @features
 class Match:
     id: int
-    player: Player = has_one(lambda: Player.id == Match.player_id)
+    # Recommended has_one: typed FK + string type, no explicit lambda
+    player_id: "Player.id"
+    player: "Player"
+    opponent_id: "Player.id"
+    opponent: "Player"
+
+    # Reverse has_one — FK lives on the child, so the join stays explicit
     stats: "MatchStats" = has_one(lambda: MatchStats.match_id == Match.id)
     telemetry: "Telemetry" = has_one(lambda: Telemetry.match_id == Match.id)
 
-    # Chalk Expression — computed server-side with zero Python overhead
+    # Chalk Expression — guaranteed acceleration to C++ server-side
     is_long_session: bool = (
         F.unix_seconds(_.telemetry.session_end) - F.unix_seconds(_.telemetry.session_start)
     ) > 3600
 
 @features
 class SanctionRecord:
+    match_id: "Match.id"  # FK wrapped as a string to avoid circular types
     # Expressions that derive rates from raw match stats — no resolver needed
     headshot_rate: float = feature(
         expression=_.stats.headshots / _.stats.kills,
@@ -121,40 +135,37 @@ Push transformations into Chalk so training and inference never call
 Chalk's vectorized engine with zero Python overhead) and the Chalk Model
 Registry for fitted models.
 
-**[features.py](features.py)** — Pattern A: native expressions
+**[data_model.py](data_model.py)** — Pattern A: native expressions on `Player`
 
 ```python
-# Population stats stored as features — scaling runs entirely in Chalk's engine
+# Population stats stored as features — scaling runs entirely in Chalk's C++ engine
 engagement_scaled: float = (_.engagement_score - _.engagement_mean) / _.engagement_std
 session_length_scaled: float = (_.session_length - _.session_length_mean) / _.session_length_std
 win_rate_scaled: float = (_.win_rate - _.win_rate_mean) / _.win_rate_std
 ```
 
-**[3_preprocessing.py](3_preprocessing.py)** — Pattern B: Chalk Model Registry
+**[3_preprocessing.py](3_preprocessing.py)** — Pattern B: model resolver backed by the Model Registry
 
 ```python
+from chalk import make_model_resolver
 from chalk.ml import ModelReference
+
+from data_model import Player
 
 categorical_encoder = ModelReference.from_alias(
     name="PlayerCategoricalEncoder", alias="latest",
 )
 
-@online
-def encode_player_categoricals(
-    player_tier: PlayerFeatures.player_tier,
-    region: PlayerFeatures.region,
-) -> Features[
-    PlayerFeatures.player_tier_encoded,
-    PlayerFeatures.region_encoded,
-]:
-    encoded = categorical_encoder.predict(np.array([[player_tier, region]]))[0]
-    return PlayerFeatures(
-        player_tier_encoded=int(encoded[0]),
-        region_encoded=int(encoded[1]),
-    )
+# Chalk binds the model's inputs/outputs to features and runs inference server-side
+encode_player_categoricals = make_model_resolver(
+    name="encode_player_categoricals",
+    model=categorical_encoder,
+    inputs=[Player.player_tier, Player.region],
+    output=[Player.player_tier_encoded, Player.region_encoded],
+)
 ```
 
-https://docs.chalk.ai/docs/model-registry
+https://docs.chalk.ai/docs/model_registry
 
 ## 4. PyTorch Training
 
@@ -166,7 +177,7 @@ from simple batch queries to DDP multi-GPU.
 ```python
 # Streaming DataLoader — no local files, no ETL
 revision = client.offline_query(
-    output=[PlayerFeatures.engagement_scaled, PlayerFeatures.session_length, PlayerFeatures.target],
+    output=[Player.engagement_scaled, Player.session_length, Player.target],
     dataset_name="training_v1",
 )
 loader = DataLoader(revision.create_torch_iter_dataset(), batch_size=256, collate_fn=collate, num_workers=4)
@@ -185,8 +196,8 @@ as `offline_query`.
 ```python
 # Same features, same values — online inference
 result = client.query(
-    input={PlayerFeatures.id: 42},
-    output=[PlayerFeatures.engagement_scaled, PlayerFeatures.session_length],
+    input={Player.id: 42},
+    output=[Player.engagement_scaled, Player.session_length],
 )
 values = [result.get_feature_value(f) or 0.0 for f in OUTPUT_FEATURES]
 x = torch.tensor([values], dtype=torch.float32)

@@ -1,28 +1,21 @@
-"""
-Gaming data model — feature classes for competitive FPS games.
-
-Demonstrates has_one, has_many, Chalk expressions, and windowed aggregations
-applied to match telemetry, player statistics, and anti-cheat scoring.
-"""
+"""Gaming data model — entities, relationships, ML features."""
 
 from datetime import datetime
 
-from chalk.features import features, _, DataFrame, has_one, has_many, Primary, feature
+from chalk.features import features, _, DataFrame, has_one, Primary, feature
 from chalk.streams import windowed, Windowed
 import chalk.functions as F
 
 
-@features
+@features(
+    owner="gaming-platform@chalk.ai",
+    tags=["gaming", "anti-cheat"],
+)
 class Player:
     id: int
+    matches: "DataFrame[Match]"
 
-    # A player has many matches — Chalk resolves the join automatically.
-    # https://docs.chalk.ai/docs/has-many
-    matches: "DataFrame[Match]" = has_many(lambda: Player.id == Match.player_id)
-
-    # Windowed aggregation: rolling cheat rate over 1d / 7d / 30d windows.
-    # Chalk evaluates this expression server-side in its vectorized engine
-    # on every query — no cron job, no materialization lag.
+    # Rolling cheat rate, evaluated at query time.
     # https://docs.chalk.ai/docs/aggregations
     cheat_rate: Windowed[float] = windowed(
         "1d", "7d", "30d",
@@ -34,27 +27,51 @@ class Player:
         default=0
     )
 
+    engagement_score: float
+    session_length: float
+    win_rate: float
+    player_tier: str
+    region: str
+    target: float
+
+    # Population stats, refreshed by a scheduled resolver.
+    engagement_mean: float
+    engagement_std: float
+    session_length_mean: float
+    session_length_std: float
+    win_rate_mean: float
+    win_rate_std: float
+
+    # Chalk Expression — guaranteed acceleration to C++ server-side.
+    engagement_scaled: float = (_.engagement_score - _.engagement_mean) / _.engagement_std
+    session_length_scaled: float = (_.session_length - _.session_length_mean) / _.session_length_std
+    win_rate_scaled: float = (_.win_rate - _.win_rate_mean) / _.win_rate_std
+
+    # Written by the model resolver in 3_preprocessing.py.
+    player_tier_encoded: int
+    region_encoded: int
+
+    split: str
+
 
 @features
 class Match:
     id: int
 
-    # Two foreign keys to the same Player class — use explicit has_one().
-    # https://docs.chalk.ai/docs/has-one
-    player_id: int
-    player: Player = has_one(lambda: Player.id == Match.player_id)
-    opponent_id: int
-    opponent: Player = has_one(lambda: Player.id == Match.opponent_id)
+    # Typed-FK has_one. https://docs.chalk.ai/docs/has-one
+    player_id: "Player.id"
+    player: "Player"
+    opponent_id: "Player.id"
+    opponent: "Player"
 
-    # Related entities joined by match id.
+    # Reverse has_one — FK is on the child.
     stats: "MatchStats" = has_one(lambda: MatchStats.match_id == Match.id)
     telemetry: "Telemetry" = has_one(lambda: Telemetry.match_id == Match.id)
     sanction_record: "SanctionRecord" = has_one(lambda: SanctionRecord.match_id == Match.id)
 
     time: datetime
 
-    # Chalk Expression — computed server-side with zero Python overhead.
-    # https://docs.chalk.ai/docs/expression
+    # Chalk Expression — guaranteed acceleration to C++ server-side.
     is_long_session: bool = (
         F.unix_seconds(_.telemetry.session_end) - F.unix_seconds(_.telemetry.session_start)
     ) > 3600
@@ -63,14 +80,12 @@ class Match:
 @features
 class SanctionRecord:
     id: int
-    match_id: Match.id
-    match: Match
+    match_id: "Match.id"
+    match: "Match"
 
     telemetry: "Telemetry" = has_one(lambda: Telemetry.match_id == SanctionRecord.match_id)
     stats: "MatchStats" = has_one(lambda: MatchStats.match_id == SanctionRecord.match_id)
 
-    # Expressions that derive rates from raw match stats — no resolver needed.
-    # Chalk evaluates these in its Rust/C++ engine during both offline and online queries.
     headshot_rate: float = feature(
         expression=_.stats.headshots / _.stats.kills,
         default=-1,
@@ -78,7 +93,7 @@ class SanctionRecord:
     hit_accuracy: float = _.stats.shots_hit / _.stats.shots_fired
     kd_ratio: float = _.stats.kills / _.stats.deaths
 
-    # Computed by Python resolvers (see 1_anti_cheat.py and 2_bot_detection.py).
+    # Written by resolvers in 1_anti_cheat.py and 2_bot_detection.py.
     is_flagged: int
     suspicious_aim: bool
     suspicious_reactions: bool
@@ -86,7 +101,7 @@ class SanctionRecord:
 
 @features
 class Telemetry:
-    match_id: Primary[Match.id]
+    match_id: Primary["Match.id"]
 
     is_bot_lobby: int
     match_duration: int
@@ -98,7 +113,6 @@ class Telemetry:
     end_reason: str
     match_result: str
 
-    # Performance telemetry — used for cheat detection.
     low_fps_rate: float
     mem_pause_avg: float
     mem_pause_freq: float
@@ -109,11 +123,10 @@ class Telemetry:
 
 @features
 class MatchStats:
-    """Per-match gameplay statistics (150+ columns in a real deployment)."""
-    match_id: Primary[Match.id]
-    player_id: Player.id
+    """150+ columns in a real deployment."""
+    match_id: Primary["Match.id"]
+    player_id: "Player.id"
 
-    # Combat
     kills: int
     deaths: int
     assists: int
@@ -121,21 +134,17 @@ class MatchStats:
     shots_fired: int
     shots_hit: int
 
-    # Damage
     damage_dealt: int
     damage_taken: int
 
-    # Objectives
     objectives_completed: int
     objectives_played: int
     plants: int
     defuses: int
 
-    # Movement
     distance_traveled: int
     time_alive: int
 
-    # Scope / ADS telemetry — used for bot detection.
     scope_toggles_1: int
     scope_duration_1: int
     scope_toggles_2: int
@@ -147,7 +156,6 @@ class MatchStats:
     reaction_time_max: int
     input_count: int
 
-    # Metadata
     platform: str
     country: str
     rank: int

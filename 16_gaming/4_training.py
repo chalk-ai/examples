@@ -1,17 +1,4 @@
-"""
-PyTorch training integration with Chalk datasets.
-
-Four patterns for feeding Chalk features into a training loop:
-
-  1. Offline batch     — offline_query → get_data_as_dataframe() → chalkdf
-  2a. Streaming        — create_torch_iter_dataset() + DataLoader
-  2b. Staged download  — download_data() + create_torch_map_dataset()
-  3. DDP multi-GPU     — staged download + DistributedSampler
-
-All patterns query the same feature contract. Transformations are pushed
-upstream into Chalk resolvers (3_preprocessing.py), so the collate_fn
-only splits the dict — no local scaling, encoding, or DataFrame round-trip.
-"""
+"""PyTorch DataLoaders over Chalk datasets."""
 
 from __future__ import annotations
 
@@ -24,18 +11,18 @@ from chalk.client import ChalkClient
 from torch.utils.data import DataLoader
 from torch.utils.data.distributed import DistributedSampler
 
-from features import PlayerFeatures
+from data_model import Player
 
 OUTPUT_FEATURES = [
-    PlayerFeatures.engagement_scaled,
-    PlayerFeatures.session_length_scaled,
-    PlayerFeatures.win_rate_scaled,
-    PlayerFeatures.player_tier_encoded,
-    PlayerFeatures.region_encoded,
-    PlayerFeatures.target,
+    Player.engagement_scaled,
+    Player.session_length_scaled,
+    Player.win_rate_scaled,
+    Player.player_tier_encoded,
+    Player.region_encoded,
+    Player.target,
 ]
 
-_PREFIX = "player_features."
+_PREFIX = "player."
 _FEATURE_COLS = [
     f"{_PREFIX}engagement_scaled",
     f"{_PREFIX}session_length_scaled",
@@ -46,16 +33,11 @@ _FEATURE_COLS = [
 _TARGET_COL = f"{_PREFIX}target"
 
 
-# ---------------------------------------------------------------------------
-# Shared collate_fn
-# ---------------------------------------------------------------------------
-
 def make_collate(
     feature_cols: list[str],
     target_col: str,
     prepare_targets: Callable[[torch.Tensor], torch.Tensor] | None = None,
 ) -> Callable:
-    """Build a collate_fn that maps a Chalk batch dict to an (x, y) tuple."""
     _prepare = prepare_targets or (lambda t: t)
 
     def _to_tensor(v) -> torch.Tensor:
@@ -77,17 +59,8 @@ def make_collate(
     return collate
 
 
-# ---------------------------------------------------------------------------
-# Pattern 1 — Offline batch query
-# ---------------------------------------------------------------------------
-
 def fetch_dataset(client: ChalkClient, dataset_name: str) -> "DataFrame":
-    """
-    Run offline_query and return a chalkdf DataFrame.
-
-    On re-runs, Chalk skips the query and returns the cached dataset
-    revision — no local files, no re-execution.
-    """
+    """On re-runs, Chalk skips the re-computation and returns the already computed dataset."""
     revision = client.offline_query(
         output=OUTPUT_FEATURES,
         dataset_name=dataset_name,
@@ -95,22 +68,12 @@ def fetch_dataset(client: ChalkClient, dataset_name: str) -> "DataFrame":
     return revision.get_data_as_dataframe()
 
 
-# ---------------------------------------------------------------------------
-# Pattern 2a — Streaming DataLoader (low / medium scale)
-# ---------------------------------------------------------------------------
-
 def make_streaming_dataloader(
     client: ChalkClient,
     dataset_name: str,
     batch_size: int = 256,
     num_workers: int = 4,
 ) -> DataLoader:
-    """
-    Streaming DataLoader backed by create_torch_iter_dataset().
-
-    Saves memory — PyTorch handles prefetch. Best when network bandwidth
-    is not the bottleneck.
-    """
     revision = client.offline_query(output=OUTPUT_FEATURES, dataset_name=dataset_name)
     return DataLoader(
         revision.create_torch_iter_dataset(),
@@ -123,10 +86,6 @@ def make_streaming_dataloader(
     )
 
 
-# ---------------------------------------------------------------------------
-# Pattern 2b — Staged download + map-style DataLoader (large scale)
-# ---------------------------------------------------------------------------
-
 def make_map_dataloader(
     client: ChalkClient,
     dataset_name: str,
@@ -134,11 +93,7 @@ def make_map_dataloader(
     batch_size: int = 256,
     num_workers: int = 8,
 ) -> DataLoader:
-    """
-    Download Parquet shards to local NVMe, then serve random-access
-    batches via create_torch_map_dataset(). No network I/O in the
-    training loop.
-    """
+    """Download Parquet shards locally, then serve random-access batches."""
     local_dir = Path(local_dir)
     local_dir.mkdir(parents=True, exist_ok=True)
 
@@ -157,12 +112,7 @@ def make_map_dataloader(
     )
 
 
-# ---------------------------------------------------------------------------
-# Pattern 3 — DDP multi-GPU
-#
-# Launch: torchrun --nproc_per_node=4 4_training.py
-# ---------------------------------------------------------------------------
-
+# torchrun --nproc_per_node=4 4_training.py
 def make_ddp_dataloader(
     client: ChalkClient,
     dataset_name: str,
@@ -170,12 +120,6 @@ def make_ddp_dataloader(
     batch_size: int = 256,
     num_workers: int = 4,
 ) -> tuple[DataLoader, DistributedSampler]:
-    """
-    Staged download + DistributedSampler for multi-GPU training.
-
-    Each rank downloads the same shards; DistributedSampler assigns
-    disjoint index subsets — no manual slicing needed.
-    """
     local_dir = Path(local_dir)
     local_dir.mkdir(parents=True, exist_ok=True)
 
