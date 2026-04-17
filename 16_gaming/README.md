@@ -1,20 +1,15 @@
 # Gaming
 
 Anti-cheat detection, bot fingerprinting, player risk scoring, and ML
-training pipelines for any type of game. Chalk's feature
-store handles the full lifecycle — from raw match telemetry to real-time
-cheat scoring and model training with zero training-serving skew.
+training pipelines built on Chalk.
 
-This example uses an FPS as the reference game, but the same patterns
-extend to any genre — sports titles, battle royales, MOBAs, racing,
-and other PvP or PvE games. Swap the stat names and thresholds;
-the Chalk architecture stays the same.
+Written against an FPS for the examples, but the same patterns work for
+sports titles, MOBAs, battle royales, racing, and other PvP/PvE games —
+swap the stat names and thresholds.
 
 ## Data Model
 
-Model match telemetry, player statistics, and sanction records as Chalk
-features with `has_one` / `has_many` joins, expressions, and windowed
-aggregations.
+Entities, relationships, and ML features in one file.
 
 **[data_model.py](data_model.py)**
 
@@ -22,9 +17,8 @@ aggregations.
 @features(owner="gaming-platform@chalk.ai", tags=["gaming", "anti-cheat"])
 class Player:
     id: int
-    matches: "DataFrame[Match]"  # FK inferred from Match.player_id
+    matches: "DataFrame[Match]"
 
-    # Rolling cheat rate over 1d / 7d / 30d windows
     cheat_rate: Windowed[float] = windowed(
         "1d", "7d", "30d",
         expression=_.matches[
@@ -35,35 +29,32 @@ class Player:
         default=0,
     )
 
-    # ML features and population stats for training-serving consistency
     engagement_score: float; win_rate: float; player_tier: str; region: str
     engagement_mean: float; engagement_std: float
-    # Pattern A — native expressions, evaluated in Chalk's C++ engine
+    # Chalk Expression — guaranteed acceleration to C++ server-side
     engagement_scaled: float = (_.engagement_score - _.engagement_mean) / _.engagement_std
-    player_tier_encoded: int  # written by a model resolver (see 3_preprocessing.py)
+    player_tier_encoded: int  # written by the model resolver in 3_preprocessing.py
 
 @features
 class Match:
     id: int
-    # Recommended has_one: typed FK + string type, no explicit lambda
+    # Typed-FK has_one shorthand
     player_id: "Player.id"
     player: "Player"
     opponent_id: "Player.id"
     opponent: "Player"
 
-    # Reverse has_one — FK lives on the child, so the join stays explicit
+    # FK lives on the child — join stays explicit
     stats: "MatchStats" = has_one(lambda: MatchStats.match_id == Match.id)
     telemetry: "Telemetry" = has_one(lambda: Telemetry.match_id == Match.id)
 
-    # Chalk Expression — guaranteed acceleration to C++ server-side
     is_long_session: bool = (
         F.unix_seconds(_.telemetry.session_end) - F.unix_seconds(_.telemetry.session_start)
     ) > 3600
 
 @features
 class SanctionRecord:
-    match_id: "Match.id"  # FK wrapped as a string to avoid circular types
-    # Expressions that derive rates from raw match stats — no resolver needed
+    match_id: "Match.id"
     headshot_rate: float = feature(
         expression=_.stats.headshots / _.stats.kills,
         default=-1,
@@ -75,8 +66,7 @@ https://docs.chalk.ai/docs/features
 
 ## 1. Anti-Cheat Detection
 
-Rule-based cheat detection combining aim anomalies with client
-performance signals (FPS patterns, memory pause timing).
+Rule-based detection from aim anomalies and client performance signals.
 
 **[1_anti_cheat.py](1_anti_cheat.py)**
 
@@ -106,8 +96,7 @@ https://docs.chalk.ai/docs/resolver-overview
 
 ## 2. Bot Detection
 
-Behavioral fingerprinting from ADS (aim-down-sights) toggle patterns and
-reaction time variance. Returns multiple features from a single resolver.
+Behavioral fingerprinting from ADS toggle patterns and reaction time variance.
 
 **[2_bot_detection.py](2_bot_detection.py)**
 
@@ -130,21 +119,19 @@ https://docs.chalk.ai/docs/resolver-overview
 
 ## 3. Feature Preprocessing
 
-Push transformations into Chalk so training and inference never call
-`transform_features()`. Prefer native expressions for arithmetic (they run in
-Chalk's vectorized engine with zero Python overhead) and the Chalk Model
-Registry for fitted models.
+Arithmetic transforms (scaling, normalization) as Chalk expressions on
+the feature class. Fitted models (sklearn, XGBoost, ONNX) go through the
+Model Registry and get wired up with a model resolver.
 
-**[data_model.py](data_model.py)** — Pattern A: native expressions on `Player`
+**[data_model.py](data_model.py)** — scaling via expression
 
 ```python
-# Population stats stored as features — scaling runs entirely in Chalk's C++ engine
 engagement_scaled: float = (_.engagement_score - _.engagement_mean) / _.engagement_std
 session_length_scaled: float = (_.session_length - _.session_length_mean) / _.session_length_std
 win_rate_scaled: float = (_.win_rate - _.win_rate_mean) / _.win_rate_std
 ```
 
-**[3_preprocessing.py](3_preprocessing.py)** — Pattern B: model resolver backed by the Model Registry
+**[3_preprocessing.py](3_preprocessing.py)** — model resolver
 
 ```python
 from chalk import make_model_resolver
@@ -156,7 +143,6 @@ categorical_encoder = ModelReference.from_alias(
     name="PlayerCategoricalEncoder", alias="latest",
 )
 
-# Chalk binds the model's inputs/outputs to features and runs inference server-side
 encode_player_categoricals = make_model_resolver(
     name="encode_player_categoricals",
     model=categorical_encoder,
@@ -169,13 +155,12 @@ https://docs.chalk.ai/docs/model_registry
 
 ## 4. PyTorch Training
 
-Four patterns for feeding Chalk datasets into PyTorch training loops —
-from simple batch queries to DDP multi-GPU.
+Offline batch, streaming, and DDP patterns for feeding Chalk datasets
+into PyTorch.
 
 **[4_training.py](4_training.py)**
 
 ```python
-# Streaming DataLoader — no local files, no ETL
 revision = client.offline_query(
     output=[Player.engagement_scaled, Player.session_length, Player.target],
     dataset_name="training_v1",
@@ -187,14 +172,12 @@ https://docs.chalk.ai/docs/datasets
 
 ## 5. Online Inference
 
-Serve pre-computed features to a trained model with zero training-serving
-skew. Both `query()` and `query_bulk()` execute the same resolver DAG
-as `offline_query`.
+Single-player and bulk scoring against the same feature contract used
+during training.
 
 **[5_inference.py](5_inference.py)**
 
 ```python
-# Same features, same values — online inference
 result = client.query(
     input={Player.id: 42},
     output=[Player.engagement_scaled, Player.session_length],
