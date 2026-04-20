@@ -232,6 +232,29 @@ def detect_cheating(
     ...
 ```
 
+## [17_compute](17_compute)
+
+Run arbitrary Python, GPU workloads, and long-lived services inside
+isolated Chalk containers with
+[chalkcompute](https://pypi.org/project/chalkcompute/):
+[OpenCode on a volume](17_compute/opencode), [vLLM on a GPU
+ScalingGroup](17_compute/vllm), [Temporal-orchestrated image
+moderation](17_compute/temporal), and [dynamic Chalk queries from an
+LLM agent](17_compute/dynamic_queries).
+
+```python
+@chalkcompute.function(
+    name="classify-image",
+    image=(
+        chalkcompute.Image.debian_slim()
+        .run_commands("pip install torch --index-url https://download.pytorch.org/whl/cpu")
+        .pip_install(["transformers", "Pillow", "requests"])
+    ),
+)
+def classify_image(image_url: str) -> str:
+    ...
+```
+
 ## [credit](credit)
 
 Chalk can help you build insight into the financial transactions
