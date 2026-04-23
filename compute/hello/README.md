@@ -1,6 +1,6 @@
 # Hello Chalk Compute
 
-A minimal example that spins up a container using [Chalk Compute](https://chalk.ai), runs a few commands inside it, and tears it down.
+A minimal example that spins up a container using [Chalk Compute](https://docs.chalk.ai/docs/compute/overview), runs a few commands inside it, and tears it down.
 
 ## Quickstart
 
