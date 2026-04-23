@@ -1,0 +1,10 @@
+[project]
+name = "hello"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "chalkcompute>=1.5.2",
+    "chalkpy>=2.119.4",
+]
