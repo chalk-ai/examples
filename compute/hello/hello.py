@@ -3,7 +3,7 @@ from chalkcompute import Container, Image
 # 1. Define an image: Python 3.12 slim + cowsay
 image = Image.debian_slim("3.12").pip_install(["cowsay"])
 
-# 2. Start a container with the "hi" volume mounted at /data
+# 2. Start a container
 container = Container(
     image=image,
     name="hello-example",
