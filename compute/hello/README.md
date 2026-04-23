@@ -29,6 +29,6 @@ uv run hello.py
 
 This will:
 - Pull a Python 3.12 slim image and install `cowsay`
-- Start a container with a volume mounted at `/data`
+- Start a container
 - Run `uname`, `python --version`, and a `cowsay` greeting inside the container
 - Stop and clean up the container
