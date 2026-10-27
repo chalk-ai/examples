@@ -1,0 +1,9 @@
+[project]
+name = "locked-down-agent"
+version = "0.1.0"
+description = "Run a data-analysis agent in a Chalk sandbox, then lock it down one protection at a time."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "chalkcompute>=2.13.11",
+]
