@@ -3,7 +3,8 @@
 A support assistant answers customer questions from a fictional lender's help-center
 articles. The tutorial runs in a Chalk notebook: it embeds the articles, retrieves the
 passages closest to a question, writes an answer with citations, and evaluates the
-answers with a Chalk Evaluation.
+answers with a Chalk Evaluation. The walkthrough is the
+[tutorial in the Chalk docs](https://docs.chalk.ai/docs/chalksql/rag-tutorial).
 
 ## Files
 
