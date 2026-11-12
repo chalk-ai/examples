@@ -1,0 +1,242 @@
+[
+  {
+    "id": "change-payment-date",
+    "topic": "Payments",
+    "title": "Change your payment date",
+    "body": "You can move your monthly payment date once every 12 months. To change it, sign in, open Loan details, and select Payment date. You can pick any day from the 1st to the 28th. We don't offer the 29th, 30th, or 31st, because some months don't have them.\n\nThe new date takes effect with your next billing cycle, and we email you a confirmation with your updated schedule. If your next payment is due within 5 days, make that payment on its current date. The change applies to the payment after it.\n\nMoving your date can make one billing cycle shorter or longer than a month. If the cycle gets longer, your next payment includes the extra days of interest. Your payment amount goes back to normal the month after."
+  },
+  {
+    "id": "autopay",
+    "topic": "Payments",
+    "title": "Set up autopay",
+    "body": "Autopay takes your monthly payment from a linked bank account on your due date, so you don't have to remember it. To turn it on, open Payments, select Autopay, and choose the bank account to use. Autopay starts with your next payment if you set it up at least 3 business days before the due date.\n\nBorrowers on autopay get a 0.25% interest rate discount. The discount starts with the first payment autopay makes and stays as long as autopay is on. If you turn autopay off, your rate goes back up at the start of your next billing cycle.\n\nIf an autopay withdrawal fails, we email you the same day and try the withdrawal once more 3 business days later. See Returned payment fee for what a failed withdrawal costs."
+  },
+  {
+    "id": "extra-payment",
+    "topic": "Payments",
+    "title": "Make an extra payment",
+    "body": "You can pay more than your monthly amount at any time. Open Payments, select Make a payment, and enter the amount. Extra money goes to your principal balance first, which lowers the interest you pay over the life of the loan.\n\nAn extra payment doesn't move your due date or let you skip a month. Your next scheduled payment is still due on its usual date, even if you paid extra the week before. If you want your extra payment to count toward next month instead, contact us before you send it.\n\nYou can make extra payments by bank transfer, debit card, or check. There is no fee for paying extra or for paying more often than once a month."
+  },
+  {
+    "id": "late-payment",
+    "topic": "Payments",
+    "title": "If a payment is late",
+    "body": "A payment is late if we haven't received it 10 days after the due date. Until then, you can pay without any fee or effect on your account. We send a reminder by email and text 3 days after the due date if we haven't received your payment.\n\nAfter 10 days, a late fee applies. See Late fees for the amount. After 30 days, we may report the late payment to the credit bureaus, which can lower your credit score.\n\nIf you know you'll miss a payment, contact us before the due date. We may be able to move your payment date or set up a short hardship plan. See Pause your payments during a hardship."
+  },
+  {
+    "id": "payment-methods",
+    "topic": "Payments",
+    "title": "Payment methods we accept",
+    "body": "You can pay by bank transfer (ACH), debit card, mailed check, or wire transfer. We don't accept credit cards, cash, or payment apps.\n\nBank transfers and debit card payments are free. Debit card payments post the same business day if you make them before 8 PM Eastern. Bank transfers post in 1 to 2 business days. Mailed checks can take up to 7 days to arrive and post, so send them at least a week before your due date.\n\nWire transfers post the same business day if we receive them before 4 PM Eastern, and they cost $20. See Wire transfer fees for details."
+  },
+  {
+    "id": "payment-amount-changed",
+    "topic": "Payments",
+    "title": "Why your payment amount changed",
+    "body": "Our loans have fixed rates, so your monthly payment normally stays the same for the whole loan. A few things can change it.\n\nTurning autopay off removes your 0.25% rate discount, which raises your payment slightly. Turning it back on lowers it again. Moving your payment date can make one billing cycle longer, and that month's payment includes the extra days of interest.\n\nA hardship pause or a loan modification also changes your payment, because interest that built up is added to your balance. Your statement lists the reason for any change in the Payment summary section. If you can't find a reason there, contact us and we'll walk through it with you."
+  },
+  {
+    "id": "hardship-pause",
+    "topic": "Payments",
+    "title": "Pause your payments during a hardship",
+    "body": "If you lose your job, have a medical emergency, or face another serious hardship, you can ask to pause your payments for up to 3 months. To apply, open Help, select Hardship request, and upload a document that shows the hardship, such as a layoff notice or a medical bill.\n\nWe decide most requests within 5 business days. While your request is under review, keep making payments if you can.\n\nInterest keeps building during a pause. When the pause ends, that interest is added to your balance, and your monthly payment goes up slightly to cover it. A pause doesn't count as a late payment, and we don't report it to the credit bureaus as missed."
+  },
+  {
+    "id": "pay-off-early",
+    "topic": "Payments",
+    "title": "Pay off your loan early",
+    "body": "You can pay off your whole loan at any time. We never charge a prepayment penalty, and paying early saves the interest you would have paid on the rest of the loan.\n\nTo pay off your loan, open Loan details and select Get payoff quote. The quote shows the exact amount to pay, including interest up to the payoff date, and it's good for 10 days. Pay the quoted amount by bank transfer, debit card, or wire before the quote expires.\n\nAfter your final payment posts, we send a paid-in-full letter within 10 business days. The origination fee isn't refunded when you pay off early. See Origination fee."
+  },
+  {
+    "id": "skip-payment",
+    "topic": "Payments",
+    "title": "Can I skip a payment?",
+    "body": "We don't offer a way to skip a single payment. Paying extra one month doesn't let you skip the next one, because extra payments go to your principal balance.\n\nIf you're facing a hardship, you can ask to pause your payments for up to 3 months instead. Interest keeps building during a pause, and it's added to your balance afterward. See Pause your payments during a hardship.\n\nIf you just need a little more time in a single month, you have until 10 days after your due date before a payment counts as late. You can also move your payment date to a day that works better with your paycheck."
+  },
+  {
+    "id": "payment-confirmation",
+    "topic": "Payments",
+    "title": "Payment confirmations",
+    "body": "We email you a confirmation for every payment. The first email arrives when you schedule or start a payment, and a second arrives when the payment posts to your account. Autopay payments get one email, when the payment posts.\n\nYour payment history lists every payment with its amount, method, and the date it posted. Open Payments and select History to see it. Payments that are still processing show as Pending.\n\nIf a payment shows as Pending for more than 3 business days, or you didn't get a confirmation email, check your spam folder first. Then contact us with the payment date and amount, and we'll trace it."
+  },
+  {
+    "id": "pay-by-phone",
+    "topic": "Payments",
+    "title": "Pay by phone",
+    "body": "You can make a payment by phone using our automated line, any time of day. Have your loan number and your bank account or debit card ready. The automated line is free and takes about 3 minutes.\n\nIf you'd rather talk to someone, call during support hours, Monday to Friday, 8 AM to 8 PM Eastern. Payments made with a support agent are also free.\n\nPhone payments post the same way as online payments: debit card payments post the same business day if made before 8 PM Eastern, and bank transfers take 1 to 2 business days. You'll get a confirmation number on the call and an email when the payment posts."
+  },
+  {
+    "id": "where-payment-goes",
+    "topic": "Payments",
+    "title": "Where your payment goes",
+    "body": "Each monthly payment first covers any fees you owe, then the interest that built up since your last payment, then your principal balance. Early in your loan, more of each payment goes to interest. Later, more goes to principal.\n\nYour statement shows how your last payment was split, in the Payment summary section. Your loan's full schedule, showing the split for every remaining payment, is under Loan details, then Payment schedule.\n\nExtra payments work differently. Money you pay above your monthly amount goes straight to principal, after any fees you owe. See Make an extra payment."
+  },
+  {
+    "id": "late-fees",
+    "topic": "Fees",
+    "title": "Late fees",
+    "body": "If your payment arrives more than 10 days after its due date, we charge a late fee of $15 or 5% of the missed payment, whichever is less. For example, on a $250 payment the fee is $12.50.\n\nWe charge at most one late fee for each missed payment, no matter how late it is. The fee is added to the amount due on your next statement.\n\nWe waive your first late fee if you pay the missed payment within 30 days of its due date. You don't need to ask; the waiver is applied automatically. For later late fees, you can ask for a waiver. See Ask for a fee waiver."
+  },
+  {
+    "id": "origination-fee",
+    "topic": "Fees",
+    "title": "Origination fee",
+    "body": "The origination fee covers the cost of setting up your loan. It's between 1% and 6% of your loan amount, based on your credit profile, and it's shown on your loan offer before you accept.\n\nWe subtract the fee from your loan amount before we send you the money. For example, on a $10,000 loan with a 3% fee, you receive $9,700 but repay $10,000 plus interest.\n\nThe origination fee isn't refunded if you pay off your loan early. It's included in your APR, which is why your APR is higher than your interest rate. See Annual percentage rate (APR)."
+  },
+  {
+    "id": "returned-payment-fee",
+    "topic": "Fees",
+    "title": "Returned payment fee",
+    "body": "If your bank returns a payment, for example because of insufficient funds or a closed account, we charge a $15 returned payment fee.\n\nIf the returned payment was an autopay withdrawal, we try it once more 3 business days later. You aren't charged a second fee for that retry, even if it's also returned. If the retry fails, make your payment another way to avoid a late fee.\n\nA returned payment doesn't count as paid. If the payment still isn't made 10 days after its due date, a late fee applies too. You can ask us to waive a returned payment fee. See Ask for a fee waiver."
+  },
+  {
+    "id": "wire-transfer-fees",
+    "topic": "Fees",
+    "title": "Wire transfer fees",
+    "body": "Payments by wire transfer cost $20. We charge this fee because wires cost us more to process. Payments by bank transfer, debit card, or check are free.\n\nWires post the same business day if we receive them before 4 PM Eastern. Many borrowers use a wire for a final payoff, when they need the payment to post before a payoff quote expires.\n\nYour bank may also charge its own fee to send a wire, often $15 to $35. That fee is separate from ours. To send a wire, use the wire instructions on your payoff quote or under Payments, then Wire instructions."
+  },
+  {
+    "id": "fee-waiver",
+    "topic": "Fees",
+    "title": "Ask for a fee waiver",
+    "body": "You can ask us to waive a late fee or a returned payment fee. Open Help, select Fee waiver request, and tell us which fee, what happened, and when you made the payment.\n\nWe decide waiver requests within 5 business days and email you the decision. An approved waiver appears as a credit on your next statement.\n\nWe're more likely to approve a waiver if it's your first missed or returned payment, or if the cause was outside your control, such as a bank error. Your first late fee is waived automatically if you pay within 30 days, so you don't need to request that one. Wire transfer fees and the origination fee can't be waived."
+  },
+  {
+    "id": "fees-on-statement",
+    "topic": "Fees",
+    "title": "Why a fee appears on your statement",
+    "body": "Each fee on your statement lists its type, such as Late fee or Returned payment fee, and the date we charged it. Fees are added to the amount due on your next payment.\n\nIf you don't recognize a fee, compare its date with your payment history. Most fees follow a payment that arrived more than 10 days late or a payment your bank returned.\n\nYou can dispute a fee within 60 days of the statement it first appeared on. Open Help, select Dispute a charge, and include the fee's date and amount. While we review a dispute, you don't need to pay the disputed amount, and it won't count as late."
+  },
+  {
+    "id": "apr",
+    "topic": "Fees",
+    "title": "Annual percentage rate (APR)",
+    "body": "Your APR is the yearly cost of your loan, including both your interest rate and your origination fee. Because it includes the fee, your APR is higher than your interest rate.\n\nFor example, a 3-year loan with a 10% interest rate and a 3% origination fee has an APR of about 12%. Both numbers are on your loan offer and your loan agreement.\n\nYour APR is fixed for the life of the loan. The autopay discount lowers your interest rate by 0.25% while autopay is on, but your loan agreement still shows the APR without the discount."
+  },
+  {
+    "id": "paper-statement-fee",
+    "topic": "Fees",
+    "title": "Paper statement fee",
+    "body": "Statements are free online. If you choose to get paper statements by mail, we charge $2 for each statement.\n\nTo switch to online statements, open Settings, select Documents, and turn off Paper statements. The fee stops with your next statement. We email you when each new statement is ready.\n\nWe don't charge for paper copies of your loan agreement, tax forms, or your paid-in-full letter. Some states don't allow paper statement fees; if you live in one of them, you won't be charged."
+  },
+  {
+    "id": "no-hidden-fees",
+    "topic": "Fees",
+    "title": "Fees we charge",
+    "body": "We charge five fees: the origination fee, a late fee, a returned payment fee, a $20 fee for payments by wire, and a $2 fee for each paper statement. Each one has its own article with details.\n\nWe don't charge application fees, prepayment penalties, or fees for paying extra, paying by phone, or changing your payment date.\n\nEvery fee you're charged appears on your statement with its type and date. If you see a fee that isn't on this list, contact us. See Why a fee appears on your statement."
+  },
+  {
+    "id": "dispute-charge",
+    "topic": "Fees",
+    "title": "Dispute a charge",
+    "body": "If you think we charged you a fee or an amount by mistake, you can dispute it within 60 days of the statement it first appeared on. Open Help, select Dispute a charge, and include the date, the amount, and why you think it's wrong.\n\nWe confirm we received your dispute within 2 business days and decide most disputes within 30 days. You don't need to pay the disputed amount while we review it, and it won't count toward a late payment.\n\nIf we find a mistake, we remove the charge and credit any amount you already paid on your next statement. If we don't, we email you an explanation and the date the amount is due."
+  },
+  {
+    "id": "interest-rate",
+    "topic": "Fees",
+    "title": "How interest is charged",
+    "body": "Interest builds every day on your unpaid principal balance. Each monthly payment covers the interest since your last payment first, then reduces your principal.\n\nYour interest rate is fixed for the life of the loan. The one exception is the autopay discount: your rate is 0.25% lower while autopay is on.\n\nBecause interest builds daily, paying a few days early saves a little interest, and paying late costs a little more, even before a late fee applies. Paying extra lowers your principal right away, so less interest builds from then on."
+  },
+  {
+    "id": "fee-amounts-by-state",
+    "topic": "Fees",
+    "title": "Fees in your state",
+    "body": "Some states limit the fees lenders can charge. If your state has a lower limit, we charge the lower amount. For example, a few states cap late fees at $10.\n\nYour loan agreement lists the fees that apply in your state. Find it under Settings, then Documents.\n\nIf you move to another state, the fees in your original loan agreement still apply. Your interest rate and payment don't change when you move. Update your address so your statements and tax forms reach you. See Update your mailing address."
+  },
+  {
+    "id": "reset-password",
+    "topic": "Account access",
+    "title": "Reset your password",
+    "body": "On the sign-in page, select Forgot password and enter the email address on your account. We send you a reset link that works for 30 minutes. If it doesn't arrive within 5 minutes, check your spam folder.\n\nYour new password must have at least 12 characters, and it can't be one of your last 5 passwords.\n\nResetting your password signs you out on every device. If you use two-step sign-in, you'll need a code the next time you sign in on each device."
+  },
+  {
+    "id": "two-step-sign-in",
+    "topic": "Account access",
+    "title": "Two-step sign-in",
+    "body": "Two-step sign-in protects your account with a 6-digit code each time you sign in on a new device. We send the code by text message to the phone number on your account.\n\nYou can use an authenticator app instead of text messages. Open Settings, select Security, and choose Authenticator app. Scan the code shown with your app, then enter the 6-digit code it gives you to finish.\n\nWhen you turn on two-step sign-in, we give you 10 backup codes. Each one works once. Keep them somewhere safe, such as a password manager, in case you lose your phone."
+  },
+  {
+    "id": "change-phone-number",
+    "topic": "Account access",
+    "title": "Change your phone number",
+    "body": "To update your phone number, open Settings, select Profile, and enter the new number. We text a code to the new number to confirm it. Your sign-in codes go to the new number from then on.\n\nIf you got a new phone but kept your number, you don't need to change anything. Text codes keep working. If you use an authenticator app, set it up again on the new phone under Settings, then Security.\n\nIf you can't receive codes at your old number and can't sign in, use one of your backup codes. If you don't have backup codes, call us. We'll verify your identity and update your number, which takes about 10 minutes."
+  },
+  {
+    "id": "locked-out",
+    "topic": "Account access",
+    "title": "Locked out of your account",
+    "body": "After 5 failed sign-in attempts in a row, your account locks for 30 minutes. After 30 minutes, you can try again.\n\nTo unlock your account sooner, reset your password with Forgot password on the sign-in page. A successful reset unlocks your account right away.\n\nIf you didn't make those sign-in attempts, someone else may be trying to get into your account. Reset your password, turn on two-step sign-in if it's off, and contact us so we can check your account activity."
+  },
+  {
+    "id": "update-address",
+    "topic": "Account access",
+    "title": "Update your mailing address",
+    "body": "To change your mailing address, open Settings, select Profile, and enter your new address. The change applies to all future mail, including paper statements and tax forms.\n\nWe send a confirmation to both your email and your old address, so you know if anyone else changed it.\n\nMoving doesn't change your loan's interest rate, payment, or fees. If you move to another state, we may send you extra disclosures that your new state requires."
+  },
+  {
+    "id": "update-email",
+    "topic": "Account access",
+    "title": "Change your email address",
+    "body": "Your email address is also your sign-in name. To change it, open Settings, select Profile, and enter the new address. We send a link to the new address; select it within 24 hours to confirm the change.\n\nUntil you confirm, keep signing in with your old email. After you confirm, use the new one. We also send a notice to your old address, in case you didn't make the change.\n\nIf you can no longer get email at your old address and can't sign in, call us. We'll verify your identity and update it for you."
+  },
+  {
+    "id": "co-borrower",
+    "topic": "Account access",
+    "title": "Add a co-borrower",
+    "body": "You can't add a co-borrower to a loan you already have. A co-borrower has to apply with you when you apply for a new loan, and we review both applications together.\n\nIf you want someone else to share responsibility for your current loan, one option is to apply together for a new loan and use it to pay off the current one. The new loan has its own rate, fees, and terms.\n\nBoth co-borrowers are fully responsible for the loan, and each signs in with their own email and password. Either one can make payments and see statements."
+  },
+  {
+    "id": "authorized-contact",
+    "topic": "Account access",
+    "title": "Let someone else talk to us about your loan",
+    "body": "You can name an authorized contact, such as a family member, who can call us about your loan. Open Settings, select Profile, and add their name and phone number. You can have up to 2 authorized contacts.\n\nAn authorized contact can ask about your balance, payments, and statements, and can make payments for you. They can't change your account settings, your payment date, or your contact details, and they can't sign in to your account.\n\nAn authorized contact isn't a co-borrower and isn't responsible for the loan. You can remove one at any time from the same page."
+  },
+  {
+    "id": "download-statements",
+    "topic": "Account access",
+    "title": "Download statements and tax forms",
+    "body": "Your monthly statements from the last 7 years are under Settings, then Documents. Select any statement to download it as a PDF.\n\nIf you paid interest last year, we post your tax form for the interest you paid on the same Documents page by January 31. We also email you when it's ready. Ask a tax professional whether you can deduct the interest.\n\nFor statements older than 7 years, contact us. We can mail paper copies, and there's no charge for them."
+  },
+  {
+    "id": "close-account",
+    "topic": "Account access",
+    "title": "Close your online account",
+    "body": "After your loan is paid off, you can close your online account. Open Settings and select Close account. You'll need to sign in again to confirm.\n\nBefore you close it, download any statements and tax forms you want to keep. After your account is closed, you can't sign in to get them.\n\nWe keep your records for 7 years, as the law requires. You can still request copies of statements or your paid-in-full letter by contacting us, and we'll mail them for free."
+  },
+  {
+    "id": "scam-messages",
+    "topic": "Account access",
+    "title": "Recognize scam messages",
+    "body": "We'll never ask for your password, your full bank account number, or a sign-in code by phone, text, or email. If someone asks for any of these, it isn't us.\n\nScam messages often say your account is locked or that you owe a fee, and include a link to a sign-in page. Don't select the link. Open our app or type our web address yourself instead.\n\nIf you shared your password or a code with someone, reset your password right away and contact us. We'll check your account for activity you don't recognize."
+  },
+  {
+    "id": "notification-settings",
+    "topic": "Account access",
+    "title": "Choose your notifications",
+    "body": "We send account notifications by email and text. To choose which ones you get, open Settings and select Notifications.\n\nPayment reminders, payment confirmations, and statement notices can be turned off. Security notices, such as a new sign-in or a password change, always go out and can't be turned off.\n\nText notifications go to the phone number on your account. Standard message rates from your carrier may apply. To stop all text notifications, reply STOP to any of our texts; you'll still get security codes for two-step sign-in."
+  },
+  {
+    "id": "sign-in-new-device",
+    "topic": "Account access",
+    "title": "Sign in on a new device",
+    "body": "When you sign in on a new phone, tablet, or computer, we ask for a 6-digit code if you use two-step sign-in. After that, you can choose Trust this device so we don't ask again on it for 30 days.\n\nWe email you each time someone signs in on a new device, with the date, time, and approximate location. If it wasn't you, reset your password right away.\n\nYou can see every device that's signed in under Settings, then Security, then Devices. Select Sign out next to any device you don't recognize or no longer use."
+  },
+  {
+    "id": "app-not-working",
+    "topic": "Account access",
+    "title": "If the app isn't working",
+    "body": "First, make sure you have the latest version of our app from your app store. Older versions may stop working after an update.\n\nIf the app opens but won't load your account, sign out and sign in again. If that doesn't help, delete the app and install it again. Deleting the app doesn't affect your loan or your payments.\n\nYou can always sign in on our website instead, which has every feature the app has. If both the app and the website are down, scheduled payments and autopay still go through as usual."
+  },
+  {
+    "id": "name-change",
+    "topic": "Account access",
+    "title": "Change your name",
+    "body": "To change the name on your loan, for example after marriage, open Help and select Name change request. Upload a document that shows your new name, such as a marriage certificate, court order, or updated driver's license.\n\nWe review name changes within 5 business days and email you when it's done. Your new name appears on your next statement and on future tax forms.\n\nChanging your name doesn't change your loan, your payment, or your sign-in. If your email address changes too, update it separately. See Change your email address."
+  },
+  {
+    "id": "contact-support",
+    "topic": "Account access",
+    "title": "Contact support",
+    "body": "You can reach us by chat or phone. Chat is in the app and on our website under Help, Monday to Friday, 8 AM to 8 PM Eastern, and Saturday, 9 AM to 1 PM Eastern.\n\nPhone support has the same hours. For payments, our automated phone line is available at any time. See Pay by phone.\n\nIf you write to us through Help, we reply within 1 business day. To speed things up, include your loan number, which is at the top of every statement."
+  }
+]
