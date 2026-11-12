@@ -1,0 +1,16 @@
+[
+  {"question": "How do I move my payment date to later in the month?", "expected": ["change-payment-date"]},
+  {"question": "Is there a penalty for paying off my loan early?", "expected": ["pay-off-early"]},
+  {"question": "What happens if my payment is a few days late?", "expected": ["late-payment"]},
+  {"question": "Can I add my spouse to my loan?", "expected": ["co-borrower"]},
+  {"question": "I got a new phone and can't get my sign-in code", "expected": ["change-phone-number"]},
+  {"question": "Where do I find the tax form for last year's interest?", "expected": ["download-statements"]},
+  {"question": "Someone texted me saying my account is locked. Is that real?", "expected": ["scam-messages"]},
+  {"question": "How much will it cost me if I send my payment by wire?", "expected": ["wire-transfer-fees"]},
+  {"question": "My autopay bounced. What will I be charged, and will you try again?", "expected": ["returned-payment-fee", "autopay"]},
+  {"question": "If I pay off my loan early, do I get the origination fee back, and how do I get a payoff amount?", "expected": ["origination-fee", "pay-off-early"]},
+  {"question": "My payment went up this month after I turned off autopay. Why, and how do I turn it back on?", "expected": ["payment-amount-changed", "autopay"]},
+  {"question": "I lost my job. Can I skip my payments for a while, and will interest still build?", "expected": ["hardship-pause"]},
+  {"question": "I was charged a late fee I don't think I owe. Can you waive it, or can I dispute it?", "expected": ["fee-waiver", "dispute-charge"]},
+  {"question": "Can a family member call you about my loan for me?", "expected": ["authorized-contact"]}
+]
